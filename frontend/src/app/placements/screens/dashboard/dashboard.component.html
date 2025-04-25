@@ -1,0 +1,240 @@
+<main id="main" class="main">
+    <div class="row">
+      <div class="col-lg-12">
+        <section class="section profile">
+          <div class="row">
+            <div class="col-xl-4">
+  
+              <div class="card card-body">
+                <div class="d-flex mt-3">
+                  <div class="flex-shrink-0">
+                    <div class="position-relative"><!---->
+                      <img *ngIf="logininfo.photoId" src="{{imageData}}" alt="Profile" class="profile-pic rounded">
+                      <img *ngIf="!logininfo.photoId" src="assets/img/profile.jpg" alt="Profile"
+                        class="profile-pic rounded">
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <div class="fw-bolder">{{ employees[0]?.empName }}</div>
+                    <!---->
+                    <div class="title-3">{{ employees[0]?.designation }} </div>
+                  </div>
+                </div>
+  
+                <div class="d-flex gap-2 justify-content-between mt-3 row">
+                  <ul class=" list-unstyled col">
+                    <li class="sticker">EmpCode</li>
+                    <li class="sticker_content">{{employees[0]?.employeeId}}</li>
+                  </ul>
+                  <ul class=" list-unstyled col">
+                    <li class="sticker">PayCode</li>
+                    <li class="sticker_content">{{employees[0]?.paycode}}</li>
+                  </ul>
+                </div>
+  
+                <div>
+                  <aside class="languagesWarper ">
+  
+                    <section class="hstack gap-2 justify-content-between row" style="flex-wrap: wrap;">
+                      <div class="col">
+                        <div role="trow"
+                          class="d-inline-flex gap-1  px-2 py-1 fw-semibold text-primary bg-primary bg-opacity-10 border border-primary border-opacity-10 rounded-2">
+                          <i class="bi bi-telephone"
+                            style="font-size:18px;font-size:18px;margin-top:-1px;"></i><span>{{logininfo.mobileNo}}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div role="trow"
+                          class="d-inline-flex gap-1  px-2 py-1 fw-semibold text-success bg-success bg-opacity-10 border border-success border-opacity-10 rounded-2">
+                          <i class="bi bi-whatsapp"
+                            style="display:block;font-size:20px;margin-top:-3px;"></i><span>{{logininfo.mobileNo}} </span>
+                        </div>
+                      </div>
+  
+  
+                      <!---->
+                    </section>
+                  </aside>
+                </div>
+                <div class="border-top mt-3">
+                  <aside class="languagesWarper">
+                    <div class="border-bottom pb-2 mb-3 hstack  justify-content-between mt-4">
+                      <div class="card-title m-0 p-0">Attendance</div>
+                      <div>{{monthyear}}</div>
+                    </div>
+                    <aside class="skillwraper">
+  
+  
+                      <div class="hstack gap-1">
+                        <div class="d-flex align-center gap-1 justify-content-between mb-3 w-100 border-bottom pb-2">
+                          <div class="hstack gap-1"><span>Today</span></div>
+                          <div class="px-2 rounded-1 text-danger text-danger bg-danger bg-opacity-10"> {{today_Data}}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="sticker_hdng1 mb-2 border-bottom mb-4 mt-4 pb-2">This Month</div>
+                      <div class="hstack gap-1">
+                        <div class="d-flex align-center gap-1 justify-content-between mb-3 w-100 border-bottom pb-2">
+                          <div class="hstack gap-1"><span>Total Working days</span></div>
+                          <div class="px-2 rounded-1 text-success bg-success bg-opacity-10"> {{working}}</div>
+                        </div>
+                      </div>
+                      <div class="hstack gap-1">
+                        <div class="d-flex align-center gap-1 justify-content-between mb-3 w-100 border-bottom pb-2">
+                          <div class="hstack gap-1"><span>Absent</span></div>
+                          <div class="px-2 rounded-1 text-danger bg-danger bg-opacity-10"> {{Absent}}</div>
+                        </div>
+                      </div>
+                      <div class="hstack gap-1">
+                        <div class="d-flex align-center gap-1 justify-content-between mb-3 w-100 border-bottom pb-2">
+                          <div class="hstack gap-1"><span>Lates</span></div>
+                          <div
+                            class="px-2 rounded-1 text-warning bg-warning bg-opacity-10 border border-warning border-opacity-10">
+                            {{Lates}}</div>
+                        </div>
+                      </div>
+  
+                      <div class="sticker_hdng1 mb-2 border-bottom mb-4 mt-4 pb-2">Casual Leaves </div>
+                      <div class="hstack gap-1">
+                        <div class="d-flex align-center gap-1 justify-content-between mb-3 w-100 border-bottom pb-2">
+                          <div class="hstack gap-1"><span>Balance</span></div>
+                          <div class="px-2 rounded-1 text-primary bg-primary bg-opacity-10"> {{balance_Cls}}</div>
+                        </div>
+                      </div>
+  
+  
+                      <!---->
+                    </aside>
+                  </aside>
+                </div>
+              </div>
+  
+            </div>
+  
+            <div class="col-xl-8">
+  
+              <div class="card">
+                <div class="card-body pt-3">
+  
+                  <div class="tab-content pt-2">
+  
+                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                      <h5 class="card-title pb-2">Office Details</h5>
+                      <hr class="mt-2" />
+                      <!-- <article class="row justify-content-between">
+  
+                        
+                      </article> -->
+                      <article class="row justify-content-between mt-3">
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Institute</li>
+                          <li class="sticker_content">{{emp_inst_Name}}</li>
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Campus</li>
+                          <li class="sticker_content">{{employees[0]?.campusName || 'NA'}}</li>
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Date of Confirmation</li>
+                          <li class="sticker_content">{{employees[0]?.official[0].DOC || 'NA'}}</li>
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Date Of Join</li>
+                          <li class="sticker_content">{{ employees[0]?.official[0].DOJ || 'NA'}}</li>
+                        </ul>
+                      </article>
+                      <article class="row justify-content-between mt-3">
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">EmployeeType</li>
+                          <li class="sticker_content  ">{{employees[0]?.category || 'NA'}}</li>
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Department</li>
+                          <li class="sticker_content">{{ employees[0]?.official[0].DepartmentName || 'NA' }}</li>
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Category</li>
+                          <li class="sticker_content">{{ employees[0]?.subcategory || 'NA' }}</li>
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Qualification</li>
+                          <li class="sticker_content "> {{ employees[0]?.official[0].Qualification || 'NA' }} </li>
+                        </ul>
+                      </article>
+                    </div>
+  
+  
+                  </div>
+  
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body pt-3">
+  
+                  <div class="tab-content pt-2">
+  
+                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+  
+                      <h5 class="card-title pb-2">Personal Information</h5>
+                      <hr class="mt-2" />
+  
+                      <article class="row justify-content-between mt-3">
+  
+                        <ul class=" col-6 col-md list-unstyled">
+                          <li class="sticker">DOB</li>
+                          <li class="sticker_content">{{ employees[0]?.personal[0]?.DOB || 'NA'}}</li>
+  
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Father Name</li>
+                          <!-- <li class="sticker_content">{{ employees[0]?.FatherName }}</li> -->
+                          <li class="sticker_content ">{{ employees[0]?.personal[0]?.FatherName || 'NA' }}</li>
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Mother Name</li>
+                          <li class="sticker_content ">{{ employees[0]?.personal[0]?.MotherName || 'NA'}} </li>
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Aadhar No.</li>
+                          <li class="sticker_content ">{{employees[0]?.idproofs[0]?.IdProofNo || 'NA'}}</li>
+                        </ul>
+                      </article>
+                      <article class="row justify-content-between mt-3">
+  
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Pan Card No.</li>
+                          <li class="sticker_content ">{{employees[0]?.idproofs[1]?.IdProofNo || 'NA'}}</li>
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">Door No/Street</li>
+                          <li class="sticker_content">{{ employees[0]?.personal[0]?.doornostreet || 'NA'}}</li>
+                        </ul>
+  
+                      </article>
+                      <article class="row justify-content-start mt-3">
+  
+                        <ul class="col-6 col-md list-unstyled  ">
+                          <li class="sticker">City</li>
+                          <li class="sticker_content ">{{ employees[0]?.personal[0]?.CityName || 'NA' }} </li>
+                        </ul>
+                        <ul class="col-6 col-md list-unstyled">
+                          <li class="sticker">State</li>
+                          <li class="sticker_content ">{{ employees[0]?.personal[0]?.State || 'NA'}} </li>
+                        </ul>
+                      </article>
+                    </div>
+  
+             </div>
+  
+                </div>
+              </div>
+  
+            </div>
+          </div>
+        </section>
+      </div>
+  
+    </div>
+  
+  </main>

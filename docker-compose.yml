@@ -1,0 +1,87 @@
+
+services:
+  staff-frontend:
+    image: httpd:2.4
+    volumes:
+      - ${PWD}/frontend/dist/employeePortal:/usr/local/apache2/htdocs
+      - ${PWD}/layout-html:/usr/local/apache2/htdocs/layouts
+      - ${PWD}/leads:/usr/local/apache2/htdocs/leads
+    ports:
+      - 4603:80     
+    restart: always
+  staff-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: staff-api
+    container_name: staff-api
+    tty: true
+    env_file:
+      -  .env.prod
+    ports:
+      - 4604:7700
+    volumes:
+      - ./uploads:/app/uploads
+    restart: always
+  staff-url-pdf:
+    build:
+      context: ./url2pdf
+      dockerfile: Dockerfile
+    image: staff-url-pdf
+    container_name: staff-url-pdf
+    tty: true
+    env_file:
+      -  .env.prod
+    ports:
+      - 4605:3800
+    volumes:
+      - ./uploads:/app/uploads
+    restart: always
+  staff-progress-gen:
+    build:
+      context: ./progress-gen
+      dockerfile: Dockerfile
+    image: staff-progress-gen
+    container_name: staff-progress-gen
+    tty: true
+    env_file:
+      -  .env.prod
+    restart: always
+  staff-progress-state-gen:
+    build:
+      context: ./result-gen
+      dockerfile: Dockerfile
+    image: result-gen
+    container_name: staff-progress-state-gen
+    tty: true
+    env_file:
+      -  .env.prod
+    restart: always
+  fastapi:
+    build:
+      context: ./fastapi
+      dockerfile: Dockerfile
+    image: fastapi
+    volumes:
+      - ${PWD}/fastapi/google.json:/app/google.json
+    container_name: fastapi
+    tty: true
+    ports:
+      - 4606:8000
+    restart: always
+  leads-update:
+    build:
+      context: ./leads-update
+      dockerfile: Dockerfile
+    image: leads-update
+    tty: true
+    deploy:
+      replicas: 4
+    restart: always
+  leads-statement:
+    build:
+      context: ./leads-statement
+      dockerfile: Dockerfile
+    image: leads-statement
+    tty: true
+    restart: always

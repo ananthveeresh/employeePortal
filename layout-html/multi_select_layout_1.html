@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/multi_select.css" />
+
+</head>
+<body>
+  <div ng-app="myApp" ng-controller="myCtrl">
+    <div class="printbt">
+
+      <article id="printSection" style="padding:15px">
+        <div class="bg-white  bgv-off">
+          <div ng-if="total_data.institute=='IITSCHOOL'" >
+            <img src="img/iithdr.png" class="w-100 d-block">
+
+          </div>
+          <div ng-if="total_data.institute=='JUNIOR'" >
+            <img src="img/jrhdr.png" class="w-100 d-block">
+
+          </div>
+          
+
+          <!-- <div class="text-center">
+            <aside class="titleBlock">
+              <h1>Academic Session - ({{stdinfo.year_name}})</h1>
+              <h1 class="fw-bold text-uppercase">
+                Progress Report
+              </h1>
+            </aside>
+          </div> -->
+          <div style="clear: both;"></div>
+
+          <div class="topicPageBreak photBlock" style="border-bottom:1px #333 dashed;">
+            <article class="hstack">
+              <aside>
+                <div class="hstack2">
+                  <div>
+                  <aside style="width:50%">
+                    <!-- <div style="opacity:0.8">SUC</div> -->
+                   
+                  </aside>
+                  <img src="https://analysis.aditya.ac.in/uploads/student_photos/{{stdinfo.std_id}}.jpg"
+                    class="image_thumb" height="100" width="90">
+                    <div style="font-size:13px;" class="text-center">{{stdinfo.student_no}}</div>
+                    </div>
+                  <table width="auto" border="0" cellspacing="0" cellpadding="0" class="noborder" style="width:28vw;">
+                    <tbody>
+                      <tr>
+                        <td style="padding-bottom:3px;">
+                          <div style="opacity:0.8; font-size: 10px;">Name</div>
+                          <div>{{stdinfo.student_name}} </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding-bottom:3px;">
+
+                          <article class="hstack2" style="column-gap:30px;">
+                            <aside style="width:30%">
+                              <div style="opacity:0.8;white-space: nowrap;font-size: 11px;">Roll No.</div>
+                              <div>{{stdinfo.roll_no}}</div>
+                            </aside>
+                            <aside style="width:70%">
+                              <div style="opacity:0.8;white-space: nowrap;font-size: 11px;">Section</div>
+                              <div>    {{stdinfo.section_name}}</div>
+                            </aside>
+                          </article>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <article class="hstack2" style="column-gap:30px;">
+                            <aside style="width:30%">
+                              <div style="opacity:0.8;white-space: nowrap;font-size: 11px;"> Course</div>
+                              <div>
+                               {{stdinfo.course_name}}
+                              </div>
+                            </aside>
+                            <aside style="width:70%">
+                              <div style="opacity:0.8;white-space: nowrap;font-size: 11px;">Branch </div>
+                              <div style="white-space: nowrap;">{{total_data.campus}}</div>
+                            </aside>
+                          </article>
+                        </td>
+                        <!-- <td>
+                        <div style="opacity:0.8">Branch</div>
+                          <div>{{ campus[0].campus_name }}adcgpt</div>
+                          </td>-->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </aside>
+              <aside style="text-align:left;line-height:18px;">
+                <h5 style="margin: 0 0 5px 0;font-size:13px;font-weight: 600;">To</h5>
+                <div>{{ stdinfo.father_name }},</div>
+
+                <div>{{ stdinfo.street }},</div>
+                <aside style="display:flex;gap: 7px;">
+                  <div>{{ stdinfo.district }},</div>
+                  <div>Andhra Pradesh,</div>
+                </aside>
+
+                <div>Mobile No : {{ stdinfo.mobile_no }}</div>
+
+              </aside>
+            </article>
+          </div>   
+
+          <div class="table-responsive mt-2 mb-1 fixed-table">
+            <table cellpadding="0" cellspacing="0" style="font-size: 10px" cellspacing="0" cellpadding="0" border="0"
+              class="pcard" width="100%">
+              <tbody>
+
+                <tr style="background-color: #d6d6d6;">
+                  <td style="width: 50px; font-weight: bold;">Month</td>
+                  <td ng-repeat="x in std_attendance" style=" text-align: center; font-weight: bold;"> {{convertMonthFormat(x.month)}}</td>
+                  <td style="text-align: center; font-weight: bold;">Total</td>
+                </tr>
+
+                <tr>
+                  <td style="font-weight: bold;">Working</td>
+                  <td class="text-center" ng-repeat="x in std_attendance"> {{x.working}}</td>
+                  <td style="text-align:center;">{{getWorkingTotal()}}</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: bold;">Present</th>
+                  <td class="text-center" ng-repeat="x in std_attendance"> {{x.present}}</td>
+                  <td style="text-align:center;">{{getPresentTotal()}}</td>
+                </tr>
+
+                <tr>
+                  <td style="font-weight: bold;">Absent</td>
+                  <td class="text-center" ng-repeat="x in std_attendance"> {{x.absent}}</td>
+                  <td style="text-align:center;">{{getAbsentTotal()}}</td>
+                </tr>
+
+                <tr>
+                  <td style="font-weight: bold;">Percentage</td>
+                  <td ng-repeat="x in std_attendance" style="text-align:center;">
+                    {{(x.present / x.working * 100) | number:1}}%
+                  </td>
+                  <td style="text-align:center;">
+                    {{getAttendancePercentage()}}%
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+
+          <table cellpadding="0" cellspacing="0" style="font-size: 11px; width: 100%; border: 1px solid #ddd;"
+            class="pcard" ng-repeat="x in std_exam_report | orderBy:'examtype' ">
+            <thead>
+              <tr>
+                <th colspan="11" style="text-align: center; background-color: #d6d6d6;">
+                  {{x.category}}
+                </th>
+              </tr>
+              <tr class="text-center">
+                <th rowspan="2">Exam</th>
+                <th ng-repeat="h in x.examresult[0].examresultinfo" rowspan="2">{{h.subjectcode}}</th>
+                <th rowspan="2">Total</th>
+                <th rowspan="2">%</th>
+                <th ng-if="x.examtype == 0" rowspan="2">Result</th>
+                <th colspan="3" ng-if="x.branchrank || x.adityarank || x.sectionrank">Rank</th>
+              </tr>
+              <tr>
+                <th ng-if="x.sectionrank" class="text-center" >Section</th>
+                <th ng-if="x.branchrank" class="text-center">Branch</th>
+                <th ng-if="x.adityarank" class="text-center">Aditya</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr ng-repeat="y in x.examresult" class="text-center">
+
+                <td>{{y.examname}}<br>{{y.examdate | date:"dd-MM-yyyy"}}</td>
+                <td ng-repeat="s in y.examresultinfo"> {{s.marks}}</td>
+                <td>{{y.examresultinfo[0].total}}</td>
+                <td>{{y.examresultinfo[0].percentage}}</td>
+                <td ng-if="x.examtype == 0">{{y.examresultinfo[0].status}}</td>
+                <td  ng-if="x.sectionrank">{{y.examresultinfo[0].sectionrank}}</td>
+                <td ng-if="x.branchrank">{{y.examresultinfo[0].branchrank}}</td>
+                <td ng-if="x.adityarank">{{y.examresultinfo[0].adityarank}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <br />
+
+          <div ng-if="teacherSignature==''" style="height:50px"><br /></div>
+          <div ng-if="teacherSignature!=''"><img
+              src="https://analysis.aditya.ac.in/uploads/principal_signature/{{stdinfo.campus_id}}.jpg"
+              style="float: right;" height="35"></div>
+          <div style="clear: both;"></div>
+          <div class="table-responsive">
+            <table width="100%" border="0" style="font-size: 13px">
+              <tbody>
+                <tr>
+                  <!-- <td align="left" style="border: 0;">
+                    Signature of Class Teacher
+                  </td> -->
+                  <td align="right" style="border: 0;">
+                    Signature of Principal
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br />
+
+          <!-- <div class="bgFixed"><img src="{{selectedLayoutImage}}" /></div> -->
+
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <script>
+    var app = angular.module("myApp", []);
+    app.controller("myCtrl", function ($scope, $http, $filter) {
+      var url = new URL(window.location.href);
+      var mongoid = url.searchParams.get("id");
+      //live apis
+       var empPortalApi = "https://analysis.aditya.ac.in/staff/api/";
+
+      //local apis
+      //  var empPortalApi = "http://10.70.3.169:7700/";
+        $scope.convertMonthFormat = function(month) {
+           return month.replace(/-(\d{4})$/, (_, year) => `-${year.slice(-2)}`);
+        };
+
+      $http.get(empPortalApi + "examresultstateboard/mongo/" + mongoid).then(function (data) {
+        $scope.total_data = data.data.result[0]
+        // console.log($scope.total_data)
+
+        $scope.total_data.exam_result.forEach(category => {
+          let hasNonNullAdityaRank = false;
+          let hasNonNullBranchRank = false;
+          let hasNonNullSectionRank = false;
+
+          category.examresult.forEach(exam => {
+            //  console.log(exam);
+
+            if (!hasNonNullAdityaRank && exam.examresultinfo[0].adityarank != null) {
+              hasNonNullAdityaRank = true;
+            }
+
+            if (!hasNonNullBranchRank && exam.examresultinfo[0].branchrank != null) {
+              hasNonNullBranchRank = true;
+            }
+
+            if (!hasNonNullSectionRank && exam.examresultinfo[0].sectionrank != null) {
+              hasNonNullSectionRank = true;
+            }
+          });
+
+          // Set category-level flags based on the conditions
+          category.adityarank = hasNonNullAdityaRank;
+          category.branchrank = hasNonNullBranchRank;
+          category.sectionrank = hasNonNullSectionRank;
+
+        });
+
+        // console.log($scope.total_data)
+        $scope.std_exam_report = $scope.total_data.exam_result
+        //  console.log($scope.std_exam_report)
+        $scope.std_attendance = $scope.total_data.student_attendance
+
+        $scope.getWorkingTotal = function () {
+            return $scope.std_attendance.reduce((total, item) => total + (item.working || 0), 0);
+          };
+
+          $scope.getPresentTotal = function () {
+            return $scope.std_attendance.reduce((total, item) => total + (item.present || 0), 0);
+          };
+
+          $scope.getAbsentTotal = function () {
+            return $scope.std_attendance.reduce((total, item) => total + (item.absent || 0), 0);
+          };
+
+          $scope.getAttendancePercentage = function () {
+            const workingTotal = $scope.getWorkingTotal();
+            const presentTotal = $scope.getPresentTotal();
+            return workingTotal > 0 ? ((presentTotal / workingTotal) * 100).toFixed(1) : 0;
+          };
+
+        $scope.stdinfo = $scope.total_data.student_info[0]
+
+        if ($scope.stdinfo.bus == 1) {
+          $scope.mode_type = "Bus"
+        }
+        else if ($scope.stdinfo.hostel == 1) {
+          $scope.mode_type = "Hostel"
+        } else if ($scope.stdinfo.bus == 0 && $scope.stdinfo.hostel == 0) {
+          $scope.mode_type = "Other";
+        }
+
+        $scope.layout_Info = $scope.total_data.layout_info[0]
+        $scope.selectedLayoutImage = $scope.layout_Info.layout_path + 'img/' + $scope.layout_Info.bg_image;
+        // $scope.selectedLayoutImage =  'img/'+ $scope.layout_Info.bg_image;
+      })
+    });
+  </script>
+</body>
+
+</html>

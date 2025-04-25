@@ -1,0 +1,87 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Subjects</h1>
+  </div>
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Subjects Catgeory</h5>
+            <form class="row g-3" [formGroup]="subjectsform"
+              (ngSubmit)=subjectssubmit()>
+              <div class="col-12">
+                <label class="form-label">Institute </label>
+                <select class="form-select" name="instituename" formControlName="instituename" required>
+                  <option value="" disabled selected hidden>Select Institute</option>
+                  <option value="{{a.id}}" *ngFor="let a of institutelist">{{a.institute_name}}</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Subject Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Subject Name"
+                  name="subjectname"
+                  formControlName="subjectname"
+                  required />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Subject Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Subject Code"
+                  name="subjectcode"
+                  formControlName="subjectcode"
+                  required />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Subject Type</label>
+                <select class="form-select" name="subjecttype"
+                  formControlName="subjecttype" required>
+                  <option value="" disabled selected hidden >Select Type</option>
+                  <option value="Scholastic" selected>Scholastic</option>
+                  <option value="Co-Scholastic" selected>Co-Scholastic</option>
+                </select>
+              </div>
+              <div class="row col-12"
+                *ngIf="subjectsform?.get('subjecttype')?.value == 'Scholastic'">
+                  <label class="form-label">Sub Papers</label>
+                  <div class="col-10" formArrayName="subtopics" >
+                  <div *ngFor="let subtopic of subtopics.controls; let i=index" >
+                    <div  [formGroupName]="i" >
+                      <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Sub Topic"
+                    name="subtop"
+                    formControlName="sub"
+                    required />
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-2">
+                    <i class="bi bi-plus-lg" (click)="addnewSubsubject()"></i>
+                  </div>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card">
+          <h1>
+            blank
+          </h1>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>

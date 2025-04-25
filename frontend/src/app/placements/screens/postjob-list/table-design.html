@@ -1,0 +1,606 @@
+<main id="main" class="main">
+  <section>
+    <div *ngIf="!showJobDetails">
+      <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <h5 class="card-title">Add Placement Drive</h5>
+        <div>
+          <a [routerLink]="['/placements/postjob']" class="btn btn-primary btn-sm">
+            <i class="bi bi-plus-square"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div *ngIf="showJobDetails">
+      <div>
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title">View Placement</h5>
+          <div>
+            <button class="btn btn-primary btn-sm" (click)=" goBack()">
+              <i class="bi bi-arrow-left"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="col-12">
+
+
+      <div class="row justify-content-center">
+        <div class="card w-100">
+          <div class="card-body">
+            <div *ngIf="!showJobDetails">
+              <div class="table-responsive mt-4">
+                <div class="overflow-auto">
+                  <table class="table table-bordered">
+                    <thead class="table-primary text-center">
+                      <tr>
+                        <th>S.No</th>
+                        <th>Company Name</th>
+                        <th>Registration Link</th>
+                        <th>Eligible Students</th>
+                        <th>Last Date</th>
+                        <th>View</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let job of job_Post_List; let i = index">
+                        <td class="text-center p-4">{{ i + 1 }}</td>
+                        <td class="">
+                          <div class="title-4">{{ job.jobDescription.company_name }}</div>
+                          <div class="title-3 ms-1">{{ job.jobDescription.role }}</div>
+                          <span class="badge bg-primary">{{ job.jobDescription.package }} LPA</span>
+                        </td>
+                        <td class="text-center p-4">
+                          <a [href]="job.driveDetails.registration_link" target="_blank">Register Here</a>
+                        </td>
+                        <td class="text-center p-4">
+                          <span class="badge bg-success">
+                            <i class="bi bi-check-circle-fill"></i> <span>100</span>
+                            <i class="bi bi-person-fill ms-1"></i>
+                          </span>
+                        </td>
+                        <td class="text-center p-4">{{ job.driveDetails.last_date_for_registration }}</td>
+                        <td class="text-center p-3">
+                          <button (click)="fetchJobDetails(job._id)" class="btn btn-link">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Original -->
+            <div *ngIf="showJobDetails" class="container mt-4">
+              <div class=" text-center">
+                <h5 class="card-title m-0 p-0 ">{{ selectedJobData.jobDescription.role }} <span>|</span> {{
+                  selectedJobData.jobDescription.company_name }}</h5>
+
+                <div class="badge bg-light text-dark p-2 mt-2">
+                  <i class="bi bi-geo-alt me-1"></i>{{ selectedJobData.jobDescription.joblocation }}
+                </div>
+
+              </div>
+
+
+              <div class="  mb-3">
+                <div class="">
+                  <h5 class="mb-2 section-title">Job Description</h5>
+                </div>
+                <div class="">
+                  <div class="row">
+                    <div class="col-md-12 mb-3">
+                      <p>{{ selectedJobData.jobDescription.jobdescription }}</p>
+                    </div>
+
+                    <div class="col-md-6">
+                      <h5 class="section-title ">Job Details</h5>
+                      <hr />
+                      <table class="table table-borderless">
+                        <tbody>
+                          <tr>
+                            <th scope="row" class="w-50">Role</th>
+                            <td>{{ selectedJobData.jobDescription.role }}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Package</th>
+                            <td>{{ selectedJobData.jobDescription.package }} LPA</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Location</th>
+                            <td>{{ selectedJobData.jobDescription.joblocation }}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Category</th>
+                            <td>{{ selectedJobData.jobDescription.category }}</td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="col-md-6">
+                      <h5 class=" section-title">Company Information</h5>
+                      <hr />
+                      <table class="table table-borderless">
+                        <tbody>
+                          <tr>
+                            <th scope="row" class="w-50">Company Name</th>
+                            <td>{{ selectedJobData.jobDescription.company_name }}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Bond</th>
+                            <td>{{ selectedJobData.jobDescription.bond }} YEARS</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Website</th>
+                            <td>
+                              <a href="{{ selectedJobData.jobDescription.website }}" target="_blank"
+                                class="text-decoration-none">
+                                {{ selectedJobData.jobDescription.website }}
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+
+                    </div>
+                    <div>
+                      <h5 class="  mt-4 section-title">Company Profile</h5>
+                      <p>{{ selectedJobData.jobDescription.companyprofile }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <h5 class="mb-0 section-title">Job Eligibility</h5>
+                  <hr />
+
+                </div>
+
+                <div class="col-md-6">
+                  <ul class="list-unstyled d-flex flex-wrap gap-3 ">
+                    <label class="title-4 mt-1">Eligible Departments</label>
+                    <li class="d-flex align-items-center"
+                      *ngFor="let department of selectedJobData.jobEligibility.departments">
+                      <i class="bi bi-check-circle-fill text-success me-2"></i>
+                      <span>{{ department.name }}</span>
+                    </li>
+                  </ul>
+                  <ul class="list-unstyled d-flex flex-wrap gap-3 ">
+                    <label class="title-4 mt-1">Eligible Campuses</label>
+                    <li class="d-flex align-items-center"
+                      *ngFor="let campus of selectedJobData.jobEligibility.campuses">
+                      <i class="bi bi-buildings me-2"></i>
+                      <span>{{ campus.name }}</span>
+                    </li>
+                  </ul>
+                  <ul class="list-unstyled d-flex flex-wrap gap-3 ">
+                    <label class="title-4 mt-1">Eligible Passout Years</label>
+                    <li *ngFor="let passout_year of selectedJobData.jobEligibility.passout_years">
+                      <span>{{ passout_year.year }}</span>
+                    </li>
+                  </ul>
+                </div>
+
+
+
+
+                <div class="col-md-6">
+                  <table class="table table-borderless">
+                    <tbody>
+                      <tr>
+                        <th scope="row">Academic Percentage</th>
+                        <td><span class="badge bg-primary">{{ selectedJobData.jobEligibility.academic_percentage
+                            }}</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">10th Percentage</th>
+                        <td><span class="badge bg-primary">{{ selectedJobData.jobEligibility.tenth_percentage_cgpa
+                            }}</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Inter Percentage</th>
+                        <td><span class="badge bg-primary">{{ selectedJobData.jobEligibility.inter_percentage_cgpa
+                            }}</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Max Backlogs</th>
+                        <td><span class="badge bg-primary">{{ selectedJobData.jobEligibility.max_backlogs_count
+                            }}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="col-md-12 mb-3">
+
+                  <h5 class="section-title">Additional Eligibility Notes</h5>
+                  <hr />
+                  <p class="">{{ selectedJobData.jobEligibility.job_eligibility_form_other_details }}</p>
+
+                </div>
+              </div>
+              <div class="mb-3">
+                <h5 class="mb-2 section-title">Drive Details</h5>
+                <hr class="my-2" />
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <table class="table table-bordered table-hover">
+                      <tbody class="table-light">
+                        <tr>
+                          <th scope="row">Registration Link</th>
+                          <td>
+                            <a [href]="selectedJobData.driveDetails.registration_link">{{
+                              selectedJobData.driveDetails.registration_link }}</a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Start Date</th>
+                          <td>{{ selectedJobData.driveDetails.start_date }}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">End Date</th>
+                          <td>{{ selectedJobData.driveDetails.end_date }}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Last Date for Registration</th>
+                          <td class="text-danger fw-bold">{{ selectedJobData.driveDetails.last_date_for_registration }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Location</th>
+                          <td>{{ selectedJobData.driveDetails.location }}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Mode of Drive</th>
+                          <td>{{ selectedJobData.driveDetails.mode_of_drive }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="col-md-6">
+
+                    <div class="card mb-3 shadow-sm">
+                      <div class="card-body">
+                        <h6 class="card-subtitle mb-2 mt-2 text-muted">Round Details</h6>
+                        <p class="card-text">{{ selectedJobData.driveDetails.round_details }}</p>
+                      </div>
+                    </div>
+
+                    <div class="card mb-3 shadow-sm">
+                      <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Selection Process</h6>
+                        <p class="card-text">{{ selectedJobData.driveDetails.selection_process }}</p>
+                      </div>
+                    </div>
+
+                    <div class="card mb-3 shadow-sm">
+                      <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Selection Criteria</h6>
+                        <p class="card-text">{{ selectedJobData.driveDetails.selection_criteria }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+            <!-- Duplicate -->
+            <!-- <div *ngIf="!showJobDetails" class="container mt-4">
+              <section>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-3">
+                            
+                           <div class="d-flex justify-content-between">
+                            <h5 class="card-title">Software Engineer</h5>
+                            <div class="d-flex gap-3">
+                               
+                            <div class="mt-3">
+                              <a class="btn btn-link text-decoration-none p-0 title-4" data-bs-toggle="collapse" href="#jobDescription" role="button" aria-expanded="false" aria-controls="jobDescription">
+                                  <i class="bi bi-file-text text-primary me-1 "></i> Job Description
+                              </a>
+                             
+                             </div>
+                             
+                          
+                             <div class="mt-3">
+                                 <a class="btn btn-link text-decoration-none p-0 title-4" data-bs-toggle="collapse" href="#companyProfile" role="button" aria-expanded="false" aria-controls="companyProfile">
+                                     <i class="bi bi-building text-primary me-1 "></i> Company Profile
+                                 </a>
+                                 
+                             </div>
+                            </div>
+                           </div>
+                           <div class="d-flex">
+                            <div class="collapse  mb-2" id="jobDescription">
+                              <div class=" border-0 p-3">
+                                <h5 class="title-4 fs-5">Job Description</h5>
+                                  <p class="mb-0 title-3">
+                                      We are looking for a talented Software Engineer to join our growing tech team. You will be responsible for developing and maintaining web applications, ensuring scalability and efficiency in our software products, and collaborating with cross-functional teams to deliver high-quality code. The ideal candidate should be skilled in Java, Python, and React.
+                                  </p>
+                              </div>
+                          </div>
+              
+                             <div class="collapse  mb-2" id="companyProfile">
+                              <div class=" border-0 p-3">
+                                <h5 class="title-4 fs-5">Company Profile</h5>
+                                  <p class="mb-0 title-3">
+                                      TechSolutions Pvt. Ltd. is a leading software development company that focuses on delivering cutting-edge technology solutions for businesses worldwide. With a team of highly skilled engineers and innovators, we specialize in custom software development, enterprise solutions, and IT consulting services.
+                                  </p>
+                              </div>
+                          </div>
+                           </div>
+                        
+                            <div class="row">
+                             
+                                <div class="col-md-2">
+                                    <p class="mb-1 title-4"><i class="bi bi-cash-stack text-primary me-1"></i> 10.5 LPA</p>
+                                    <p class="mb-1 title-4"><i class="bi bi-geo-alt text-primary me-1"></i> Bengaluru, Karnataka</p>
+                                </div>
+                
+                            
+                                <div class="col-md-2">
+                                    <p class="mb-1 title-4"><i class="bi bi-building text-primary me-1"></i> TechSolutions Pvt. Ltd.</p>
+                                    <p class="mb-0 title-4"><i class="bi bi-clock text-primary me-1"></i> Bond: 2 years</p>
+                                </div>
+                
+                             
+                                <div class="col-md-3">
+                                    <h6 class="mb-2 title-4"><i class="bi bi-check-circle text-primary me-1"></i> Eligibility</h6>
+                                    <p class="mb-1 title-4"><i class="bi bi-people-fill text-primary me-1"></i> Departments: EEE, MECH, IT, CSE</p>
+                                </div>
+                
+                            
+                                <div class="col-md-3">
+                                    <p class="mb-1 title-4"><i class="bi bi-house-door text-primary me-1"></i> Campuses: ADC, AWDC</p>
+                                    <p class="mb-1 title-4"><i class="bi bi-calendar text-primary me-1"></i> Passout Years: 2020, 2021, 2022, 2023, 2024</p>
+                                </div>
+                
+                          
+                                <div class="col-md-2">
+                                    <p class="mb-1 title-4"><i class="bi bi-percent text-primary me-1"></i> Academic: 75%</p>
+                                    <p class="mb-1 title-4"><i class="bi bi-percent text-primary me-1"></i> 10th: 85%</p>
+                                </div>
+                            </div>
+                
+                           
+                        </div>
+                    </div>
+                </div>
+                
+          
+                  <div class="col-lg-12">
+          
+                    <div class="card">
+                      <div class="card-body">
+          
+                    
+                        <ul class="nav nav-tabs d-flex justify-content-between" id="myTab" role="tablist">
+                          <div>
+                            <h5 class="card-title p-0 pt-4">Drive details</h5>
+                          </div>
+                         <div class="d-flex mt-4">
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link active  title-4" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Drive details</button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link  title-4" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" tabindex="-1">Profile</button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link  title-4" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false" tabindex="-1">Contact</button>
+                          </li>
+                         </div>
+                        </ul>
+                        <div class="tab-content pt-4" id="myTabContent">
+                          <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="mb-3">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="mb-3">
+                                    <div>
+                                      <h6 class="card-subtitle mb-2 mt-2 text-muted">Round Details</h6>
+                                      <p class="card-text">1st Round: Online Coding Test, 2nd Round: Technical
+                                        Interview, 3rd Round: HR Interview</p>
+                                      <h6 class="card-subtitle mb-2 text-muted">Selection Process</h6>
+                                      <p class="card-text">Candidates will first take an online coding test to
+                                        assess problem-solving skills. Shortlisted candidates will then have a technical interview
+                                        focusing on data structures, algorithms, and system design. Finally, an HR interview will
+                                        take
+                                        place to evaluate soft skills and cultural fit.</p>
+                                      <h6 class="card-subtitle mb-2 text-muted">Selection Criteria</h6>
+                                      <p class="card-text">Minimum academic percentage of 70%, no more than 2
+                                        active backlogs, proficient in at least one programming language, and strong analytical and
+                                        problem-solving abilities.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                  <table class="table table-bordered table-hover">
+                                    <tbody>
+                                      <tr>
+                                        <th scope="row">Registration Link</th>
+                                        <td> www.companyxyz.com/register </td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">Start Date</th>
+                                        <td>2025-03-10</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">End Date</th>
+                                        <td>2025-03-10</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">Last Date for Registration</th>
+                                        <td class="text-danger fw-bold">2025-03-10</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">Location</th>
+                                        <td>Bengaluru, Karnataka / Remote (for virtual)</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">Mode of Drive</th>
+                                        <td>On Campus</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            TechSolutions Pvt. Ltd. is a leading software development company that focuses on delivering cutting-edge technology solutions for businesses worldwide. With a team of highly skilled engineers and innovators, we specialize in custom software development, enterprise solutions, and IT consulting services.</div>
+                          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"></div>
+                        </div>
+                      </div>
+                    </div>
+          
+                  </div>
+          
+                 
+                </div>
+              </section>
+            </div> -->
+
+
+            <!-- testing -->
+            <!-- <div  *ngIf="showJobDetails" class="row">
+
+              <div class="col-12 mt-3">
+                  <div class="d-md-flex justify-content-between align-items-center mb-4">
+                     
+                      <div class="mb-3 mb-md-0">
+                          <h5 class="card-title">Placement Drive</h5>
+                          <div class="d-flex justify-content-start gap-2">
+                              <button class="btn btn-sm btn-success">Live</button>
+                              <button class="btn btn-sm btn-secondary">Closed</button>
+                          </div>
+                      </div>
+          
+                      <div class="col-md-12 col-lg-6 col-xl-5 col-xxl-4">
+                          <form novalidate class="form">
+                              <div class="input-group mb-3">
+                                  <input placeholder="Search" type="text" class="form-control" />
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          
+              <div class="col-lg-4">
+                  <div class="card">
+                      <div class="card-body">
+                          <div class="d-flex justify-content-between mb-0 mt-3">
+                              <span class="badge bg-primary m-0 py-1">On - Campus</span>
+                         
+                              <div class="d-flex align-items-center">
+                                  <div class="text-muted rounded-pill me-2 d-flex align-items-center">
+                                   
+                                      <div class="nav-item dropdown ms-2">
+                                          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                              <i class="bi bi-three-dots"></i>
+                                          </a>
+                                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                        
+                                              <li>
+                                                  <a class="dropdown-item d-flex align-items-center" href="#/Placement">
+                                                      <i class="bi bi-calendar-event me-2"></i>
+                                                      <span>Drive Details</span>
+                                                  </a>
+                                              </li>
+                                              <li>
+                                                  <a class="dropdown-item d-flex align-items-center" href="#/Placement">
+                                                      <i class="bi bi-people me-2"></i>
+                                                      <span>Eligibility</span>
+                                                  </a>
+                                              </li>
+                                              <li>
+                                                  <a class="dropdown-item d-flex align-items-center" href="#/Placement">
+                                                      <i class="bi bi-upc-scan me-2"></i>
+                                                      <span>Company info</span>
+                                                  </a>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+          
+                          <div class="d-md-flex justify-content-between align-items-center">
+                              <div>
+                                  <h5 class="card-title p-0 mt-3">Web Designer / Developer</h5>
+                              </div>
+                              <img src="https://static.vecteezy.com/system/resources/thumbnails/014/018/563/small_2x/amazon-logo-on-transparent-background-free-vector.jpg"
+                                  alt="Company Logo" class="mt-2 mb-2" style="height: auto;width: 68px;">
+                          </div>
+          
+                          <div class="row">
+                              
+                              <div class="col-md-6 col-12 mb-2 mb-md-0">
+                                  <div class=" ">
+                                      <p class="title-3  m-0">Last Date:</p>
+                                      <p class=" title-5 mb-0">25 Oct 2023</p>
+                                  </div>
+                              </div>
+          
+                             
+                              <div class="col-md-6 col-12">
+                                <div class="mb-0 ">
+                                  <p class="title-3  m-0">Package:</p>
+                                  <p class=" title-5 mb-0">12 LPA</p>
+                              </div>
+                                  
+                              </div>
+          
+                             
+                          </div> 
+                          
+                          <div class="row mt-3">
+                              
+                               <div class="col-md-6 col-12 mb-md-0 mb-4">
+                                <div class="mb-0 ">
+                                  <p class="title-3  m-0">Departments:</p>
+                                  <p class=" title-5">CSE, IT, ECE, MECH, CIVIL, EEE</p>
+                              </div>
+                                 
+                              </div>
+          
+                           
+                              <div class="col-md-6 col-12">
+                                <div class="mb-0 ">
+                                  <p class="title-3  m-0">Eligible Batches:</p>
+                                  <p class=" title-5">2022, 2023, 2024, 2025</p>
+                              </div>
+                                 
+                              </div>
+                            </div>
+                      </div>
+                  </div>
+              </div>
+          
+          </div> -->
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

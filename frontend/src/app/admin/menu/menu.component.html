@@ -1,0 +1,84 @@
+<aside id="sidebar" class="sidebar">
+
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link " href="#/admin/dashboard">
+        <i class="bi bi-grid"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link " href="#/admin/homework">
+        <i class="bi bi-building"></i>
+        <span>Campus Connect </span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link " href="#/admin/enquiry-form-entry">
+        <i class="ri-user-search-line"></i>
+        <span>Admission Enquiries</span>
+      </a>
+    </li>
+
+    <!-- <li class="nav-item">
+        <a class="nav-link " href="">
+          <i class="bi bi-journal-text" ></i>
+          <span>Exam Models </span>
+        </a>
+      </li> -->
+
+      <!-- <li class="nav-item">
+        <a class="nav-link " href="#/admin/student-intimation">
+          <i class="bi bi-building"></i>
+          <span>Student Intimation </span>
+        </a>
+      </li> -->
+      <li class="nav-item" *ngIf="logininfo.instId == 7">
+        <a class="nav-link collapsed" data-bs-target="#exams" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Marks Entry</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="exams" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="#/admin/exam-marks-entry">
+              <i class="bi bi-circle"></i><span>UNIT</span>
+            </a>
+          </li>
+          <li>
+            <a href="#/admin/cbse_termend">
+              <i class="bi bi-circle"></i><span>Term End</span>
+            </a>
+          </li>
+          <!-- <li>
+            <a href="#/admin/exammarks-postto-analysis">
+              <i class="bi bi-circle"></i><span>exam marks</span>
+            </a>
+          </li> -->
+        </ul>
+      </li>
+     
+      <!-- <li class="nav-item">
+        <a class="nav-link " href="#/admin/exam-marks-entry">
+          <i class="bi bi-file-earmark-bar-graph"></i>
+          <span>Exam Marks Entry </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="#/admin/cbse_termend">
+          <i class="bi bi-building"></i>
+          <span> Term End </span>
+        </a>
+      </li> -->
+     
+
+    <li class="nav-item">
+      <a class="nav-link " href="#/admin/change-password">
+        <i class="bi bi-key" style="transform: rotate(51deg);font-size: 20px !important;"></i>
+        <span>Change Password</span>
+      </a>
+    </li>
+
+
+  </ul>
+
+</aside>

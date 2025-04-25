@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="stylesheet" href="css/termend_0.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<style>
+  th,
+  strong,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600 !important;
+    color: #222;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 500 !important;
+    font-size: 11px !important;
+  }
+
+  .textleft table tbody tr td:first-child {
+    text-align: left;
+  }
+
+  body {
+    font-family: "Open Sans", sans-serif !important;
+  }
+</style>
+
+<body style="font-size:11px;color: #555;">
+  <div ng-app="myApp" ng-controller="myCtrl">
+
+    <div class="bg-white  shadow-sm bgDynamic">
+      <div class="text-center" style="margin-top:-79px;float:right;">
+        <aside class="titleBlock">
+          <h6 class="ng-binding">Academic Session - ({{stdinfo.year_id}})</h6>
+          <h6 class="text-uppercase">
+            Progress Report (TERM - I)</h6>
+        </aside>
+      </div>
+
+      <aside style="margin-top: -24px;display: inline-block;">
+        <div>
+          <div class="row">
+            <div class="col">
+              <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                <div style="padding:3px;">
+                  <p style="margin: 0;"><strong>Name</strong></p>
+                </div>
+                <div style="flex-grow: 1;    padding:3px;">
+                  <p style="margin: 0; border-bottom: 1px solid;">{{stdinfo.student_name}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                <div style="padding:3px;">
+                  <p style="margin: 0;"><strong>Roll N0.</strong></p>
+                </div>
+                <div style="flex-grow: 1;    padding:3px; ">
+                  <p style="margin: 0;border-bottom: 1px solid;">{{stdinfo.roll_no}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col">
+              <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                <div style="padding:3px;">
+                  <p style="margin: 0;"><strong>Class</strong></p>
+                </div>
+                <div style="flex-grow: 1;    padding:3px; ">
+                  <p style="margin: 0;border-bottom: 1px solid;">{{stdinfo.class_name}}</p>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col">
+              <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                <div style="padding:3px;">
+                  <p style="margin: 0;"><strong>House</strong></p>
+                </div>
+                <div style="flex-grow: 1;    padding:3px;">
+                  <p style="margin: 0;border-bottom: 1px solid;">Marutina</p>
+                </div>
+              </div>
+            </div> -->
+            <div class="col">
+              <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                <div style="padding:3px;">
+                  <p style="margin: 0;"><strong>Adm No</strong></p>
+                </div>
+                <div style="flex-grow: 1;    padding:3px;">
+                  <p style="margin: 0;border-bottom: 1px solid;">{{stdinfo.suc_code}}</p>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-3">
+              <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                <div style="padding:3px;">
+                  <p style="margin: 0;"><strong>DOB</strong></p>
+                </div>
+                <div style="flex-grow: 1;    padding:3px; ;">
+                  <p style="margin: 0;border-bottom: 1px solid;">20-08-1992</p>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+
+        </div>
+        <div class="row mt-1">
+          <div class="col-6">
+            <table class="table-bordered w-100 text-center">
+              <thead>
+                <tr>
+                  <th>Health Status</th>
+                  <th style="text-align:center">Term-I</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="subject in block0.subjects">
+
+                  <th>{{subject.sub_titile}}</th>
+                  <td>{{subject.col_value}}</td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+          <!-- Attendance Report Table -->
+          <div class="col-6">
+            <table class=" table-bordered w-100 text-center">
+              <thead>
+                <tr>
+                  <th>Attendance Report</th>
+                  <th>Term-I</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th> Present Days</th>
+                  <td>104</td>
+                </tr>
+                <tr>
+                  <th>Working Days</th>
+                  <td>111</td>
+                </tr>
+                <tr>
+                  <th>Percentage</th>
+                  <td>93.69%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="table-responsive text-center textleft">
+          <table class="table-bordered mt-2" cellpadding="2" cellspacing="2" style="width:100%">
+            <thead>
+              <tr>
+                <th style="min-width:80px;max-width:80px;text-align:left">Subject</th>
+                <th ng-repeat="sub in filteredExamResult1[0].subjects"
+                  style="min-width:60px;max-width:60px;text-align:center;">
+                  {{ sub.sub_titile}} <br>({{sub.max_marks}})
+                </th>
+                <th style="min-width:60px;max-width:60px;text-align:center;">Total
+                  ({{filteredExamResult1[0].max_marks}})</th>
+                <th style="min-width:60px;max-width:60px;text-align:center;">Grade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="result in filteredExamResult1">
+                <td>{{ result.subject }}</td>
+                <td ng-repeat="sub in result.subjects" style="text-align:center;">
+                  {{ sub.marks }}
+                </td>
+                <td style="text-align:center;">{{ result.total }}</td>
+                <td style="text-align:center;">{{ result.grade }}</td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+
+        <div class="row" style="margin-top: -10px;">
+          <div class="col">
+            <table class="table-responsive table-bordered mt-3" cellpadding="2" cellspacing="2" style="width:100%">
+              <thead>
+                <tr>
+                  <th style="min-width:80px;max-width:80px;text-align:left;">Subject</th>
+                  <th ng-repeat="sub in filteredExamResult2[0].subjects"
+                    style="min-width:60px;max-width:60px;text-align:center;">{{ sub.sub_titile }}<br>({{sub.max_marks}})
+                  </th>
+                  <th style="min-width:60px;max-width:60px;text-align:center;">Total
+                    ({{filteredExamResult2[0].max_marks}})</th>
+                  <th style="min-width:60px;max-width:60px;text-align:center;">Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="result in filteredExamResult2">
+                  <td>{{ result.subject }}</td>
+                  <td ng-repeat="sub in result.subjects" align="center">{{ sub.marks }}</td>
+                  <td align="center">{{ result.total }}</td>
+                  <td align="center">{{ result.grade }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-12">
+            <div class="table-responsive text-center">
+              <table class="table-bordered mt-2" cellpadding="2" cellspacing="2" style="width:100%;">
+                <thead class="thead-light">
+                  <tr>
+                    <th rowspan="2">Subject</th>
+
+                  </tr>
+                  <tr>
+                    <th>Max Marks</th>
+                    <th>Marks Obtained</th>
+                    <th>Grade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="subject in block3.subjects">
+                    <td style="text-align:left">{{subject.sub_titile}}</td>
+                    <td>{{subject.max_marks}}</td>
+                    <td>{{subject.marks}}</td>
+                    <td>{{subject.grade}}</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+          <div class="col-12">
+            <div class="table-responsive ">
+              <table class="table-bordered mt-2" cellpadding="2" cellspacing="2" style="width:100%">
+                <thead class="">
+                  <tr>
+                    <th class="text-nowrap">Subjects <span style="font-size:9px;">(on a 5 point(A-C) Grading Scale)
+                        Grade</span></th>
+                    <th align="center" class="text-nowrap" style="text-align:center">Term-I</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="subject in block4.subjects">
+                    <td>{{subject.sub_titile}}</td>
+                    <td align="center">{{subject.grade}}</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="p-1">
+          <strong>Class Teacher's Comments</strong>
+          <p style="
+    margin-top: -1px;
+    line-height: 13px;
+    letter-spacing: -0.1px;
+" ng-repeat="subject in block5.subjects">{{subject.sub_titile}}</p>
+          <div class="d-flex justify-content-between " style="margin-top: -1px;">
+            <p style="
+    margin-top: 15px;margin-bottom:0;
+">Signature of the Class Teacher</p>
+            <p style="
+    margin-top: 15px;margin-bottom:0;
+">Signature of the Principal</p>
+          </div>
+        </div>
+
+      </aside>
+      <!-- <div class="bgFixed"> <img src="{{selectedLayoutImage}}"> </div> -->
+      <div class="bgFixed"> <img src="/layout-html/img/cbse_termend_bg_1.jpg"> </div>
+    </div>
+  </div>
+  <script>
+    var app = angular.module("myApp", []);
+    app.controller("myCtrl", function ($scope, $http, $filter) {
+
+      var url = new URL(window.location.href);
+      var mongoid = url.searchParams.get("id");
+      //live apis
+    //    var empPortalApi = "https://analysis.aditya.ac.in/staff/api/";
+
+      //local apis
+       var empPortalApi = "http://10.70.3.169:7700/";
+      $http.get(empPortalApi + "exammarks/resultbyid/" + mongoid).then(function (response) {
+        $scope.total_data = response.data.result[0];
+        console.log($scope.total_data)
+        $scope.filteredExamResult1 = $scope.total_data.exam_result.filter(subjectData => subjectData.subject !== 'ICT');
+        $scope.filteredExamResult2 = $scope.total_data.exam_result.filter(subjectData => subjectData.subject === 'ICT');
+        console.log($scope.filteredExamResult1)
+        console.log($scope.filteredExamResult2)
+
+        const termAdditionalMarks = $scope.total_data.term_aditional_marks;
+        $scope.stdinfo = $scope.total_data.student_info[0];
+        console.log($scope.stdinfo)
+
+        $scope.block0 = termAdditionalMarks.filter(block => block.title === 'block-0')[0];
+        $scope.block3 = termAdditionalMarks.filter(block => block.title === 'block-3')[0];
+        $scope.block4 = termAdditionalMarks.filter(block => block.title === 'block-4')[0];
+        $scope.block5 = termAdditionalMarks.filter(block => block.title === 'block-5')[0];
+
+
+          $scope.layout_Info = $scope.total_data.layout_info[0]
+          $scope.selectedLayoutImage = $scope.layout_Info.layout_path + 'img/' + $scope.layout_Info.bg_image;
+          // $scope.selectedLayoutImage =  'img/'+ $scope.layout_Info.bg_image;
+
+      });
+
+    });
+  </script>
+
+</body>
+
+</html>

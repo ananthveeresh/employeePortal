@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/cbse_unit.css" />
+<style>
+  th, td {
+    padding:3px 5px 3px 8px !important;
+  }
+</style>
+  <body>
+    <div ng-app="myApp" ng-controller="myCtrl" class="newPrint">
+      <div class="printbt">
+        <article id="printSection">
+          <div class="bg-white shadow-sm bgv">
+            <div class="text-center m-auto">
+              <aside class="titleBlock">
+                <!--			<img src="assets/img/lakshya-logo.png" class="d-inline-block" alt=""/>-->
+                <h6 class="mt-4">(Academic Session - {{exammarks.year_id}})</h6>
+                <h5 class="fw-bold">{{exammarks.exam_name}}</h5>
+                <h4
+                  class="fw-bold text-uppercase mb-3"
+                  style="border-bottom: 3px #333 solid; display: inline-flex"
+                >
+                  Progress Report
+                </h4>
+              </aside>
+            </div>
+            <aside style="font-size: 13px">
+              <table
+                class="table-sm w-auto"
+                cellpadding="2"
+                cellspacing="2"
+                style="font-size: 13px"
+              >
+                <tbody>
+                  <tr>
+                    <td>Name of the student</td>
+                    <td>:</td>
+                    <td class="fw-semibold">{{exammarks.student_name}}</td>
+                  </tr>
+                  <tr>
+                    <td>Class</td>
+                    <td>:</td>
+                    <td class="fw-semibold">{{exammarks.class_name}}</td>
+                  </tr>
+                  <tr>
+                    <td>Father Name</td>
+                    <td>:</td>
+                    <td class="fw-semibold">{{exammarks.father_name}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="table-responsive mt-3 mb-3" ng-if="exammarks.attendance_show==true">
+                <table width="100%" border="0" class="newPrintTable" style="font-size: 13px">
+                  <thead>
+                    <tr>
+                      <th colspan="6" align="center"  class="text-center">
+                        ATTENDANCE
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>Working days</th>
+                      <td class="text-center"> {{std_attendance.workingdays * 2}}</td>
+  
+                      <th>Present days</th>
+                      <td class="text-center"> {{std_attendance.presentdays * 2}}</td>
+  
+                      <th>Absent days</th>
+                      <td class="text-center"> {{std_attendance.absentdays * 2}}</td>
+  
+                    </tr>
+  
+                  </tbody>
+                </table>
+              </div>
+             
+
+              <div class="table-responsive mt-3 mb-3">
+                <table
+                  width="100%"
+                  border="0"
+                  class="table-bordered table-sm"
+                  style="font-size: 13px"
+                >
+                  <tbody>
+                    <tr>
+                      <th >Sl.No.</th>
+                      <th style="width: 100%;">Subject</th>
+                      <th>Marks</th>
+                      <th>Grade</th>
+                    </tr>
+                    <tr ng-repeat="x in exammarks.exam_result">
+                      <td >{{$index+1}}</td>
+                      <td>{{x.subject}}</td>
+                      <td>{{x.marks}}</td>
+                      <td>{{x.grade}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div ng-if="teacherSignature==''" style="height:50px"><br /></div>
+              <div ng-if="teacherSignature!=''"><img src="{{teacherSignature}}" style="float: right;" height="50"></div>
+              <div style="clear: both;"></div>
+              <div class="table-responsive">
+                <table width="100%" border="0" style="font-size: 13px">
+                  <tbody>
+                    <tr>
+                      <td align="left">
+                        Signature of Class Teacher
+                      </td>
+                      <td align="right">
+                        Signature of Principal
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-responsive mt-3 mb-3">
+                <table
+                  width="100%"
+                  class="table-sm table-bordered"
+                  style="font-size: 13px"
+                >
+                  <tbody>
+                    <tr>
+                      <th colspan="5" align="center" style="text-align: center">
+                        GRADE SCALE
+                      </th>
+                    </tr>
+                    <tr>
+                      <th >Grade</th>
+                      <th>Marks Range</th>
+                      <th rowspan="5">&nbsp;</th>
+                      <th>Grade</th>
+                      <th>Marks Range</th>
+                    </tr>
+                    <tr>
+                      <td >A+</td>
+                      <td>{{getmarksrange('A+')}}</td>
+                      <td>C+</td>
+                      <td>{{getmarksrange('C+')}}</td>
+                    </tr>
+                    <tr>
+                      <td >A</td>
+                      <td>{{getmarksrange('A')}}</td>
+                      <td>C</td>
+                      <td>{{getmarksrange('C')}}</td>
+                    </tr>
+                    <tr>
+                      <td >B+</td>
+                      <td>{{getmarksrange('B+')}}</td>
+                      <td>D</td>
+                      <td>{{getmarksrange('D')}}</td>
+                    </tr>
+                    <tr>
+                      <td >B</td>
+                      <td>{{getmarksrange('B')}}</td>
+                      <td colspan="2">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </aside>
+            <div class="bgFixed"><img src="{{selectedLayoutImage}}" /></div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <script>
+      var app = angular.module("myApp", []);
+      app.controller("myCtrl", function ($scope, $http, $filter) {
+        var url = new URL(window.location.href); 
+        $scope.mongoid = url.searchParams.get("id");
+        //live apis
+        var empPortalApi = "https://analysis.aditya.ac.in/staff/api";
+        var analysislocal = "https://apis.aditya.ac.in/analysis"
+       
+        //local apis
+        // var empPortalApi = "http://10.70.3.73:7700";
+        // var analysislocal = "http://10.60.1.9:3006/api"
+        $scope.teacherSignature = ""
+        $http.get(empPortalApi+"/exammarks/mongo/"+$scope.mongoid).then(function (data) {
+            //console.log(data)
+            if (data.data.status == true) {
+              $scope.exammarks = data.data.result[0];
+              //console.log($scope.exammarks.report_layout)
+              $http.get(empPortalApi+"/layouts/filter/"+$scope.exammarks.report_layout).then(function(imgdata){
+                // console.log(imgdata)
+                var imgresult = imgdata.data[0];
+                $scope.selectedLayoutImage = imgresult.layout_path+'img/'+ imgresult.bg_image;
+                // console.log(imgresult.signature)
+                if(imgresult.signature!='' && imgresult.signature!=undefined){
+                  // $scope.teacherSignature = 'img/'+ imgresult.signature;
+                  $scope.teacherSignature = imgresult.layout_path+'img/'+ imgresult.signature;
+                } else {
+                  $scope.teacherSignature = ""
+                }
+                
+                //console.log($scope.selectedLayoutImage)
+              // //console.log(analysisApi+"master/year")
+              $http.get(analysislocal+"/master/year").then(function(yeardata){
+                //console.log(yeardata)
+                $scope.year_Info = yeardata.data.filter(e => e.year_name == $scope.exammarks.year_id)
+
+                var obj = {
+                  "student_id": $scope.exammarks.student_id,
+                   "year_id": $scope.year_Info[0].year_id,
+                   "section_id": $scope.exammarks.section_id,
+                   "attendance_from_date": $scope.exammarks.attendance_from_date,
+                   "attendance_to_date": $scope.exammarks.attendance_to_date
+                }
+
+                $http.post(analysislocal+"/student/rangeattendance",obj).then(function (std_attend_data) {
+                   //console.log(std_attend_data)
+                   $scope.std_attendance = std_attend_data.data.result[0]
+  
+                 });
+
+              //console.log($scope.exammarks.report_layout)
+              // //console.log($scope.exammarks);
+              var gradeobj = {
+                institute : $scope.exammarks.institute,
+                exam_category : $scope.exammarks.exam_type,
+                campus:$scope.exammarks.campus
+              }
+              //console.log(gradeobj)
+              $http
+                .post(empPortalApi+"/gradescale/getone/", gradeobj)
+                .then(function (data) {
+                  //console.log(data);
+                  $scope.gradescale = data.data[0].grade_scale;
+                  //console.log($scope.gradescale)
+                  $scope.getmarksrange = (grd) => {
+                    // //console.log(grd)
+                    var gradefilter = $scope.gradescale.filter(
+                      e => e.grade == grd
+                    );
+                    // //console.log(grd, gradefilter);
+                    return gradefilter[0].marks_range;
+                  };
+                });
+              })
+            })
+            }
+          });
+       
+      });
+    </script>
+  </body>
+</html>

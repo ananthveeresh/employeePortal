@@ -1,0 +1,144 @@
+<main id="main" class="main">
+  <section class="section">
+    <div class="printbt">
+      <button class="btn btn-primary  d-inline-flex px-3 py-1 rounded-1" style="float: right;"
+        (click)="printDiv('printSection')"><i class="bi bi-printer me-1"></i>Print</button>
+      <div style="clear: both;"></div>
+      <div style="margin-bottom: 5px;"></div>
+      <article id="printSection">
+        <div class="bg-white  shadow-sm bgv">
+          <div class="text-center m-auto">
+            <aside class="titleBlock">
+              <h6 class="mt-2">(Academic Session) - {{logininfo_yr[0].year_name}}</h6>
+              <h5 class="fw-bold">{{std_Exam_Result.exam_name}}</h5>
+              <h4 class="fw-bold text-uppercase mb-3" style="border-bottom: 3px #333 solid;display: inline-flex;">
+                Progress Report </h4>
+            </aside>
+          </div>
+          <aside style="font-size: 13px">
+            <table class="table-sm w-auto" cellpadding="2" cellspacing="2" style="font-size: 13px">
+              <tbody>
+                <tr>
+                  <td>Name of the student</td>
+                  <td>:</td>
+                  <td class="fw-semibold">{{std_Exam_Result.student_name}}</td>
+                </tr>
+                <tr>
+                  <td>Class</td>
+                  <td>:</td>
+                  <td class="fw-semibold">{{std_Exam_Result.section}}</td>
+                </tr>
+                <tr>
+                  <td>Father Name</td>
+                  <td>:</td>
+                  <td class="fw-semibold">{{std_Exam_Result.father_name}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="table-responsive mt-3 mb-3" *ngIf="std_Exam_Result.attendance_show==true">
+              <table width="100%" border="0" class="table-bordered table-sm" style="font-size: 13px">
+                <thead>
+                  <tr>
+                    <th colspan="6" class="text-center">
+                      ATTENDANCE
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Working days</th>
+                    <td *ngFor="let x of std_attendance" class="text-center"> {{x.workingdays * 2}}</td>
+
+                    <th>Present days</th>
+                    <td *ngFor="let x of std_attendance" class="text-center"> {{x.presentdays * 2}}</td>
+
+                    <th>Absent days</th>
+                    <td *ngFor="let x of std_attendance" class="text-center"> {{x.absentdays * 2}}</td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-responsive mt-3 mb-3">
+              <table width="100%" border="0" class="table-bordered table-sm" style="font-size: 13px">
+                <tbody>
+                  <tr>
+                    <th>Sl.No.</th>
+                    <th style="width: 100%;">Subject</th>
+                    <th>Marks</th>
+                    <th>Grade</th>
+                  </tr>
+                  <tr *ngFor="let x of std_Exam_Result.exam_result; let i= index">
+                    <td>{{i+1}}</td>
+                    <td>{{x.subject}}</td>
+                    <td>{{x.marks}}</td>
+                    <td>{{x.grade}}</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="teacherSignature==''" style="height:50px"><br /></div>
+            <div *ngIf="teacherSignature!=''"><img src="{{teacherSignature}}" style="float: right;" height="50"></div>
+            <div style="clear:both"></div>
+            <div class="table-responsive">
+              <table width="100%" border="0" style="font-size: 13px">
+                <tbody>
+                  <tr>
+                    <td align="left">Signature of Teacher</td>
+                    <td align="right">Signature of Principal</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-responsive mt-3">
+              <table width="100%" class="table-sm table-bordered" style="font-size: 13px">
+                <tbody>
+                  <tr>
+                    <th colspan="5" align="center" style="text-align: center">GRADE SCALE</th>
+                  </tr>
+                  <tr>
+                    <th align="center">Grade</th>
+                    <th>Marks Range</th>
+                    <th rowspan="5">&nbsp;</th>
+                    <th>Grade</th>
+                    <th>Marks Range</th>
+                  </tr>
+                  <tr>
+                    <td>A+</td>
+                    <td>{{getmarksrange('A+')}}</td>
+                    <td>C+</td>
+                    <td>{{getmarksrange('C+')}}</td>
+                  </tr>
+                  <tr>
+                    <td>A</td>
+                    <td>{{getmarksrange('A')}}</td>
+                    <td>C</td>
+                    <td>{{getmarksrange('C')}}</td>
+                  </tr>
+                  <tr>
+                    <td>B+</td>
+                    <td>{{getmarksrange('B+')}}</td>
+                    <td>D</td>
+                    <td>{{getmarksrange('D')}}</td>
+                  </tr>
+                  <tr>
+                    <td>B</td>
+                    <td>{{getmarksrange('B')}}</td>
+                    <td colspan="2">&nbsp;</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </aside>
+          <div class="bgFixed"> <img src="{{selectedLayoutImage}}"> </div>
+
+        </div>
+      </article>
+    </div>
+  </section>
+</main>

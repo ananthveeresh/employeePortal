@@ -1,0 +1,900 @@
+<main id="main" class="main">
+  <section>
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+      <div class="pagetitle">
+        <h1>Placement Drive</h1>
+      </div>
+      <div>
+        <a [routerLink]="['/placements/postjob_list']" class="btn btn-primary btn-sm">
+          <i class="bi bi-list-task"></i> &nbsp; List
+        </a>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <div class="col-12">
+        <div class="row justify-content-center">
+          <div class="card">
+            <div class="card-body">
+              <div class="col-md-12">
+                <div class="form-container">
+
+                  <div class="" *ngIf="currentStep === 0">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h2 class="card-title  p-0 mt-4 m-1">Job Description</h2>
+                      <p class="m-1 fs-6">1/4</p>
+                    </div>
+                    <hr />
+                    <form class="form-group" [formGroup]="job_description_form">
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <div class="row">
+                            <div class="col-md-12 mb-3">
+                              <label class=" title-3 form-label">Company Name <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" formControlName="company_name"
+                                placeholder="Ex: Infosys">
+                              <div
+                                *ngIf="job_description_form.get('company_name')?.touched && job_description_form.get('company_name')?.invalid"
+                                class="validation-error-messages">
+                                <div *ngIf="job_description_form.get('company_name')?.errors?.['required']">
+                                  Company Name is required.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                              <label class="title-3 form-label">Logo <span class="text-danger">*</span></label>
+                              <div class="hstack gap-1">
+                                <input class="form-control" type="file" accept="image/*" (change)="onFileSelect($event)"
+                                  required />
+                                <input type="hidden" formControlName="logo" />
+                              </div>
+                              <div *ngIf="job_description_form.get('logo')?.value">
+                                <img [src]="job_description_form.get('logo')?.value" alt="Uploaded Logo"
+                                  class="img-fluid mt-2" style="max-width: 100px; height: auto; margin:5px;">
+                              </div>
+                              <div
+                                *ngIf="job_description_form.get('logo')?.touched && job_description_form.get('logo')?.invalid"
+                                class="validation-error-messages">
+                                <div *ngIf="job_description_form.get('logo')?.errors?.['required']">
+                                  Logo is required.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                              <label class="title-3 form-label">Category <span class="text-danger">*</span></label>
+                              <select class="form-select" formControlName="category">
+                                <option value="">Select Category</option>
+                                <option value="ADMINISTRATION">ADMINISTRATION</option>
+                                <option value="ANIMATION">ANIMATION</option>
+                                <option value="BANKING">BANKING</option>
+                                <option value="BPO">BPO</option>
+                                <option value="BPS">BPS</option>
+                                <option value="CEMENT">CEMENT</option>
+                                <option value="CONSTRUCTION">CONSTRUCTION</option>
+                                <option value="DIGITAL MARKETING">DIGITAL MARKETING</option>
+                                <option value="EDU-TECH">EDU-TECH</option>
+                                <option value="Finance and Operations">Finance and Operations</option>
+                                <option value="FMCG">FMCG</option>
+                                <option value="HOTEL MANAGEMENT">HOTEL MANAGEMENT</option>
+                                <option value="HR">HR</option>
+                                <option value="INSURANCE">INSURANCE</option>
+                                <option value="IT">IT</option>
+                                <option value="ITES">ITES</option>
+                                <option value="KPO">KPO</option>
+                                <option value="PHARMA">PHARMA</option>
+                                <option value="RECRUITMENT">RECRUITMENT</option>
+                                <option value="SALES">SALES</option>
+                                <option value="TEACHING">TEACHING</option>
+                              </select>
+                              <div
+                                *ngIf="job_description_form.get('category')?.touched && job_description_form.get('category')?.invalid"
+                                class="validation-error-messages">
+                                <div *ngIf="job_description_form.get('category')?.errors?.['required']">
+                                  Category is required.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                              <label class=" title-3 form-label">Website (URL) <span
+                                  class="text-danger">*</span></label>
+                              <input type="url" class="form-control" formControlName="website"
+                                placeholder="Ex: aditya.ac.in">
+                              <div
+                                *ngIf="job_description_form.get('website')?.touched && job_description_form.get('website')?.invalid"
+                                class="validation-error-messages">
+                                <div *ngIf="job_description_form.get('website')?.errors?.['required']">
+                                  Website is required.
+                                </div>
+                                <div *ngIf="job_description_form.get('website')?.errors?.['pattern']">
+                                  Please enter a valid Website URL (e.g., aditya.ac.in).
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                              <label class="title-3 form-label">Company Profile <span
+                                  class="text-danger">*</span></label>
+                              <textarea class="form-control" formControlName="companyprofile"
+                                placeholder="Ex: Company Profile"></textarea>
+                              <div
+                                *ngIf="job_description_form.get('companyprofile')?.touched && job_description_form.get('companyprofile')?.invalid"
+                                class="validation-error-messages">
+                                <div *ngIf="job_description_form.get('companyprofile')?.errors?.['required']">
+                                  Company Profile is required.
+                                </div>
+                                <div *ngIf="job_description_form.get('companyprofile')?.errors?.['minlength']">
+                                  Company Profile must have at least {{
+                                  job_description_form.get('companyprofile')?.errors?.['minlength'].requiredLength }}
+                                  characters.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <div class="col-md-12 mb-3">
+                            <label class=" title-3 form-label">Role <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" formControlName="role"
+                              placeholder="Ex: Software Developer">
+                            <div
+                              *ngIf="job_description_form.get('role')?.touched && job_description_form.get('role')?.invalid"
+                              class="validation-error-messages">
+                              <div *ngIf="job_description_form.get('role')?.errors?.['required']">
+                                Role is required.
+                              </div>
+                              <div *ngIf="job_description_form.get('role')?.errors?.['pattern']">
+                                Please enter a valid Role (e.g., Software Developer).
+                              </div>
+                              <div *ngIf="job_description_form.get('role')?.errors?.['minlength']">
+                                Role must have at least {{
+                                job_description_form.get('role')?.errors?.['minlength'].requiredLength }} characters.
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12 mb-3">
+                            <label class=" title-3 form-label">Package (IN LPA)</label>
+                            <input type="text" class="form-control" formControlName="package"
+                              placeholder="Ex: 2 or 2.5">
+                            <div
+                              *ngIf="job_description_form.get('package')?.touched && job_description_form.get('package')?.invalid"
+                              class="validation-error-messages">
+                              <div *ngIf="job_description_form.get('package')?.errors?.['pattern']">
+                                Please enter a valid company name (e.g.,2 or 2.5 or NA).
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12 mb-3">
+                            <label class=" title-3 form-label">Service Agreement (IN YEARS)</label>
+                            <input type="text" class="form-control" formControlName="service_agreement"
+                              placeholder="Ex: 2 or 3.3">
+                            <div
+                              *ngIf="job_description_form.get('service_agreement')?.touched && job_description_form.get('service_agreement')?.invalid"
+                              class="validation-error-messages">
+                              <div *ngIf="job_description_form.get('service_agreement')?.errors?.['pattern']">
+                                Please enter a valid Service Agreement (e.g., 2 or 3.3 or NA).
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12 mb-3">
+                            <label class=" title-3 form-label">Job Location <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" formControlName="joblocation"
+                              placeholder="Ex: Kakinada , hyd">
+                            <div
+                              *ngIf="job_description_form.get('joblocation')?.touched && job_description_form.get('joblocation')?.invalid"
+                              class="validation-error-messages">
+                              <div *ngIf="job_description_form.get('joblocation')?.errors?.['required']">
+                                Job Location is required.
+                              </div>
+                              <div *ngIf="job_description_form.get('joblocation')?.errors?.['pattern']">
+                                Please enter a valid company name (e.g., Kakinada, HYD).
+                              </div>
+                              <div *ngIf="job_description_form.get('joblocation')?.errors?.['minlength']">
+                                Job Location must have at least {{
+                                job_description_form.get('joblocation')?.errors?.['minlength'].requiredLength }}
+                                characters.
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12 mb-3">
+                            <label class=" title-3 form-label">Job Description <span
+                                class="text-danger">*</span></label>
+                            <textarea class="form-control" formControlName="jobdescription"
+                              placeholder="Ex: Company Info"></textarea>
+                            <div
+                              *ngIf="job_description_form.get('jobdescription')?.touched && job_description_form.get('jobdescription')?.invalid"
+                              class="validation-error-messages">
+                              <div *ngIf="job_description_form.get('jobdescription')?.errors?.['required']">
+                                Job Description is required.
+                              </div>
+                              <div *ngIf="job_description_form.get('jobdescription')?.errors?.['minlength']">
+                                Job Description must have at least {{
+                                job_description_form.get('jobdescription')?.errors?.['minlength'].requiredLength }}
+                                characters.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="" *ngIf="currentStep === 1">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h2 class="card-title  p-0 mt-4">Eligibility</h2>
+                      <p class="m-1 fs-6">2/4</p>
+                    </div>
+                    <hr />
+                    <form class="form-group" [formGroup]="job_eligibility_form" novalidate>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class="title-3 form-label me-3">Departments <span class="text-danger">*</span></label>
+                          <ng-select [items]="department_List" bindLabel="name" placeholder="Ex: MCCs" appendTo="body"
+                            [multiple]="true" formControlName="departments" (change)="onDepartmentChange()">
+                          </ng-select>
+                          <div
+                            *ngIf="job_eligibility_form.get('departments')?.touched && job_eligibility_form.get('departments')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="job_eligibility_form.get('departments')?.errors?.['required']">
+                              At least one department must be selected. (e.g., MCCs).
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class="title-3 form-label">Campuses <span class="text-danger">*</span></label>
+                          <ng-select [items]="campus_List" bindLabel="name" placeholder="Ex: ADCKKD" appendTo="body"
+                            [multiple]="true" formControlName="campuses" (change)="onCampusChange()">
+                          </ng-select>
+                          <div
+                            *ngIf="job_eligibility_form.get('campuses')?.touched && job_eligibility_form.get('campuses')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="job_eligibility_form.get('campuses')?.errors?.['required']">
+                              At least one campus must be selected. (e.g., ADCKKD)
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class=" title-3 form-label">Degree CGPA <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" formControlName="degree_cgpa" placeholder="Ex: 6.75">
+                          <div
+                            *ngIf="job_eligibility_form.get('degree_cgpa')?.touched && job_eligibility_form.get('degree_cgpa')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="job_eligibility_form.get('degree_cgpa')?.errors?.['required']">
+                              Degree CGPA is required.
+                            </div>
+                            <div *ngIf="job_eligibility_form.get('degree_cgpa')?.errors?.['pattern']">
+                              Please enter a Valid Degree CGPA. (e.g., 6.0)
+                            </div>
+                            <div *ngIf="job_eligibility_form.get('degree_cgpa')?.errors?.['max']">
+                              CGPA cannot exceed {{
+                              job_eligibility_form.get('degree_cgpa')?.errors?.['max'].max }}.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class=" title-3 form-label">10th % / CGPA<span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" formControlName="tenth_cgpa" placeholder="Ex: 9.7">
+                          <div
+                            *ngIf="job_eligibility_form.get('tenth_cgpa')?.touched && job_eligibility_form.get('tenth_cgpa')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="job_eligibility_form.get('tenth_cgpa')?.errors?.['required']">
+                              10th CGPA is required.
+                            </div>
+                            <div *ngIf="job_eligibility_form.get('tenth_cgpa')?.errors?.['pattern']">
+                              Please enter a Valid 10th CGPA. (e.g. 6.0)
+                            </div>
+                            <div *ngIf="job_eligibility_form.get('tenth_cgpa')?.errors?.['min']">
+                              Number must be at least {{
+                              job_eligibility_form.get('tenth_cgpa')?.errors?.['min'].min }}.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class=" title-3 form-label">Inter % / CGPA<span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" formControlName="inter_percentage"
+                            placeholder="Ex: 67">
+                          <div
+                            *ngIf="job_eligibility_form.get('inter_percentage')?.touched && job_eligibility_form.get('inter_percentage')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="job_eligibility_form.get('inter_percentage')?.errors?.['required']">
+                              Inter or +2 Percentage is required.
+                            </div>
+                            <div *ngIf="job_eligibility_form.get('inter_percentage')?.errors?.['pattern']">
+                              Please enter a Valid Inter Percentage. (e.g., 60)
+                            </div>
+                            <div *ngIf="job_eligibility_form.get('inter_percentage')?.errors?.['min']">
+                              Number must be at least {{
+                              job_eligibility_form.get('inter_percentage')?.errors?.['min'].min }}.
+                            </div>
+                            <div *ngIf="job_eligibility_form.get('inter_percentage')?.errors?.['max']">
+                              Percentage cannot exceed {{
+                              job_eligibility_form.get('inter_percentage')?.errors?.['max'].max }}.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class="title-3 form-label">Backlogs Count<span class="text-danger">*</span></label>
+                          <select class="form-select" formControlName="max_backlogs_count">
+                            <option value="">Select</option>
+                            <option value="NA">Not Applicable</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4+">4+</option>
+                          </select>
+                          <div
+                            *ngIf="job_eligibility_form.get('max_backlogs_count')?.touched && job_eligibility_form.get('max_backlogs_count')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="job_eligibility_form.get('max_backlogs_count')?.errors?.['required']">
+                              Backlog count is required.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class="title-3 form-label">Passout Years <span class="text-danger">*</span></label>
+                          <ng-select [items]="passoutYear_List" bindLabel="year" placeholder="Ex: 2025" appendTo="body"
+                            [multiple]="true" formControlName="passout_years" (change)="onPassoutYearChange()">
+                          </ng-select>
+                          <div
+                            *ngIf="job_eligibility_form.get('passout_years')?.touched && job_eligibility_form.get('passout_years')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="job_eligibility_form.get('passout_years')?.errors?.['required']">
+                              At least one passout year must be selected. (e.g., 2025)
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class=" title-3 form-label">Other Details</label>
+                          <textarea class="form-control" formControlName="job_eligibility_form_other_details"
+                            placeholder="Ex: Other Details"></textarea>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+
+                  <div class="" *ngIf="currentStep === 2">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h2 class="card-title  p-0 mt-4">Drive Details</h2>
+                      <p class="m-1 fs-6">3/4</p>
+                    </div>
+                    <hr />
+                    <form class="form-group" [formGroup]="drive_details_form" novalidate>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class="title-3 form-label">Drive Title</label>
+                          <input type="text" class="form-control" formControlName="drive_info"
+                            placeholder="Ex: DriveTitle123" />
+                          <div
+                            *ngIf="drive_details_form.get('drive_info')?.touched && drive_details_form.get('drive_info')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="drive_details_form.get('drive_info')?.errors?.['required']">
+                              Drive title is required.
+                            </div>
+                            <div *ngIf="drive_details_form.get('drive_info')?.errors?.['pattern']">
+                              Drive title can only contain letters and numbers (no spaces).
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class=" title-3 form-label">Registration Link <span
+                              class="text-danger">*</span></label>
+                          <input type="url" class="form-control" formControlName="registration_link"
+                            placeholder="Ex: tcs.com">
+                          <div
+                            *ngIf="drive_details_form.get('registration_link')?.touched && drive_details_form.get('registration_link')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="drive_details_form.get('registration_link')?.errors?.['required']">
+                              Registration Link is required.
+                            </div>
+                            <div *ngIf="drive_details_form.get('registration_link')?.errors?.['pattern']">
+                              Please enter a valid Registration Link (e.g., tcs.com).
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class="title-3 form-label">Registration Start Date <span
+                              class="text-danger">*</span></label>
+                          <input type="date" class="form-control datepicker" formControlName="registration_start_date"
+                            placeholder="Select Date">
+                          <div
+                            *ngIf="drive_details_form.get('registration_start_date')?.touched && drive_details_form.get('registration_start_date')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="drive_details_form.get('registration_start_date')?.errors?.['required']">
+                              Registration Start Date is required.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class="title-3 form-label">Registration End Date <span
+                              class="text-danger">*</span></label>
+                          <input type="date" class="form-control datepicker" formControlName="registration_end_date"
+                            placeholder="Select Date">
+                          <div
+                            *ngIf="drive_details_form.get('registration_end_date')?.touched && drive_details_form.get('registration_end_date')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="drive_details_form.get('registration_end_date')?.errors?.['required']">
+                              Registration End Date is required.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class=" title-3 form-label">Drive Locations <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" formControlName="drive_location"
+                            placeholder="Ex: Kakinada">
+                          <div
+                            *ngIf="drive_details_form.get('drive_location')?.touched && drive_details_form.get('drive_location')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="drive_details_form.get('drive_location')?.errors?.['required']">
+                              Drive Location is required.
+                            </div>
+                            <div *ngIf="drive_details_form.get('drive_location')?.errors?.['pattern']">
+                              Please enter a valid Drive Location (e.g., Kakinada).
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class="title-3 form-label">Mode of Drive <span class="text-danger">*</span></label>
+                          <select class="form-select" formControlName="mode_of_drive">
+                            <option value="" disabled>Select Drive</option>
+                            <option value="On Campus">On Campus</option>
+                            <option value="Off Campus">Off Campus</option>
+                          </select>
+                          <div
+                            *ngIf="drive_details_form.get('mode_of_drive')?.touched && drive_details_form.get('mode_of_drive')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="drive_details_form.get('mode_of_drive')?.errors?.['required']">
+                              Mode of Drive is required.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class="title-3 form-label">Number of Rounds <span class="text-danger">*</span></label>
+                          <input type="number" class="form-control" formControlName="no_of_rounds"
+                            placeholder="Ex: 2 or 3" (keyup)="onRoundsChange()" min="1" max="15">
+                          <div
+                            *ngIf="drive_details_form.get('no_of_rounds')?.touched && drive_details_form.get('no_of_rounds')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="drive_details_form.get('no_of_rounds')?.errors?.['required']">Please enter the
+                              number of rounds.</div>
+                            <div *ngIf="drive_details_form.get('no_of_rounds')?.errors?.['min']">Number of rounds must
+                              be at least 1.</div>
+                            <div *ngIf="drive_details_form.get('no_of_rounds')?.errors?.['max']">
+                              Number of rounds cannot exceed {{
+                              drive_details_form.get('no_of_rounds')?.errors?.['max'].max }}.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class="title-3 form-label">Gender <span class="text-danger">*</span></label>
+                          <select class="form-select" formControlName="gender">
+                            <option value="">All</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6" formArrayName="round_details">
+                          <div class="row">
+                            <div *ngFor="let roundNumber of roundsArray; let i = index" [formGroupName]="i"
+                              class="col-md-12">
+                              <div class="mb-2">
+                                <label>Round {{ roundNumber }}</label>
+                                <input type="text" class="form-control" formControlName="round"
+                                  placeholder="Ex: Technical or HR">
+                                <div *ngIf="roundDetailsArray.at(i)?.get('round')?.touched && 
+                                           roundDetailsArray.at(i)?.get('round')?.invalid"
+                                  class="validation-error-messages">
+                                  <div *ngIf="roundDetailsArray.at(i)?.get('round')?.errors?.['required']">
+                                    Round {{ roundNumber }} is required.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class=" title-3 form-label">Selection Process <span
+                              class="text-danger">*</span></label>
+                          <textarea class="form-control" formControlName="selection_process" rows="3"
+                            placeholder="Ex: Selection Process"></textarea>
+                          <div
+                            *ngIf="drive_details_form.get('selection_process')?.touched && drive_details_form.get('selection_process')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="drive_details_form.get('selection_process')?.errors?.['required']">
+                              Please enter a Valid Selection Process.
+                            </div>
+                            <div *ngIf="drive_details_form.get('selection_process')?.errors?.['minlength']">
+                              Selection Process must have at least {{
+                              drive_details_form.get('selection_process')?.errors?.['minlength'].requiredLength }}
+                              characters.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class=" title-3 form-label">Selection Criteria <span
+                              class="text-danger">*</span></label>
+                          <textarea class="form-control" formControlName="selection_criteria" rows="3"
+                            placeholder="Ex: Selection Criteria"></textarea>
+                          <div
+                            *ngIf="drive_details_form.get('selection_criteria')?.touched && drive_details_form.get('selection_criteria')?.invalid"
+                            class="validation-error-messages">
+                            <div *ngIf="drive_details_form.get('selection_criteria')?.errors?.['required']">
+                              Please enter a Selection Criteria.
+                            </div>
+                            <div *ngIf="drive_details_form.get('selection_criteria')?.errors?.['minlength']">
+                              Selection Criteria must have at least {{
+                              drive_details_form.get('selection_criteria')?.errors?.['minlength'].requiredLength }}
+                              characters.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <div class="form-check mt-3 p-0">
+                            <input class="me-2" type="checkbox" formControlName="send_emails" id="gridCheck1">
+                            <label class="form-check-label title-3 mb-1" for="gridCheck1">
+                              Send Emails
+                            </label>
+                          </div>
+                          <div class="form-check mt-2 p-0">
+                            <input class="me-2" formControlName="send_whatsapp_messages" type="checkbox"
+                              id="gridCheck2">
+                            <label class="form-check-label title-3" for="gridCheck2">
+                              Send WhatsApp messages
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class=" title-3 form-label title-3">Other Details</label>
+                          <textarea class="form-control" formControlName="drive_details_form_other_details" rows="3"
+                            placeholder="Ex: Additional Information"></textarea>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="" *ngIf="currentStep === 3">
+                    <div class=" mt-4 mb-5">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title  p-0  d-none d-md-block">Review and Verify your information Before
+                          Submission</h5>
+                        <h5 class="card-title  p-0  d-md-none">Review and Verify</h5>
+                        <p class="m-1 fs-6">4/4</p>
+                      </div>
+                      <hr />
+                    </div>
+                    <div>
+
+                      <!-- Job Description Section -->
+                      <div class=" mb-5   ">
+                        <div class=" text-white mb-3">
+                          <h6 class="text-primary mb-0"><i class="fas fa-briefcase me-2 ms-1"></i>Job Description</h6>
+                        </div>
+                        <div class="border rounded-3 p-3 ">
+                          <div class="row">
+                            <div class="col-md-6 d-none">
+                              <p class="text-capitalize">Company Name: {{ job_description_form.value.company_name }}</p>
+                              <p>Category: {{ job_description_form.value.category }}</p>
+                              <p>Website: <a [href]="job_description_form.value.website" target="_blank"
+                                  class="text-decoration-none">{{ job_description_form.value.website }}</a></p>
+                              <p *ngIf="job_description_form.value.service_agreement">service_agreement: {{
+                                job_description_form.value.service_agreement }}</p>
+                              <p *ngIf="job_description_form.value.logo">Logo:
+                                <img [src]="job_description_form.value.logo" alt="Company Logo" width="80"
+                                  class="ms-2 rounded">
+                              </p>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="d-table">
+                                <div class="d-table-row">
+                                  <div class="d-table-cell  pe-2">Company Name</div>
+                                  <div class="d-table-cell text-capitalize">: {{ job_description_form.value.company_name
+                                    }}</div>
+                                </div>
+
+                                <div class="d-table-row">
+                                  <div class="d-table-cell  pe-2">Category</div>
+                                  <div class="d-table-cell">: {{ job_description_form.value.category }}</div>
+                                </div>
+
+                                <div class="d-table-row">
+                                  <div class="d-table-cell  pe-2">Website</div>
+                                  <div class="d-table-cell">
+                                    <a [href]="job_description_form.value.website" target="_blank"
+                                      class="text-decoration-none">
+                                      : {{ job_description_form.value.website }}
+                                    </a>
+                                  </div>
+                                </div>
+
+                                <div class="d-table-row" *ngIf="job_description_form.value.service_agreement">
+                                  <div class="d-table-cell  pe-2">Service Agreement</div>
+                                  <div class="d-table-cell">: {{ job_description_form.value.service_agreement }}</div>
+                                </div>
+
+                                <div class="d-table-row" *ngIf="job_description_form.value.logo">
+                                  <div class="d-table-cell  pe-2">Logo</div>
+                                  <div class="d-table-cell">
+                                    <img [src]="job_description_form.value.logo" alt="Company Logo" width="80"
+                                      class="ms-2 rounded">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6  ">
+                              <div class="d-table">
+                                <div class="d-table-row">
+                                  <div class="d-table-cell  pe-2">Role</div>
+                                  <div class="d-table-cell ">: {{ job_description_form.value.role }}</div>
+                                </div>
+
+                                <div class="d-table-row" *ngIf="job_description_form.value.package">
+                                  <div class="d-table-cell  pe-2">Package</div>
+                                  <div class="d-table-cell">: {{ job_description_form.value.package }}</div>
+                                </div>
+
+                                <div class="d-table-row">
+                                  <div class="d-table-cell  pe-2">Job Location</div>
+                                  <div class="d-table-cell ">: {{ job_description_form.value.joblocation }}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <div>Company Profile :</div>
+                            <div>
+                              <p class="mb-0 text-content" [class.expanded]="showFullCompanyProfile">
+                                {{ job_description_form.value.companyprofile }}
+                              </p>
+                              <div class="d-flex justify-content-end">
+                                <button class="btn btn-link p-0 text-primary btn-sm" (click)="toggleCompanyProfile()"
+                                  *ngIf="job_description_form.value.companyprofile?.length > 150">
+                                  {{ showFullCompanyProfile ? 'Show Less' : 'Show More' }}
+                                </button>
+                              </div>
+                            </div>
+                            <div class="mt-3">Job Description :</div>
+                            <div>
+                              <p class="mb-0 text-content" [class.expanded]="showFullJobDescription">
+                                {{ job_description_form.value.jobdescription }}
+                              </p>
+                              <div class="d-flex justify-content-end">
+                              <button class="btn btn-link p-0 text-primary btn-sm" (click)="toggleJobDescription()"
+                                *ngIf="job_description_form.value.jobdescription?.length > 150">
+                                {{ showFullJobDescription ? 'Show Less' : 'Show More' }}
+                              </button>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Eligibility Criteria Section -->
+                      <div class=" mb-5 ">
+                        <div class="  mb-3">
+                          <h6 class="text-primary mb-0"><i class="fas fa-graduation-cap me-2 ms-1"></i>Eligibility
+                            Criteria
+                          </h6>
+                        </div>
+                        <div class="border p-3 rounded-3">
+                          <div class="row">
+                            <div class="col-md-6  ">
+                              <div class="d-table">
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Departments</div>
+                                  <div class="d-table-cell">
+                                    : <span
+                                      *ngFor="let department of job_eligibility_form.value.departments; let last = last">
+                                      {{ department?.name }}<span *ngIf="!last">, </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Campuses</div>
+                                  <div class="d-table-cell">
+                                    : <span
+                                      *ngFor="let campuses of job_eligibility_form.value.campuses; let last = last">
+                                      {{ campuses?.name }}<span *ngIf="!last">, </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Degree CGPA</div>
+                                  <div class="d-table-cell">: {{ job_eligibility_form.value.degree_cgpa }}</div>
+                                </div>
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">10th CGPA</div>
+                                  <div class="d-table-cell">: {{ job_eligibility_form.value.tenth_cgpa }}</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6  ">
+                              <div class="d-table ">
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Inter Percentage</div>
+                                  <div class="d-table-cell">: {{ job_eligibility_form.value.inter_percentage }}</div>
+                                </div>
+
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Max Backlogs</div>
+                                  <div class="d-table-cell">: {{ job_eligibility_form.value.max_backlogs_count }}</div>
+                                </div>
+
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Passout Years</div>
+                                  <div class="d-table-cell">
+                                    : <span
+                                      *ngFor="let passout_years of job_eligibility_form.value.passout_years; let last = last">
+                                      {{ passout_years?.year }}<span *ngIf="!last">, </span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mt-3">
+                            <span *ngIf="job_eligibility_form.value.job_eligibility_form_other_details">Other Details:
+                              <p class=""> {{ job_eligibility_form.value.job_eligibility_form_other_details }}</p>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Drive Details Section -->
+                      <div class=" mb-5">
+                        <div class="  mb-3">
+                          <h6 class="text-primary mb-0"><i class="fas fa-calendar-alt me-2 ms-1"></i>Drive Details</h6>
+                        </div>
+                        <div class="border p-3 rounded-3">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class=" d-table ">
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Drive title</div>
+                                  <div class="d-table-cell">: {{ drive_details_form.value.drive_info }}
+                                  </div>
+                                </div>
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Company Registration Link</div>
+                                  <div class="d-table-cell">
+                                    :
+                                    <a [href]="drive_details_form.value.registration_link?.startsWith('http') 
+                                               ? drive_details_form.value.registration_link 
+                                               : 'https://' + drive_details_form.value.registration_link"
+                                      target="_blank">
+                                      {{ drive_details_form.value.registration_link }}
+                                    </a>
+                                  </div>
+                                </div>
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Registration Start Date</div>
+                                  <div class="d-table-cell">: {{ drive_details_form.value.registration_start_date }}
+                                  </div>
+                                </div>
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Registration End Date</div>
+                                  <div class="d-table-cell">: {{ drive_details_form.value.registration_end_date }}</div>
+                                </div>
+                                <div class="d-table-row">
+                                  <div class="d-table-cell pe-2">Rounds</div>
+                                  <div class="d-table-cell">: {{ drive_details_form.value.no_of_rounds }} (+2 Extra Rounds)</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class=" d-table ">
+                                <div class="d-table-row">
+                                  <div class="d-table-cell  pe-2">Mode</div>
+                                  <div class="d-table-cell">: {{ drive_details_form.value.mode_of_drive }}</div>
+                                </div>
+                                <div class="d-table-row">
+                                  <div class="d-table-cell  pe-2">Gender</div>
+                                  <div class="d-table-cell">
+                                    : {{
+                                    drive_details_form.value.gender === 'm' ? 'Male' :
+                                    drive_details_form.value.gender === 'f' ? 'Female' : 'All'
+                                    }}
+                                  </div>
+                                </div>
+                                <div class="d-table-row">
+                                  <div class="d-table-cell  pe-2">Drive Location</div>
+                                  <div class="d-table-cell">: {{ drive_details_form.value.drive_location }}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <div>Round Details :</div>
+                            <div>
+                              <div *ngIf="drive_details_form.value.round_details?.length">
+                                <ul class="list-unstyled text-capitalize">
+                                  <li *ngFor="let round of drive_details_form.value.round_details; let i = index"
+                                    class="mb-1">
+                                    <span class="me-2">{{ i + 1 }}.</span>
+                                    <span class="align-middle">{{ round?.round || 'Not specified' }}</span>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="mt-3">Selection Process :</div>
+                            <div>
+                              <div class="mb-0 text-content" [class.expanded]="showFullSelectionProcess"
+                                [innerHTML]="drive_details_form.value.selection_process"></div>
+                                <div class="d-flex justify-content-end">
+                              <button class="btn btn-link p-0 text-primary btn-sm" (click)="toggleSelectionProcess()"
+                                *ngIf="drive_details_form.value.selection_process?.length > 150">
+                                {{ showFullSelectionProcess ? 'Show Less' : 'Show More' }}
+                              </button>
+                            </div>
+                            </div>
+                            <div class="mt-3">Selection Criteria :</div>
+                            <div>
+                              <div class="mb-0 text-content" [class.expanded]="showFullSelectionCriteria"
+                                [innerHTML]="drive_details_form.value.selection_criteria"></div>
+                                <div class="d-flex justify-content-end">
+                              <button class="btn btn-link p-0 text-primary btn-sm" (click)="toggleSelectionCriteria()"
+                                *ngIf="drive_details_form.value.selection_criteria?.length > 150">
+                                {{ showFullSelectionCriteria ? 'Show Less' : 'Show More' }}
+                              </button>
+                            </div>
+                            </div>
+                            <div class="mt-3" *ngIf="drive_details_form.value.drive_details_form_other_details">Other
+                              Details :</div>
+                            <div>
+                              <div class="mb-0 text-content" [class.expanded]="showFullOtherDetails"
+                                [innerHTML]="drive_details_form.value.drive_details_form_other_details">: </div>
+                                <div class="d-flex justify-content-end">
+                              <button class="btn btn-link p-0 text-primary btn-sm" (click)="toggleOtherDetails()"
+                                *ngIf="drive_details_form.value.drive_details_form_other_details?.length > 150">
+                                {{ showFullOtherDetails ? 'Show Less' : 'Show More' }}
+                              </button>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-check mb-4">
+                      <input class="form-check-input" type="checkbox" id="agreeCheckbox" [(ngModel)]="isAgreed">
+                      <label class="form-check-label" for="agreeCheckbox">
+                        We hereby declare that all information provided in this form is accurate and has been verified
+                        to the best of our knowledge, and we take full responsibility for any discrepancies that may
+                        arise.
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-primary" (click)="prevStep()" [disabled]="currentStep === 0">
+                      Previous
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                      (click)="currentStep === 3 ? submitForm() : nextStep()"
+                      [disabled]="currentStep === 3 && !isAgreed">
+                      {{ currentStep === 3 ? 'Submit' : 'Next' }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

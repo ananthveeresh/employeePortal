@@ -1,0 +1,459 @@
+<main id="main" class="main">
+
+    <section>
+      <div class="pagetitle">
+       
+        <nav>
+          <ol class="breadcrumb">
+            <!-- <li class="breadcrumb-item"><a href="index.html">Home</a></li> -->
+            <!-- <li class="breadcrumb-item active">New Job Post</li> -->
+          </ol>
+        </nav>
+      </div>
+
+      
+        
+        
+       
+    
+
+
+
+
+     
+       <div class="d-flex justify-content-center">
+        <div class="col-md-10">
+          
+          <div class="row justify-content-center">
+            <div class="card">
+                <div class="card-body ">
+                    <h5 class="card-title text-center"></h5>
+                    
+                    <!-- Job List Table -->
+                    <div *ngIf="!showJobDetails">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Company Name</th>
+                                        <th>Role</th>
+                                        <th>Registration Link</th>
+                                        <th>Last Date</th>
+                                        <th>View</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let job of job_Post_List; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ job.jobDescription.company_name }}</td>
+                                        <td>{{ job.jobDescription.role }}</td>
+                                        <td>
+                                            <a [href]="job.driveDetails.registration_link" target="_blank">Register Here</a>
+                                        </td>
+                                        <td>{{ job.driveDetails.last_date_for_registration }}</td>
+                                        <td>
+                                            <button (click)="fetchJobDetails(job._id)" class="btn btn-link">
+                                                <i class="bi bi-eye"></i> 
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    
+                
+                    <div *ngIf="showJobDetails" class="container ">
+                      <!-- Job Header -->
+                    
+                        <div class=" text-center">
+                          <h5 class="card-title m-0 p-0 ">{{ selectedJobData.jobDescription.role }} <span>|</span> {{ selectedJobData.jobDescription.company_name }}</h5>
+                         
+                          <div class="badge bg-light text-dark p-2 mt-2">
+                            <i class="bi bi-geo-alt me-1"></i>{{ selectedJobData.jobDescription.joblocation }} | Pincode: 654654
+                          </div>
+                         
+                        </div>
+                     
+                     
+                      <!-- Job Description Section -->
+                      <div class="  mb-3">
+                        <div class="">
+                          <h5 class="mb-2 section-title">Job Description</h5>
+                        </div>
+                        <div class="">
+                          <div class="row">
+                            <div class="col-md-12 mb-3">
+                              <p>{{ selectedJobData.jobDescription.jobdescription }}</p>
+                            </div>
+                            
+                            <div class="col-md-6">
+                              <h5 class="section-title ">Job Details</h5>
+                              <hr/>
+                              <table class="table table-borderless">
+                                <tbody>
+                                  <tr>
+                                    <th scope="row" class="w-50">Role</th>
+                                    <td>{{ selectedJobData.jobDescription.role }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">Package</th>
+                                    <td>{{ selectedJobData.jobDescription.package }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">Location</th>
+                                    <td>{{ selectedJobData.jobDescription.joblocation }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">Category</th>
+                                    <td>{{ selectedJobData.jobDescription.category }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            
+                            <div class="col-md-6">
+                              <h5 class=" section-title">Company Information</h5>
+                              <hr/>
+                              <table class="table table-borderless">
+                                <tbody>
+                                  <tr>
+                                    <th scope="row" class="w-50">Company Name</th>
+                                    <td>{{ selectedJobData.jobDescription.company_name }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">Bond</th>
+                                    <td>{{ selectedJobData.jobDescription.bond }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">Website</th>
+                                    <td>
+                                      <a href="{{ selectedJobData.jobDescription.website }}" target="_blank" class="text-decoration-none">
+                                        {{ selectedJobData.jobDescription.website }}
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              
+                           
+                            </div>
+                            <div>
+                              <h5 class="  mt-4 section-title">Company Profile</h5>
+                              <p>{{ selectedJobData.jobDescription.companyprofile }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <h5 class="mb-0 section-title">Job Eligibility</h5>
+                            <hr/>
+                          
+                        </div>
+                      
+                        <div class="col-md-6">
+                          <ul class="list-unstyled d-flex flex-wrap gap-3 ">
+                            <label class="title-4 mt-1">Eligible Departments</label>
+                            <li class="d-flex align-items-center" *ngFor="let department of selectedJobData.jobEligibility.departments">
+                              <i class="bi bi-check-circle-fill text-success me-2"></i>
+                              <span>{{ department.name }}</span>
+                            </li>
+                          </ul>
+                          <ul class="list-unstyled d-flex flex-wrap gap-3 ">
+                            <label class="title-4 mt-1">Eligible Campuses</label>
+                              <li class="d-flex align-items-center" *ngFor="let campus of selectedJobData.jobEligibility.campuses">
+                                <i class="bi bi-buildings me-2"></i>
+                                <span>{{ campus.name }}</span>
+                              </li>
+                            </ul>
+                            <ul class="list-unstyled d-flex flex-wrap gap-3 ">
+                              <label class="title-4 mt-1">Eligible Passout Years</label>
+                            <li *ngFor="let passout_year of selectedJobData.jobEligibility.passout_years">
+                              <span>{{ passout_year.year }}</span>
+                            </li>
+                          </ul>
+                        </div>
+                     
+                     
+                      
+                      
+                        <div class="col-md-6">
+                          <table class="table table-borderless">
+                            <tbody>
+                              <tr>
+                                <th scope="row">Academic Percentage</th>
+                                <td><span class="badge bg-primary">{{ selectedJobData.jobEligibility.academic_percentage }}</span></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">10th Percentage</th>
+                                <td><span class="badge bg-primary">{{ selectedJobData.jobEligibility.tenth_percentage_cgpa }}</span></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Inter Percentage</th>
+                                <td><span class="badge bg-primary">{{ selectedJobData.jobEligibility.inter_percentage_cgpa }}</span></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Max Backlogs</th>
+                                <td><span class="badge bg-primary">{{ selectedJobData.jobEligibility.max_backlogs_count }}</span></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      
+                        <div class="col-md-12 mb-3">
+                          
+                            <h5 class="section-title">Additional Eligibility Notes</h5>
+                            <hr/>
+                            <p class="">{{ selectedJobData.jobEligibility.job_eligibility_form_other_details }}</p>
+                         
+                        </div>
+                      </div>
+                      
+                      
+                      
+                      <!-- Drive Details Section -->
+                      <div class="mb-3">
+                        <h5 class="mb-2 section-title">Drive Details</h5>
+                        <hr class="my-2" />
+                      
+                        <div class="row">
+                          <div class="col-md-6">
+                            <table class="table table-bordered table-hover">
+                              <tbody class="table-light">
+                                <tr>
+                                  <th scope="row">Registration Link</th>
+                                  <td>
+                                    {{ selectedJobData.driveDetails.registration_link }}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Start Date</th>
+                                  <td>{{ selectedJobData.driveDetails.start_date }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">End Date</th>
+                                  <td>{{ selectedJobData.driveDetails.end_date }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Last Date for Registration</th>
+                                  <td class="text-danger fw-bold">{{ selectedJobData.driveDetails.last_date_for_registration }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Location</th>
+                                  <td>{{ selectedJobData.driveDetails.location }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Mode of Drive</th>
+                                  <td>{{ selectedJobData.driveDetails.mode_of_drive }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                      
+                          <div class="col-md-6">
+                            <!-- <h5 class="mb-3">
+                              Selection Process <span class="text-muted">|</span> Number of Rounds: {{ selectedJobData.driveDetails.no_of_rounds }}
+                            </h5>
+                       -->
+                            <div class="card mb-3 shadow-sm">
+                              <div class="card-body">
+                                <h6 class="card-subtitle mb-2 mt-2 text-muted">Round Details</h6>
+                                <p class="card-text">{{ selectedJobData.driveDetails.round_details }}</p>
+                              </div>
+                            </div>
+                      
+                            <div class="card mb-3 shadow-sm">
+                              <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">Selection Process</h6>
+                                <p class="card-text">{{ selectedJobData.driveDetails.selection_process }}</p>
+                              </div>
+                            </div>
+                      
+                            <div class="card mb-3 shadow-sm">
+                              <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">Selection Criteria</h6>
+                                <p class="card-text">{{ selectedJobData.driveDetails.selection_criteria }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        
+                      </div>
+                      
+                    </div>
+                
+                
+                
+            </div>
+        </div>
+      </div>
+        </div>
+       </div>
+    </section>
+
+  </main>
+
+  
+
+
+  <!-- Duplicte -->
+  <div class="step" *ngIf="currentStep== 3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="card-title mt-4 p-0 fs-5">Review and Verify your  information Before Submission</h2>
+    
+      <p class="m-1 fs-5">4/4</p>
+    </div> 
+    <div>
+       <!-- Job Description Section -->
+      <div class="card mb-5 shadow-sm">
+        <div class="card-header text-white">
+          <h6 class="section-title mb-0"><i class="fas fa-briefcase me-2"></i>Job Description</h6>
+        </div>
+        <br>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p>Company Name: {{ job_description_form.value.company_name }}</p>
+              <p>Role: {{ job_description_form.value.role }}</p>
+              <p>Package: {{ job_description_form.value.package }}</p>
+              <p>Bond: {{ job_description_form.value.bond }}</p>
+            </div>
+            <div class="col-md-6">
+              <p>Category: {{ job_description_form.value.category }}</p>
+              <p>Website: <a [href]="job_description_form.value.website" target="_blank" class="text-decoration-none">{{ job_description_form.value.website }}</a></p>
+              <p>Job Location: {{ job_description_form.value.joblocation }}</p>
+              <p *ngIf="job_description_form.value.logo">Logo:
+                <img [src]="job_description_form.value.logo" alt="Company Logo" width="80" class="ms-2 rounded">
+              </p>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <p>Company Profile:</p>
+            <div>
+              <p class="mb-0 text-content" [class.expanded]="showFullCompanyProfile">
+                {{ job_description_form.value.companyprofile }}
+              </p>
+              <button class="btn btn-link p-0 text-primary" (click)="toggleCompanyProfile()" *ngIf="job_description_form.value.companyprofile?.length > 150">
+                {{ showFullCompanyProfile ? 'Show Less' : 'Show More' }}
+              </button>
+            </div>
+    
+            <p class="mt-3">Job Description:</p>
+            <div>
+              <p class="mb-0 text-content" [class.expanded]="showFullJobDescription">
+                {{ job_description_form.value.jobdescription }}
+              </p>
+              <button class="btn btn-link p-0 text-primary" (click)="toggleJobDescription()" *ngIf="job_description_form.value.jobdescription?.length > 150">
+                {{ showFullJobDescription ? 'Show Less' : 'Show More' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Eligibility Criteria Section -->
+      <div class="card mb-5 shadow-sm">
+        <div class="card-header text-white">
+          <h6 class="section-title mb-0"><i class="fas fa-graduation-cap me-2"></i>Eligibility Criteria</h6>
+        </div>
+        <br>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+
+              <p>Departments:
+                <span
+                  *ngFor="let department of job_eligibility_form.value.departments; let last = last">{{
+                  department?.name }}<span *ngIf="!last">, </span></span>
+              </p>
+              <p>Campuses:
+                <span *ngFor="let campuses of job_eligibility_form.value.campuses; let last = last">{{
+                  campuses?.name }}<span *ngIf="!last">, </span></span>
+              </p>
+              <p>Academic %:{{ job_eligibility_form.value.academic_percentage }}</p>
+              <p>10th %/CGPA: {{ job_eligibility_form.value.tenth_percentage_cgpa }}</p>
+            </div>
+            <div class="col-md-6">
+              <p>Inter %/CGPA: {{ job_eligibility_form.value.inter_percentage_cgpa }}</p>
+              <p>Max Backlogs: {{ job_eligibility_form.value.max_backlogs_count }}</p>
+              <p>Passout Years
+                <span
+                  *ngFor="let passout_years of job_eligibility_form.value.passout_years; let last = last">{{
+                  passout_years?.year }}<span *ngIf="!last">, </span></span>
+              </p>
+            </div>
+          </div>
+          <div class="mt-3">
+            <p>Other Details:</p>
+            <p class="">{{ job_eligibility_form.value.job_eligibility_form_other_details }}</p>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Drive Details Section -->
+      <div class="card mb-5 shadow-sm">
+        <div class="card-header text-white">
+          <h6 class="section-title mb-0"><i class="fas fa-calendar-alt me-2"></i>Drive Details</h6>
+        </div>
+        <br>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p>Registration Link: 
+                <a [href]="drive_details_form.value.registration_link" target="_blank" class="text-decoration-none">
+                  {{ drive_details_form.value.registration_link }}
+                </a>
+              </p>
+              <p>Last Date: {{ drive_details_form.value.last_date_for_registration }}</p>
+              <p>Start Date: {{ drive_details_form.value.start_date }}</p>
+              <p>End Date: {{ drive_details_form.value.end_date }}</p>
+            </div>
+            <div class="col-md-6">
+              <p>Mode: {{ drive_details_form.value.mode_of_drive }}</p>
+              <p>Location: {{ drive_details_form.value.location }}</p>
+              <p>Rounds: {{ drive_details_form.value.no_of_rounds }}</p>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <p>Round Details:</p>
+            <div>
+              <p class="mb-0">{{ drive_details_form.value.round_details }}</p>
+            </div>
+            
+            <p class="mt-3">Selection Process:</p>
+            <div>
+              <div class="mb-0 text-content" [class.expanded]="showFullSelectionProcess" [innerHTML]="drive_details_form.value.selection_process"></div>
+              <button class="btn btn-link p-0 text-primary" (click)="toggleSelectionProcess()" *ngIf="drive_details_form.value.selection_process?.length > 150">
+                {{ showFullSelectionProcess ? 'Show Less' : 'Show More' }}
+              </button>
+            </div>
+            
+            <p class="mt-3">Selection Criteria:</p>
+            <div>
+              <div class="mb-0 text-content" [class.expanded]="showFullSelectionCriteria" [innerHTML]="drive_details_form.value.selection_criteria"></div>
+              <button class="btn btn-link p-0 text-primary" (click)="toggleSelectionCriteria()" *ngIf="drive_details_form.value.selection_criteria?.length > 150">
+                {{ showFullSelectionCriteria ? 'Show Less' : 'Show More' }}
+              </button>
+            </div>
+            
+            <p class="mt-3">Other Drive Info:</p>
+            <div>
+              <p class="mb-0 text-content">{{ drive_details_form.value.drive_info }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <label>
+      <input type="checkbox" id="agreeCheckbox"> I hereby agree
+    </label>
+    
+    
+  </div>

@@ -1,0 +1,73 @@
+<main class="body">
+   <div class="container mh-100">
+      <div class="row g-0 justify-content-center  align-content-center mh-100">
+
+         <div class="rounded-4 shadow-lg bg-white col-lg-5 col-md-6 align-self-center">
+            <div class="RightBlock row px-3  py-3 ">
+               <div class="loginCntMiddle align-self-center text-center px-xl-5  p-3">
+                  <aside class="loginBlk">
+                     <div class="loginCntHeader text-center   mb-4 rounded-3">
+                        <img src="assets/img/analysis_logo.png" class="logo">
+                        <h3 class="text-left mt-4 text-dark"><strong>Employee Portal</strong></h3>
+                     </div>
+                     <h3 class="text-left mb-3"><strong>Login</strong></h3>
+                     <h6 class="text-danger" *ngIf="show_log_error!=''"> {{show_log_error}} </h6>
+                     <form novalidate [formGroup]="logdata" (ngSubmit)="onLogin()">
+                        <div class="row g-4">
+                           <div class="col-md-12 col-12 ">
+                              <div class="form-group">
+                                 <label for="employee_paycode">Employee Code
+                                   <span class="text-danger font-weight-bold ms-1">*</span>
+                                 </label>
+                               
+                                 <input type="number" id="employee_paycode" name="employee_paycode" class="form-control"
+                                        min="1000" required autocomplete="off"
+                                        formControlName="employee_paycode" (keyup)="clearfunction()"
+                                        placeholder="Enter Employee Code">
+                               
+                                 <div *ngIf="logdata.controls['employee_paycode'].invalid && logdata.controls['employee_paycode'].touched"
+                                      class="text-danger text-center mt-2">
+                                   <div *ngIf="logdata.controls['employee_paycode'].errors?.['min']">
+                                     <small>Employee Code must be at least 4 digits</small>
+                                   </div>
+                                 </div>
+                               </div>
+                           </div>
+                           <div class="col-md-12 col-12 ">
+                              <div class="form-group">
+                                 <label for="employee_pwd"> Password<span class="text-danger font-weight-bold ms-1">*</span></label>
+                                 <input type="password" id="employee_pwd" name="employee_pwd"
+                                    minlength="6" class="form-control" required autocomplete="off"
+                                    formControlName="employee_pwd" placeholder="Enter Password" (keyup)="clearfunction()" />
+
+
+                                 <!-- <input type="password" id="employee_pwd" name="employee_pwd" minlength="6" class="form-control"
+                                    required autocomplete="off" formControlName="employee_pwd" placeholder="Enter Pin"
+                                    (keyup)="clearfunction()"> -->
+                                 <div *ngIf="logdata.controls['employee_pwd'].invalid && logdata.controls['employee_pwd'].touched"
+                                    class="text-danger text-center mt-2">
+                                    <div *ngIf="logdata.controls['employee_pwd'].errors">
+                                       <small>Enter Password of Minimum Length 6</small>
+                                    </div>
+                                 </div>
+
+                              </div>
+                           </div>
+
+                           <div class="text-center col-12">
+                              <button type="submit" class="btn btn-primary rounded-pill-OFF shadow btn-block   w-100"
+                                 [disabled]="!logdata.valid" id="login">Login</button> <br>
+                              <a href="#/registration"
+                                 style="font-size: 14px; color: inherit!important;   cursor: pointer;"
+                                 class="mt-4 d-block  ">
+                                 I don't have an account? </a>
+                           </div>
+                        </div>
+                     </form>
+                  </aside>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</main>

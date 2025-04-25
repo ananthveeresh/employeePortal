@@ -1,0 +1,73 @@
+.validation-error-messages {
+    color: #ff4d4d; 
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .validation-error {
+    /* margin: 3px 0; */
+    font-family: Arial, sans-serif;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #3f51b5;
+  }
+  
+  .step {
+    /* background-color: #f9f9f9; */
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  .text-content {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Show only 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.3s ease-in-out;
+    white-space: pre-line; /* Preserve line breaks */
+  }
+  
+  .text-content.expanded {
+    -webkit-line-clamp: unset;
+    white-space: normal;
+  }
+
+  /* Add to your component's CSS or global styles */
+.card {
+  border: none;
+  border-radius: 10px;
+}
+
+.card-header {
+  border-radius: 10px 10px 0 0 !important;
+}
+
+.section-title {
+  font-weight: 600;
+}
+
+.btn-link {
+  text-decoration: none;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+p{
+    font-size: 15px;
+    font-weight:100%;
+}
+
+
+
+  
+  
+  
+.d-table-cell {
+  display: table-cell;
+  padding-bottom: 0.8rem; /* This mimics mb-4 */
+  vertical-align: top;
+}

@@ -1,0 +1,308 @@
+<main id="main" style="margin-top: 50px">
+  <section class="section dashboard">
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+      <div class="pagetitle">
+        <h1>Student Data</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <!-- <h5 class="card-title">Student Data</h5> -->
+            <div class="container mt-4">
+              <form (submit)="searchStudent(); $event.preventDefault()">
+                <div class="input-group mb-3">
+                  <input type="number" class="form-control" placeholder="Enter SUC Code" [(ngModel)]="sucCode"
+                    name="sucCode" required />
+                  <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div *ngIf="showDetails && student" class="text-end mb-3">
+      <button class="btn btn-primary" (click)="printStudentDetails()">
+        <i class="bi bi-printer-fill"></i> Print
+      </button>
+    </div>
+
+    <div id="print-section" *ngIf="showDetails && student" class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <!-- Header Section -->
+          <div class="text-md-center mt-4">
+            <h1 class="card-title fs-3">{{ student.studentname }}</h1>
+            <p>
+              <span class="fw-bold">Mobile:</span> {{ student.studentmobilenumber }} | <br class="d-sm-none">
+              <span class="fw-bold">Email:</span> {{ student.studentemail }}
+            </p>
+            <p>
+              <span class="fw-bold">Address:</span> {{ student.studentaddress }} | <br class="d-sm-none">
+              <span class="fw-bold">Pincode:</span> {{ student.pincode }}
+            </p>
+          </div>
+
+          <!-- Personal Details Section -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="section-title mb-0 text-primary">
+                <i class="bi bi-person-circle"></i> Personal Details
+              </h5>
+            </div>
+            <hr class="section-underline">
+            <div class="row">
+              <div class="col-md-6">
+                <table class="w-100">
+                  <tr>
+                    <td class="fw-bold">Date of Birth</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.dob | date:'dd/MM/yyyy' }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Gender</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.gender }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Religion</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.religion }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Father's Name</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.fathername }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Mother's Name</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.mothername }}</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-md-6">
+                <table class="w-100">
+                  <tr>
+                    <td class="fw-bold">Aadhaar No</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.studentaadhaarnumber }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Category</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.reservation }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">PWD</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.physicallychallenged }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Father's Occupation</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.fatheroccupation }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Mother's Occupation</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.motheroccupation }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Education Details Section -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="section-title mb-0 me-2 text-primary">
+                <i class="bi bi-mortarboard-fill me-2  text-primary"></i>Education Details
+              </h5>
+            </div>
+            <hr class="section-underline">
+            <div class="table-responsive ms-2">
+              <table class="table table-bordered">
+                <thead class="table-light">
+                  <tr class="text-center">
+                    <th>Education</th>
+                    <th>Board/University</th>
+                    <th>Institution</th>
+                    <th>Hallticket No</th>
+                    <th>Year of Pass</th>
+                    <th>CGPA / %</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- SSC Row -->
+                  <tr>
+                    <td>SSC</td>
+                    <td>{{ student.sscboard }}</td>
+                    <td>{{ student.sscschoolname }}</td>
+                    <td>{{ student.sschallticketnumber }}</td>
+                    <td class="text-center">{{ student.sscyearofpass }}</td>
+                    <td class="text-center">{{ student.sscgpa }}</td>
+                  </tr>
+                  <!-- Intermediate Row -->
+                  <tr>
+                    <td>Intermediate</td>
+                    <td>{{ student.interboard }}</td>
+                    <td>{{ student.intercollegename }}</td>
+                    <td>{{ student.interhallticketnumber }}</td>
+                    <td class="text-center">{{ student.interyearofpass }}</td>
+                    <td class="text-center">{{ student.interpercentage }}</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Course Details Section -->
+          <div class="mb-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="section-title mb-0 text-primary">
+                <i class="bi bi-book me-2 text-primary"></i>Course Details
+              </h5>
+            </div>
+            <hr class="section-underline">
+            <div class="row">
+              <div class="col-md-6">
+                <table class="w-100">
+                  <tr>
+                    <td class="fw-bold">Course</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.course[0]?.full_course_name || 'N/A' }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Hall Ticket No</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.board_id }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Second Language</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.language }}</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-md-6">
+                <table class="w-100">
+                  <tr>
+                    <td class="fw-bold">No. of Backlogs</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.degreebacklogs }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Avg CGPA</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.degreeavgcgpa }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Year Of Completion</td>
+                    <td class="fw-bold">:</td>
+                    <td class=" ">{{ student.degreeyearofpass }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- Semester Details -->
+            <div class="form-section mt-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="section-title mb-0 text-primary">
+                  <i class="bi-book-half me-2  text-primary"></i>Semester Details
+                </h5>
+              </div>
+              <hr class="section-underline">
+              <div class="table-responsive mt-3">
+                <table class="table table-bordered">
+                  <thead class="table-light">
+                    <tr class="text-center">
+                      <th>Semester</th>
+                      <th>SGPA</th>
+                      <th>Year of Pass</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let degree of student.degreeinfo; let i = index">
+                      <td class="text-center">Semester {{i+1}}</td>
+                      <td class="text-center">{{ degree.percentage }}</td>
+                      <td class="text-center">{{ degree.year }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- <main id="main" style="margin-top: 50px">
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Student Data</h5>
+
+            <form (submit)="searchStudent(); $event.preventDefault()">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter SUC Code"
+                  [(ngModel)]="sucCodeInput"
+                  name="sucCodeInput"
+                  required
+                />
+                <button class="btn btn-primary" type="submit">Search</button>
+              </div>
+            </form>
+            
+
+            <div *ngIf="showDetails && students.length > 0" class="table-responsive">
+              <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Father Name</th>
+                    <th>Mobile</th>
+                    <th>SUC Code</th>
+                    <th>Course</th>
+                    <th>Section</th>
+                    <th>Campus</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let student of students">
+                    <td>{{ student.student_name }}</td>
+                    <td>{{ student.father_name }}</td>
+                    <td>{{ student.mobile_no }}</td>
+                    <td>{{ student.student_no }}</td>
+                    <td>{{ student.course_name }}</td>
+                    <td>{{ student.section_name }}</td>
+                    <td>{{ student.campus_name }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main> -->

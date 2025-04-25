@@ -1,0 +1,360 @@
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="card" *ngIf="showForm==0">
+            <div class="card-body">
+                
+                <div class="d-flex justify-content-between align-items-center my-3">
+                    <h5 class="card-title m-0 p-0">Enquiries List</h5>
+                    <div class="d-flex justify-content-end gap-2">
+                        <!-- <button type="button" class="btn btn-outline-success btn-sm  rounded-4 blockBtn" (click)="showForm = 2;">
+                         <i class="ri-file-info-line"></i>
+                        </button> -->
+                        <button type="button" class="btn btn-outline-primary btn-sm  rounded-4 blockBtn" (click)="showForm = 1; isEdit = false; selectedEnquiry = { gender: '', instId: '', enq_category:'', course: [], qualification: {}, address: {} }">
+                             <i class="bi bi-person"></i>
+                        </button>
+                        
+                    </div>
+                    </div>
+                    <div class="alert alert-danger" *ngIf="enquiries.length==0">
+                        <strong>No Enquiries Found!</strong> Please add some enquiries.
+                    </div>
+                    <div class="my-3" *ngIf="enquiries.length>0">
+                        <input type="text" class="form-control" placeholder="Search Name or Mobile No." [(ngModel)]="searchText" (keyup)="searchEnquiries()" autocomplete="off">
+                    </div>
+                    <table class="table" *ngIf="enquiries.length>0">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Student Details</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let enquiry of enquiries; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td> 
+                                <div class="fw-bolder">{{ enquiry.student_name }}</div> 
+                                <div class="small  text-dark text-uppercase"><span class="text-muted">C/o:&nbsp;</span>{{ enquiry.father_name }}</div>
+                                <div class="small text-muted" (click)="togglePhone(enquiry)" style="cursor: pointer;">
+                                    {{ enquiry.showPhone ? enquiry.phone_no : maskPhone(enquiry.phone_no) }}
+                                    <!-- <button class="btn btn-link btn-sm">
+                                        {{ enquiry.showPhone ? 'Hide' : 'Show' }}
+                                    </button> -->
+                                </div>
+                                <div class="small text-muted">{{ enquiry.course }}</div>
+                            </td>
+                            
+                            
+                            <td>
+                                <button class="btn btn-outline-warning btn-sm hstack rounded-4 blockBtn" (click)="editEnquiry(enquiry)">
+                                <i class="bi bi-pencil"></i>
+                                </button>
+                                <!-- <button class="btn btn-danger btn-sm" (click)="deleteEnquiry(enquiry._id)">Delete</button> -->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+
+        <div class="card" *ngIf="showForm==1">
+            <div class="card-body">
+                <div class="row my-3">
+                    <div class="col-6">
+                        <h5 class="card-title m-0 p-0">{{ isEdit ? 'Edit Enquiry' : 'Add Enquiry' }}</h5>
+                    </div>
+                    <div class="col-6 text-right" style="text-align: right;">
+                        <button class="btn btn-primary btn-sm mb-3" (click)="showForm = 0">Back</button>
+                    </div>
+                </div>
+
+                <form #enquiryForm="ngForm" (ngSubmit)="onSubmit(enquiryForm)">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Course <span class="text-danger">*</span></label>
+                            <!-- {{selectedEnquiry.course | json}} -->
+                            <ng-select 
+                                name="course"
+                                [items]="courseslist"
+                                bindLabel="course_main_name"
+                                bindValue="course_main_name"
+                                [(ngModel)]="selectedEnquiry.course"
+                                [multiple]="true"
+                                [searchable]="true"
+                                [trackByFn]="trackByFn"
+                                placeholder="Select Course(s)"
+                                #course="ngModel"
+                                required autocomplete="off">
+                            </ng-select>
+                        
+                            <div class="text-danger"  *ngIf="course.invalid && course.touched">
+                                At least one course is required
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Aadhar Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" 
+                                   [(ngModel)]="selectedEnquiry.aadhar_no" 
+                                   name="aadhar_no" 
+                                   pattern="^([0-9]{12})$"  
+                                   #aadharNo="ngModel" (keyup)="findAadharNo()" required autocomplete="off">
+                        
+                            <div class="text-danger" *ngIf="aadharNo.invalid && (aadharNo.dirty || aadharNo.touched)">
+                                <span *ngIf="aadharNo.errors?.['pattern']">Enter a valid 12-digit Aadhar Number</span>
+                                <span *ngIf="aadharNo.errors?.['required']">Aadhar Number is required</span>
+                            </div>
+                            <div class="text-danger" *ngIf="stdaadhardata!=''">{{stdaadhardata}}</div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Hallticket Number</label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.hallticket_no" name="hallticket_no" autocomplete="off">
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Where do you got from <span class="text-danger">*</span></label>
+                            <select class="form-control" [(ngModel)]="selectedEnquiry.enq_category" name="enq_category" required #enqCategory="ngModel" autocomplete="off">
+                                <option value="" disabled selected>Select</option>
+                                <option value="Individual">Individual</option>
+                                <option value="Bulk">Bulk</option>
+                            </select>
+                            <div class="text-danger" *ngIf="enqCategory.invalid && enqCategory.touched">Enquiry from is required</div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Student Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.student_name" name="student_name" required #studentName="ngModel" autocomplete="off">
+                            <div class="text-danger" *ngIf="studentName.invalid && studentName.touched">Student Name is required</div>
+                        </div>
+                        
+                
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Gender <span class="text-danger">*</span></label>
+                            <select class="form-control" [(ngModel)]="selectedEnquiry.gender" name="gender" required #gender="ngModel" autocomplete="off">
+                                <option value="" disabled selected>Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <div class="text-danger" *ngIf="gender.invalid && gender.touched">Gender is required</div>
+                        </div>
+
+                        
+                        
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Father's Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.father_name" name="father_name" required #fatherName="ngModel" autocomplete="off">
+                            <div class="text-danger" *ngIf="fatherName.invalid && fatherName.touched">Father's Name is required</div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Father Occupation <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.father_occupation" name="father_occupation" required #fatherOccupation="ngModel" autocomplete="off">
+                            <div class="text-danger" *ngIf="fatherOccupation.invalid && fatherOccupation.touched">Father Occupation is required</div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Annual Income <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.annual_income" name="annual_income" required #annualIncome="ngModel" autocomplete="off">
+                            <div class="text-danger" *ngIf="annualIncome.invalid && annualIncome.touched">Father Occupation is required</div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Phone Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.phone_no" name="phone_no" required pattern="^[0-9]{10}$" #phoneNo="ngModel" autocomplete="off">
+                            <div class="text-danger" *ngIf="phoneNo.invalid && phoneNo.touched">
+                                <span *ngIf="phoneNo.errors?.['required']">Phone Number is required</span>
+                                <span *ngIf="phoneNo.errors?.['pattern']">Enter a valid 10-digit phone number</span>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                    </div>
+                
+                    <div class="card-title">Previous Qualification</div>
+                    <div class="row">
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">Class</label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.qualification.class" name="qualification_class" placeholder="10th" autocomplete="off">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="mb-1">School/College</label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.qualification.school" name="qualification_school" placeholder="Aditya Public School" autocomplete="off">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">Year of Completion</label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.qualification.year" name="qualification_year" placeholder="2020" autocomplete="off">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="mb-1">Place of Study</label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.qualification.place_of_study" name="qualification_place" placeholder="Kakinada" autocomplete="off">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">Marks %</label>
+                            <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.qualification.marks" name="qualification_marks" placeholder="85%" autocomplete="off">
+                        </div>
+                        <!-- <div class="col-md-12 m-0"><hr></div> -->
+                    </div>
+                    
+                    
+                    <!-- <div *ngFor="let qualification of selectedEnquiry.qualifications; let i = index" class="row ">
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">Class</label>
+                            <input type="text" class="form-control" [(ngModel)]="qualification.class" name="qualification_{{i}}_class" required placeholder="Class" autocomplete="off">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">School/Collge</label>
+                            <input type="text" class="form-control" [(ngModel)]="qualification.school" name="qualification_{{i}}_school" required placeholder="School/Collge" autocomplete="off">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">Year of Completion</label>
+                            <input type="text" class="form-control" [(ngModel)]="qualification.year" name="qualification_{{i}}_year" required pattern="^[0-9]{4}$" placeholder="Year" autocomplete="off">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">Place of Study</label>
+                            <input type="text" class="form-control" [(ngModel)]="qualification.place_of_study" name="qualification_{{i}}_place" required placeholder="Place of Study" autocomplete="off">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">Medium</label>
+                            <input type="text" class="form-control" [(ngModel)]="qualification.medium" name="qualification_{{i}}_medium" required placeholder="Medium" autocomplete="off">
+                        </div>
+                        <div class="col-md-2 mb-2 d-flex justify-content-between">
+                            <div class="w-75">
+                                <label class="mb-1">Marks %</label>
+                            <input type="text" class="form-control" [(ngModel)]="qualification.marks" #marks="ngModel" name="qualification_{{i}}_marks" required pattern="^[0-9]{1,2}$" placeholder="Marks (%)" autocomplete="off">
+                            <div class="text-danger" *ngIf="marks.invalid && marks.touched">
+                                <small *ngIf="marks.errors?.['required']">Marks are required</small>
+                                <small *ngIf="marks.errors?.['pattern']">Marks must be a number between 0 and 99</small>
+                            </div>
+                            </div>
+                            <div class="">
+                                <button class="btn btn-danger btn-sm" style="margin-top: 25px;" type="button" (click)="removeQualification(i)">✖</button>
+                            </div>
+                        </div>
+                        <div class="col-md-12 m-0"><hr></div>
+                    </div> -->
+                    <!-- <button type="button" class="btn btn-success btn-sm" (click)="addQualification()">+ Add Qualification</button> -->
+                    <div class="card-title">Address Details</div>
+                        <div class="row">
+                            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                                <label>Street</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.address.street" name="address.street" autocomplete="off">
+                            </div>
+                            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                                <label>City</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.address.city" name="address.city" autocomplete="off">
+                            </div>
+                            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                                <label>State</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.address.state" name="address.state" autocomplete="off">
+                            </div>
+                            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                                <label>ZIP Code</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.address.zip" name="address.zip" autocomplete="off">
+                            </div>
+                        </div>
+                    <button type="submit" class="btn btn-primary mt-3" [disabled]="enquiryForm.invalid">{{ isEdit ? 'Update' : 'Submit' }}</button>
+                </form>
+                
+            </div>
+        </div>
+
+        <div class="card" *ngIf="showForm==2">
+            <div class="card-body">
+                <div class="row my-3">
+                    <div class="col-6">
+                        <h5 class="card-title m-0 p-0">Upload Excel</h5>
+                    </div>
+                    <div class="col-6 text-right" style="text-align: right;">
+                        <!-- <button (click)="downloadExcel()" class="btn btn-warning btn-sm me-2"><i class="bi bi-cloud-arrow-down-fill"></i> Sample Date</button> -->
+                        <!-- <button type="button" class="btn btn-outline-success btn-sm  rounded-4 blockBtn" (click)="showForm = 2;">
+                            Excel Upload 
+                        </button> -->
+                        <button class="btn btn-primary btn-sm" (click)="showForm = 0">Back</button>
+                    </div>
+                </div>
+                <div class="template-card mb-4" style="border-left: 3px solid #4754ee;">
+                            
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center text-color">
+                            <i class="fas fa-file-excel fs-3 me-3 animated-icon"></i>
+                            <div>
+                                <a href="javascript:void(0)" (click)="downloadExcel()">
+                                    <h5 class="fw-bold mb-1">Download Template</h5>
+                                </a>
+                                <p class="text-color mb-0">Excel format (.xlsx)</p>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" (click)="downloadExcel()" class="btn download-button text-color">
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+        
+                <div class="upload-zone mb-4">
+                    <i class="fas fa-cloud-upload-alt text-primary fs-1 mb-3"></i>
+                    <h5 class="fw-bold">Drag & Drop Files Here</h5>
+                    <p class="text-muted mb-3">or</p>
+        
+                    <input type="file" class="d-none" id="fileUpload" (change)="onFileChange($event)" accept=".xlsx">
+                    <label for="fileUpload" class="btn btn-sm mb-1 cstm-btn" style="border: 1px solid #4754ee; color: #4754ee;">
+                        <i class="fas fa-plus me-2"></i>Browse Files
+                    </label>
+        
+                    <!-- <p *ngIf="fileName" class="text-muted mt-2"> {{ fileName }}</p> -->
+                </div>
+
+                <table class="table table-bordered mt-3" *ngIf="excelData.length">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Father's Name</th>
+                            <th>Gender</th>
+                            <th>Course</th>
+                            <th>Phone No</th>
+                            <th>Email</th>
+                            <th>Aadhar No</th>
+                            <th>Address</th>
+                            <th>Prev College</th>
+                            <th>Year of Passed</th>
+                            <th>Place of Study</th>
+                            <th>Medium</th>
+                            <th>Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let student of excelData">
+                            <td>{{ student.student_name }}</td>
+                            <td>{{ student.father_name }}</td>
+                            <td>{{ student.gender }}</td>
+                            <td>{{ student.course }}</td>
+                            <td>{{ student.phone_no }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.aadhar_no }}</td>
+                            <td>{{ student.street }}, {{ student.city }}, {{ student.state }}, {{ student.zip }}</td>
+                            <td>{{ student.prev_college }}</td>
+                            <td>{{ student.year_of_passed }}</td>
+                            <td>{{ student.place_of_study }}</td>
+                            <td>{{ student.Medium }}</td>
+                            <td>{{ student.marks }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+        
+                <div class="text-end">
+                    <button class="btn btn-modern btn-primary px-4" (click)="uploadData()" [disabled]="!isuploadexcel">
+                        <i class="fas fa-upload me-2"></i>Upload Student Data
+                    </button>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-md-6">
+                        <input type="file" (change)="onFileChange($event)" accept=".xlsx, .xls" />
+                        <button (click)="uploadData()" class="btn btn-primary btn-sm">Upload</button>
+                    </div>
+                    <div class="col-md-6">
+                        
+                    </div>
+                </div> -->
+
+                
+            </div>
+        </div>
+    </section>
+</main>

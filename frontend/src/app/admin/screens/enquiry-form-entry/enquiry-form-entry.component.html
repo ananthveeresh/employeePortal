@@ -1,0 +1,647 @@
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="row" *ngIf="showForm==0">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">Admission Enquiries </h5>
+                        <div class="row">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="alert p-3 border-secondary hvr-float-shadow" (click)="bulkdataurl()">
+                                    <div role="parent" class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img alt="1" src="assets/img/bulkdata.png" class="icon_width_30x30" style="background: transparent;">
+                                            <div class="d-flex flex-column">
+                                                <div role="topic name" class="fw-bold"> Bulk Data </div>
+                                                <!-- <small role="topic chapters" class="text-muted">{{logininfo_yr[0].student_year}}</small> -->
+                                            </div>
+                                        </div>
+                                        <div><i class="bx bxs-chevron-right fs-2"></i></div>
+                                    </div>
+                                </div>
+                            </div><!---->
+                            <div class="col-md-6 col-lg-8">
+                                <div class="card bs-card-border">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center media">
+                                            <div class="flex-shrink-0 me-md-5">
+                                                <aside class="d-flex flex-md-row flex-column gap-3 align-items-center text-center text-md-start mbdiv"><img
+                                                        alt="1" class="icon_width_30x30" src="assets/img/walkin.png" style="background: transparent;">
+                                                    <div class="fw-bold mbdivtxt"> Walkins 
+                                                        <!-- <div class="fw-normal small text-muted">No.of Enquiries</div> -->
+                                                    </div>
+                                                </aside>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3" *ngIf="enquiries.length!=0">
+                                                <div class="Result d-flex align-items-center gap-3 justify-content-between pointer">
+                                                    <div class="d-flex flex-column pointer" *ngFor="let es of enqsummary" (click)="filterEnquiriesbyStatus(es.enq_status, es.noof_students)">
+                                                        <div class="title-4 text-center" [ngClass]="getStatusSummary(es.enq_status)">{{ es.noof_students }}</div><small class="title-3 text-center">{{ es.enq_status }}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="d-flex justify-content-between align-items-center my-3">
+                                    <h5 class="card-title m-0 p-0">Summary</h5>
+                                </div>
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let es of enqsummary">
+                                      <div class="d-flex align-items-center w-100">
+                                        <i [ngClass]="getStatusIcon(es.enq_status)" class="me-2"></i> 
+                                        <span class="flex-grow-1">{{ es.enq_status }}</span>
+                                        <span class="badge bg-primary rounded-pill pointer" (click)="filterEnquiriesbyStatus(es.enq_status)">
+                                          {{ es.noof_students }}
+                                        </span>
+                                      </div>
+                                    </li>
+                                </ul> -->
+                            </div>
+                        </div>
+                    
+                        
+                        
+                    </div>
+                </div>            
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        
+                        <div class="d-flex justify-content-between align-items-center my-3">
+                            <h5 class="card-title m-0 p-0">Walkins List</h5>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-primary btn-sm  rounded-4 hstack gap-1" (click)="showForm = 2">
+                                     <i class="bx bx-user-plus" style="font-size: 20px;"></i> <span>New</span>
+                                </button>
+                                
+                            </div>
+                            </div>
+                            <div class="alert alert-danger" *ngIf="enquiries.length==0">
+                                <strong>No Enquiries Found!</strong> Please add some enquiries.
+                            </div>
+                            <div class="my-3" *ngIf="enquiries.length>0">
+                                <div class="d-md-flex gap-3">
+                                    <div class="flex-grow-1">
+                                        <input type="text" class="form-control" placeholder="Search Name or Mobile No." [(ngModel)]="searchText" (keyup)="searchEnquiries()" autocomplete="off">
+                                    </div>
+                                    <div class="div">
+                                        <button class="dropdown-toggle btn border   " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ selectedCategory || 'Category Filter' }}
+                                          </button>
+                                          <div class="dropdown-menu m-0 p-0">
+                                          <ul class="list-group">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center pointer" *ngFor="let es of enqsummary" (click)="filterEnquiriesbyStatus(es.enq_status, es.noof_students)">
+                                                <div class="d-flex align-items-center w-100">
+                                                  <i [ngClass]="getStatusIcon(es.enq_status)" class="me-2"></i> 
+                                                  <span class="flex-grow-1">{{ es.enq_status }}</span>
+                                                  <span class="badge bg-primary rounded-pill">
+                                                    {{ es.noof_students }}
+                                                  </span>
+                                                </div>
+                                              </li>
+                                          </ul>
+                                          </div>
+                                        <!-- <select class="form-select" [(ngModel)]="enq_category" name="enq_category" (change)="filterEnquiriesbyStatus()" autocomplete="off">
+                                            <option value="" selected> Select</option>
+                                            <option  *ngFor="let es of enqsummary" [value]="x.name">
+                                                {{es.enq_status}}
+                                            </option>
+                                        </select> -->
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
+                            
+                            <table class="tablecstm" *ngIf="enquiries.length>0">
+                                <thead>
+                                <tr>
+                                    <th class="brb">#</th>
+                                    <th class="brb">Student Details</th>
+                                    <!-- <th class="brb">Staff Details</th> -->
+                                    <th class="brb">Status</th>
+                                    <th class="brb text-end">Edit</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-center text-danger brb" *ngIf="nodatainsrh==1">No data found</td>
+                                </tr>
+                                </thead>
+                                
+                                
+                                <tbody *ngFor="let enquiry of enquiries; let i = index">
+                                <tr>
+                                    <td>{{ i + 1 }}</td>
+                                    <td> 
+                                        <div class="fw-bolder"><a href="tel:+91 {{enquiry.phone_no}}">{{ enquiry.student_name | textCapitalize }}</a></div> 
+                                        
+                                    </td>
+                                    <!-- <td>
+                                        <div>{{enquiry.user_info.user_name | textCapitalize}}</div>
+                                        <div class="hdng-label"><a href="tel:+91 {{enquiry.user_info.user_mobile}}">{{enquiry.user_info.user_mobile}}</a></div>
+                                    </td> -->
+                                    <td width="150">
+                                        <span *ngIf="!enquiry.isEditing"
+                                        class="badge rounded-1 pointer"
+                                        [ngClass]="{
+                                            'bg-warning': enquiry.enq_status === 'New',
+                                            'bg-primary': enquiry.enq_status === 'Interested',
+                                            'bg-success': enquiry.enq_status === 'Joined',
+                                            'bg-danger': enquiry.enq_status === 'Not Interested'
+                                        }"
+                                        (click)="editStatus(enquiry)">
+                                        {{ enquiry.enq_status }}
+                                    </span>
+                                    
+                                    <!-- Select Dropdown for Status Update -->
+                                    <select *ngIf="enquiry.isEditing && enquiry.user_id==logininfo.paycode" [(ngModel)]="enquiry.enq_status" (change)="updateStatus(enquiry)" class="form-select form-select-sm">
+                                        <option value="New">New</option>
+                                        <option value="Interested">Interested</option>
+                                        <option value="Joined">Joined</option>
+                                        <option value="Not Interested">Not Interested</option>
+                                    </select>
+                                    </td>
+                                    
+                                    <td align="right">
+                                        <button class="btn btn-primary btn-sm hstack rounded-4 blockBtn" (click)="editEnquiry(enquiry)">
+                                        <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <!-- <button class="btn btn-danger btn-sm" (click)="deleteEnquiry(enquiry._id)">Delete</button> -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="brb">&nbsp;</td>
+                                    <td class="brb" colspan="3">
+                                        <div class="small  text-dark text-uppercase brbwithmr"><span class="text-muted">C/o:&nbsp;</span>{{ enquiry.father_name | textCapitalize }}, <a href="tel:+91 {{enquiry.phone_no}}">{{ enquiry.showPhone ? enquiry.phone_no : enquiry.phone_no }}</a><br /> {{ enquiry.course }}</div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="row mobile_form">
+            <div class="col-md-4 offset-md-4">
+                <form #enquiryForm="ngForm" (ngSubmit)="submitForm()">
+                <div class="card" *ngIf="showForm==2">
+                    <!-- <article class="hdng2 border-bottom py-3 px-3">Courses</article> -->
+                    <div class="card-body mb-2">
+                        <div class="d-flex justify-content-between align-items-center my-3">
+                            <h5 class="card-title m-0 p-0">Courses</h5>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-primary btn-sm  rounded-4 blockBtn" (click)="showForm = 0">
+                                     <i class="bi bi-list-task"></i>
+                                </button>
+                                
+                            </div>
+                        </div>
+                        <!-- <input type="text" class="form-control mb-2" [(ngModel)]="searchText" (input)="filterCourses()" name="searchText" placeholder="Search Course" autocomplete="off"> -->
+                        <aside class="coursesBlk d-flex flex-column row-gap-4">
+                            <div class="form-check" *ngFor="let cr of filteredCourses">
+                                <input class="form-check-input" type="checkbox" [(ngModel)]="cr.selected" name="course_{{cr.id}}" id="gridCheck{{cr.id}}"  (change)="updateCourseSelection()">
+                                <label class="form-check-label" for="gridCheck{{cr.id}}">
+                                    &nbsp; {{cr.course_main_name}}
+                                </label>
+                            </div>
+                            <div class="text-danger mt-2" *ngIf="courseSelectionError">Please select at least one course.</div>
+                        </aside>
+                    </div>
+                    <div class="border-top py-3 px-3 text-center">
+                        <button type="button" class="btn btn-primary btn-sm float-end hstack rounded-4 blockBtn" (click)="validateCourses()"><i class="bi bi-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="card" *ngIf="showForm==3">
+                    <article class="border-bottom py-3 px-3">
+                        <div class="hdng-label">Selected Courses</div>
+                        <div>{{selectedEnquiry.course}}</div>
+                      </article>
+                    <!-- <article class="hdng2 border-bottom py-3 px-3">Selected Course : {{selectedEnquiry.course}}</article> -->
+                    <div class="card-body p-3">
+                        <div class="row g-3">
+                            <!-- <div class="col-12">
+                                <label class="form-label">Selected Courses</label>
+                                <ul>
+                                    <li *ngFor="let course of selectedEnquiry.selectedCourses">{{course.course_main_name}}</li>
+                                </ul>
+                            </div> -->
+                            <div class="col-12">
+                                <label>Student Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.student_name" name="student_name" required #studentName="ngModel" autocomplete="off">
+                                <div class="text-danger" *ngIf="studentName.invalid && studentName.touched">Student Name is required</div>
+                            </div>
+                            <div class="col-12">
+                                <label>Aadhar Number <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" 
+                                    [(ngModel)]="selectedEnquiry.aadhar_no" 
+                                    name="aadhar_no" 
+                                    pattern="^([0-9]{12})$"  
+                                    #aadharNo="ngModel" required autocomplete="off">
+                            
+                                <div class="text-danger" *ngIf="aadharNo.invalid && (aadharNo.dirty || aadharNo.touched)">
+                                    <span *ngIf="aadharNo.errors?.['pattern']">Enter a valid 12-digit Aadhar Number</span>
+                                    <span *ngIf="aadharNo.errors?.['required']">Aadhar Number is required</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label>Phone Number <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" [(ngModel)]="selectedEnquiry.phone_no" name="phone_no" required pattern="^[0-9]{10}$" #phoneNo="ngModel" autocomplete="off">
+                                <div class="text-danger" *ngIf="phoneNo.invalid && phoneNo.touched">
+                                    <span *ngIf="phoneNo.errors?.['required']">Phone Number is required</span>
+                                    <span *ngIf="phoneNo.errors?.['pattern']">Enter a valid 10-digit phone number</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-top py-3 px-3 text-center">
+                        <button type="button" class="btn btn-primary btn-sm hstack rounded-4 blockBtn float-start" (click)="showForm=2"><i class="bi bi-chevron-left
+"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm hstack rounded-4 blockBtn float-end" [disabled]="enquiryForm.invalid" (click)="findStudent()"><i class="bi bi-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div  *ngIf="showForm==4">
+                    
+                    <div class="clear:both"></div>
+                    <div class="card">
+
+                        <div class="pt-3 px-3 text-end border-bottom pb-3">
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="showForm=3; nonabove=true">None of the above</button>
+                          <!-- <a class="btn btn-secondary btn-sm" href="s3.html">Skip</a> -->
+                        </div>
+
+                        <aside class="total border-bottom" *ngFor="let std of studentresult">
+                            <article class="px-3 pb-2 pt-1 hstack justify-content-between">
+                              <aside>
+                                <div>{{std.student_name | textCapitalize}}</div>
+                                <div class="hdng-label"><span class="fw-bolder">C/o:</span> {{std.father_name | textCapitalize}}</div>
+                              </aside>
+                              <aside class="hstack">
+                                <button type="button" class="btn btn-warning btn-sm hstack rounded-1 blockBtn me-1" *ngIf="std.user_id==logininfo.paycode" (click)="editEnquiry(std)">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button type="button"
+                                    class="btn btn-primary btn-sm hstack rounded-1 blockBtn" 
+                                    (click)="toggleCollapse(std.enquiry_id)">
+                                    <i class="bi bi-info fs-3"></i>
+                                </button>
+                              </aside>
+                            </article>
+                            <div class="px-3 pb-3 text-start collapse" [ngClass]="{'show': activeEnquiryId === std.enquiry_id}" id="{{std.enquiry_id}}">
+                                <div class="small d-inline-flex text-primary">
+                                  Staff Details:
+                                </div>
+                                <div class="hstack justify-content-between" style="margin-top: -4px;">
+                                  <div class="d-flex flex-column text-start">
+                                    <div>{{std.user_info.user_name | textCapitalize}}</div>
+                                    <div class="hdng-label"><a href="tel:+91 {{std.user_info.user_mobile}}">{{std.user_info.user_mobile}}</a></div>
+                                  </div>
+                                </div>
+                              </div>
+                          </aside>
+
+                       
+                        
+                       
+        
+                      </div>
+                    
+                </div>
+
+                <div class="card" *ngIf="showForm==5">
+                    <article class="hdng2 border-bottom py-3 px-3">
+                        <div class="hdng-label">Student Name</div>
+                        <div>{{selectedEnquiry.student_name}}</div>
+                      </article>
+                    <div class="card-body p-3">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label>Gender <span class="text-danger">*</span></label>
+                                <select class="form-control" [(ngModel)]="selectedEnquiry.gender" name="gender" required #gender="ngModel" autocomplete="off">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                                <div class="text-danger" *ngIf="gender.invalid && gender.touched">Gender is required</div>
+                            </div>
+                            <div class="col-12">
+                                <label>Father's Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.father_name" name="father_name" required #fatherName="ngModel" autocomplete="off">
+                                <div class="text-danger" *ngIf="fatherName.invalid && fatherName.touched">Father's Name is required</div>
+                            </div>
+                            <div class="col-12">
+                                <label>Father Occupation <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.father_occupation" name="father_occupation" required #fatherOccupation="ngModel" autocomplete="off">
+                                <div class="text-danger" *ngIf="fatherOccupation.invalid && fatherOccupation.touched">Father Occupation is required</div>
+                            </div>
+                            <div class="col-12">
+                                <label>Annual Income <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.annual_income" name="annual_income" required #annualIncome="ngModel" autocomplete="off">
+                                <div class="text-danger" *ngIf="annualIncome.invalid && annualIncome.touched">Father Occupation is required</div>
+                            </div>
+                            <div class="col-12">
+                                <label>Caste</label>
+                                <select class="form-control" [(ngModel)]="selectedEnquiry.caste" name="caste" autocomplete="off">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="OC">OC</option>
+                                    <option value="BC">BC</option>
+                                    <option value="SC">SC</option>
+                                    <option value="SC">ST</option>
+                                </select>
+                            </div>
+                            <div class="col-12 my-3">
+                                <label>Where do you got from <span class="text-danger">*</span></label>
+                                <select class="form-select" [(ngModel)]="selectedEnquiry.enq_category" name="enq_category" required #enqCategory="ngModel" autocomplete="off">
+                                    <option value="" selected> Select</option>
+                                    <option *ngFor="let x of enq_category_list" [value]="x.name">
+                                        {{x.name}}</option>
+                                </select>
+                                <div class="text-danger" *ngIf="enqCategory.invalid && enqCategory.touched">Enquiry Category is required</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <aside class="hstack justify-content-between">
+                              <div class="hdng3">
+                                <div>Previous Education Details</div>
+                                <!-- <small class="text-muted" style="font-size: 11px;margin-top: -5px;display: block;">Is it not mandatory?</small> -->
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input checkNew" type="checkbox" id="gridCheckEducation" [(ngModel)]="selectedEnquiry.showEducationDetails" name="showEducationDetails">
+
+                              </div>
+                            </aside>
+                            <hr/>
+                          </div>
+                          <div class="row" *ngIf="selectedEnquiry.showEducationDetails">
+                            <div class="col-12 mb-2">
+                                <label>Hallticket Number</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.hallticket_no" name="hallticket_no" autocomplete="off">
+                            </div>
+                            <div class="col-12 mb-2">
+                                <label class="mb-1">Class</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.qualification.class" name="qualification_class" autocomplete="off">
+                            </div>
+                            <div class="col-12 mb-2">
+                                <label class="mb-1">School/College</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.qualification.school" name="qualification_school" autocomplete="off">
+                            </div>
+                            <div class="col-12 mb-2">
+                                <label class="mb-1">Year of Completion</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.qualification.year" name="qualification_year" autocomplete="off">
+                            </div>
+                            <div class="col-12 mb-2">
+                                <label class="mb-1">Place of Study</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.qualification.place_of_study" name="qualification_place"  autocomplete="off">
+                            </div>
+                            <div class="col-12 mb-2">
+                                <label class="mb-1">Marks %</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.qualification.marks" name="qualification_marks" autocomplete="off">
+                            </div>
+                          </div>
+                          <div class="col-12">
+                            <aside class="hstack justify-content-between">
+                              <div class="hdng3">
+                                <div>Address</div>
+                                <!-- <small class="text-muted" style="font-size: 11px;margin-top: -5px;display: block;">Is it not mandatory?</small> -->
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input checkNew" type="checkbox" id="gridCheckAddress" [(ngModel)]="selectedEnquiry.showAddressDetails" name="showAddressDetails">
+
+                              </div>
+                            </aside>
+                          </div>
+                          <div class="row" *ngIf="selectedEnquiry.showAddressDetails">
+                            <div class="col-12 mb-3">
+                                <label>Street</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.address.street" name="address.street" autocomplete="off">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label>City</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.address.city" name="address.city" autocomplete="off">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label>State</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.address.state" name="address.state" autocomplete="off">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label>ZIP Code</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedEnquiry.address.zip" name="address.zip" autocomplete="off">
+                            </div>
+                            <!-- <div class="col-12 mb-3">
+                                <label>Where do you got from <span class="text-danger">*</span></label>
+                                <select class="form-control" [(ngModel)]="selectedEnquiry.enq_category" name="enq_category" autocomplete="off">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="Individual">Individual</option>
+                                    <option value="Bulk">Bulk</option>
+                                </select>
+                            </div> -->
+                          </div>
+                          
+                    </div>
+                    <div class="border-top py-3 px-3 text-center">
+                        <button type="button" class="btn btn-primary btn-sm hstack rounded-4 blockBtn float-start" (click)="showForm=3"><i class="bi bi-chevron-left
+                            "></i></button>
+                        <button type="submit" class="btn btn-primary btn-sm float-end" [disabled]="enquiryForm.invalid">Submit</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>  
+        
+        <div class="card" *ngIf="showForm==1">
+            <div class="card-body">
+                <div class="row my-3">
+                    <div class="col-6">
+                        <h5 class="card-title m-0 p-0">Edit Enquiry</h5>
+                    </div>
+                    <div class="col-6 text-right" style="text-align: right;">
+                        <button class="btn btn-primary btn-sm mb-3" (click)="showForm = 0">Back</button>
+                    </div>
+                </div>
+
+                <form #editEnquiryForm="ngForm" (ngSubmit)="updateEnquiry()">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Course <span class="text-danger">*</span></label>
+                            <!-- {{editedEnquiry.course | json}} -->
+                            <ng-select 
+                                name="course"
+                                [items]="courseslist"
+                                bindLabel="course_main_name"
+                                bindValue="course_main_name"
+                                [(ngModel)]="editedEnquiry.course"
+                                [multiple]="true"
+                                [searchable]="true"
+                                placeholder="Select Course(s)"
+                                #course="ngModel"
+                                required autocomplete="off">
+                            </ng-select>
+                        
+                            <div class="text-danger"  *ngIf="course.invalid && course.touched">
+                                At least one course is required
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Aadhar Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" 
+                                   [(ngModel)]="editedEnquiry.aadhar_no" 
+                                   name="aadhar_no" 
+                                   pattern="^([0-9]{12})$"  
+                                   #aadharNo="ngModel" required autocomplete="off">
+                        
+                            <div class="text-danger" *ngIf="aadharNo.invalid && (aadharNo.dirty || aadharNo.touched)">
+                                <span *ngIf="aadharNo.errors?.['pattern']">Enter a valid 12-digit Aadhar Number</span>
+                                <span *ngIf="aadharNo.errors?.['required']">Aadhar Number is required</span>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Hallticket Number</label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.hallticket_no" name="hallticket_no" autocomplete="off">
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Where do you got from <span class="text-danger">*</span></label>
+                            <select class="form-select" [(ngModel)]="editedEnquiry.enq_category" name="enq_category" required #enqCategory="ngModel" autocomplete="off">
+                                <option value="" selected> Select</option>
+                                <option *ngFor="let x of enq_category_list" [value]="x.name">
+                                    {{x.name}}</option>
+                            </select>
+                            <div class="text-danger" *ngIf="enqCategory.invalid && enqCategory.touched">Enquiry category is required</div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Student Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.student_name" name="student_name" required #studentName="ngModel" autocomplete="off">
+                            <div class="text-danger" *ngIf="studentName.invalid && studentName.touched">Student Name is required</div>
+                        </div>
+                        
+                
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Gender <span class="text-danger">*</span></label>
+                            <select class="form-control" [(ngModel)]="editedEnquiry.gender" name="gender" required #gender="ngModel" autocomplete="off">
+                                <option value="" disabled selected>Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <div class="text-danger" *ngIf="gender.invalid && gender.touched">Gender is required</div>
+                        </div>
+
+                        
+                        
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Father's Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.father_name" name="father_name" required #fatherName="ngModel" autocomplete="off">
+                            <div class="text-danger" *ngIf="fatherName.invalid && fatherName.touched">Father's Name is required</div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Father Occupation <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.father_occupation" name="father_occupation" required #fatherOccupation="ngModel" autocomplete="off">
+                            <div class="text-danger" *ngIf="fatherOccupation.invalid && fatherOccupation.touched">Father Occupation is required</div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Annual Income <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.annual_income" name="annual_income" required #annualIncome="ngModel" autocomplete="off">
+                            <div class="text-danger" *ngIf="annualIncome.invalid && annualIncome.touched">Father Occupation is required</div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Caste</label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.caste" name="caste" autocomplete="off">
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Phone Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.phone_no" name="phone_no" required pattern="^[0-9]{10}$" #phoneNo="ngModel" autocomplete="off">
+                            <div class="text-danger" *ngIf="phoneNo.invalid && phoneNo.touched">
+                                <span *ngIf="phoneNo.errors?.['required']">Phone Number is required</span>
+                                <span *ngIf="phoneNo.errors?.['pattern']">Enter a valid 10-digit phone number</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                            <label>Status <span class="text-danger">*</span></label>
+                            <select class="form-control" [(ngModel)]="editedEnquiry.enq_status" name="enq_status" required #enqStatus="ngModel" autocomplete="off">
+                                <option value="" disabled selected>Select</option>
+                                <option value="New">New</option>
+                                <option value="Interested">Interested</option>
+                                <option value="Not Interested">Not Interested</option>
+                                <option value="Joined">Joined</option>
+                            </select>
+                            <div class="text-danger" *ngIf="enqStatus.invalid && enqStatus.touched">Status is required</div>
+                        </div>
+                        
+                        
+                        
+                    </div>
+                
+                    <div class="card-title">Previous Qualification</div>
+                    <div class="row">
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">Class</label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.qualification.class" name="qualification_class" autocomplete="off">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="mb-1">School/College</label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.qualification.school" name="qualification_school" autocomplete="off">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">Year of Completion</label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.qualification.year" name="qualification_year" autocomplete="off">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="mb-1">Place of Study</label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.qualification.place_of_study" name="qualification_place"  autocomplete="off">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="mb-1">Marks %</label>
+                            <input type="text" class="form-control" [(ngModel)]="editedEnquiry.qualification.marks" name="qualification_marks" autocomplete="off">
+                        </div>
+                        <!-- <div class="col-md-12 m-0"><hr></div> -->
+                    </div>
+                    
+                    
+                    <div class="card-title">Address Details</div>
+                        <div class="row">
+                            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                                <label>Street</label>
+                                <input type="text" class="form-control" [(ngModel)]="editedEnquiry.address.street" name="address.street" autocomplete="off">
+                            </div>
+                            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                                <label>City</label>
+                                <input type="text" class="form-control" [(ngModel)]="editedEnquiry.address.city" name="address.city" autocomplete="off">
+                            </div>
+                            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                                <label>State</label>
+                                <input type="text" class="form-control" [(ngModel)]="editedEnquiry.address.state" name="address.state" autocomplete="off">
+                            </div>
+                            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                                <label>ZIP Code</label>
+                                <input type="text" class="form-control" [(ngModel)]="editedEnquiry.address.zip" name="address.zip" autocomplete="off">
+                            </div>
+                        </div>
+                        <div  *ngIf="editedEnquiry.user_id!=logininfo.paycode">
+                            <div class="card-title">Staff Details</div>
+                              <div class="hstack justify-content-between" style="margin-top: -4px;">
+                                <div class="d-flex flex-column text-start">
+                                  <div>{{editedEnquiry.user_info.user_name | textCapitalize}}</div>
+                                  <div><a href="tel:+91 {{editedEnquiry.user_info.user_mobile}}">{{editedEnquiry.user_info.user_mobile}}</a></div>
+                                </div>
+                              </div>
+                        </div> 
+                        <div class="row"  *ngIf="editedEnquiry.user_id==logininfo.paycode">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-danger mt-3" (click)="deleteStd(editedEnquiry._id, editedEnquiry.enq_status)">Delete</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary float-end mt-3" [disabled]="editEnquiryForm.invalid">{{ isEdit ? 'Update' : 'Submit' }}</button>
+                            </div>
+                        </div>
+                      
+                    
+                </form>
+                
+            </div>
+        </div>
+
+    </section>
+</main>

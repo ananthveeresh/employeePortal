@@ -1,0 +1,272 @@
+
+.pcard table,
+td,
+th {
+  border: 1px #999 solid;
+  border-collapse: collapse;
+  padding-left: 9px;
+  padding-right: 9px;
+  padding-top: 2px;
+  padding-bottom: 0px;
+
+}
+
+.bgDynamic table {
+    font-size: 13px!important;
+}
+.bgDynamic .table-sm>:not(caption)>*>* {
+    padding: 4px 5px!important;
+	
+}
+.bgv {
+	width: 210mm;
+    height: 297mm;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    padding-top: 144px;
+    padding-left: 80px;
+    padding-right: 80px;
+}
+.bgFixed {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+}
+.bgFixed img {
+	width: 210mm;
+	height: 297mm;
+}
+@media print{
+    .bgFixed img {
+        width: 210mm;
+        height: 297mm;
+    }
+}
+
+.printbt {
+	width: 210mm;
+	height: 297mm;
+    margin: auto;
+}
+
+
+
+/* new css */
+table {margin-bottom:5px;}
+.noborder {margin-bottom:inherit!important;}
+h6 {
+    font-size: 13px;
+    margin-bottom: 0px;
+    text-transform: uppercase;
+    background: #d6d6d845;
+    display: flex;
+    justify-content: start;
+    padding: 4px 6px 3px 10px;
+    color: #141313;
+    font-weight: 600;
+	border-left: 1px #ccc solid;
+    border-right: 1px #ccc solid;
+    border-top: 1px #ccc solid;
+}
+  h3 {
+  font-size: 18px;
+    text-align: center;
+    font-weight: 500;
+    color: #2b2d44;
+    margin-bottom: -16px;
+    display: inline-grid;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px #333 solid;
+    /* border-radius: 50px; */
+    /* padding: 5px 15px; */
+    text-transform: uppercase;
+   
+  }
+.main {
+	width:80%;
+	box-shadow: 0 1px 6px rgba(32, 33, 36, .28);
+	padding-left:30px;
+	padding-right:30px;
+	padding-bottom:30px;
+	/*background:url(../images/bg.jpg) no-repeat center top;*/
+	background-size:cover;
+	
+	}
+	
+.hdng_warper {
+	text-align:center;
+	}
+.topicPageBreak {
+		page-break-inside:avoid;
+		
+	}
+	table {
+	    border-collapse: collapse;
+		
+	}
+  @media all {
+    .page-break {
+      display: none;
+    }
+  }
+
+  @media print {
+    .page-break {
+      display: block;
+      page-break-before: always;
+    }
+	.main {
+		width:100vw;
+		box-shadow: inherit;
+		padding:0;
+		}
+  } 
+
+  body {
+   /* font-family: 'Roboto Condensed'; */
+	font-size:12px!important;
+	color:#333!important;
+	margin:0;
+	padding:0;
+	    font-weight: 400;
+  }
+b, th,strong, .bold {
+	font-weight:600;
+	}
+	
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .inputstyle {
+    width: 32px;
+  }
+
+  ol {
+    counter-reset: list;
+    padding: 0;
+    margin: 0px;
+  }
+
+  ol>li {
+    list-style: none;
+    float: left;
+    padding: 0px 10px 10px 0px;
+  }
+
+  ol>li:before {
+    content: counter(list, decimal) ") ";
+    counter-increment: list;
+    font-weight: bold;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  table {
+    page-break-inside: auto;
+    font-size: 12px;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto
+  }
+
+  #pageFooter {
+    display: table-footer-group;
+    float: left;
+  }
+
+  #pageFooter:after {
+    counter-increment: page;
+    content: counter(page);
+    padding-left: 180px;
+  }
+
+
+
+  .pcard table,
+  td,
+  th {
+    border: 1px #ccc solid;
+    border-collapse: collapse;
+    padding-left: 9px;
+    padding-right: 9px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+
+  }
+.noborder td, .noborder th
+   {
+	border-width:0!important;
+	padding:0!important;
+	}
+	.bg_bar {
+		background: #ECEDFD!important;
+		}
+		
+		.image_thumb {
+			border: 1px #ccc solid;
+    padding: 2px;
+    border-radius: 4px;
+
+			}
+			
+			
+.photBlock {
+    border-bottom: 1px #333 dashed;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+.mt{
+	margin-top:24px;
+	}
+.hstack{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    column-gap: 20px;
+}
+.hstack2{
+    display: flex;
+    width: 100%;
+    column-gap: 15px;
+}
+
+.custome_class{
+  
+  font-size: 13px;
+  background: #d6d6d845;
+  color: #141313;
+}
+.hggfd_class{
+
+  font-size: 13px;
+  margin-bottom: 0px;
+  background: #d6d6d845;
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 6px 3px 10px;
+  color: #141313;
+  font-weight: 600;
+	border-left: 1px #ccc solid;
+    border-right: 1px #ccc solid;
+    border-top: 1px #ccc solid;
+}

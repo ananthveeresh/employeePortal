@@ -1,0 +1,237 @@
+<main id="main" class="main">
+  <section class="section">
+    <div style="display: flex;justify-content: end;margin-bottom: 7px;margin-right: 235px;">
+      <div id="printSection" style="font-size:11px;color: #555;" class="bg-white shadow-sm bgDynamic">
+
+        <div class="text-center" style="margin-top:-103px;float:right;">
+          <aside class="titleBlock">
+            <h6  class="text-uppercase" style="font-size: 16px !important;">Academic Session - ({{ stdinfo?.year_id }})</h6>
+            <h6 class="text-uppercase"  style="font-size: 16px !important;">Progress Report (TERM - I)</h6>
+          </aside>
+        </div> 
+
+        <div style="clear: both;"></div>
+
+        <aside style="margin-top: -24px;display: inline-block;">
+          <div>
+            <div class="row">
+              <div class="col">
+                <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                  <div style="padding:3px;">
+                    <p style="margin: 0;"><strong>Name</strong></p>
+                  </div>
+                  <div style="flex-grow: 1;    padding:3px;">
+                    <p style="margin: 0; border-bottom: 1px solid;">{{stdinfo?.student_name}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                  <div style="padding:3px;">
+                    <p style="margin: 0;"><strong>Roll N0.</strong></p>
+                  </div>
+                  <div style="flex-grow: 1;    padding:3px; ">
+                    <p style="margin: 0;border-bottom: 1px solid;">{{stdinfo?.roll_no}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                  <div style="padding:3px;">
+                    <p style="margin: 0;"><strong>Class</strong></p>
+                  </div>
+                  <div style="flex-grow: 1;    padding:3px; ">
+                    <p style="margin: 0;border-bottom: 1px solid;">{{stdinfo?.class_name}}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                  <div style="padding:3px;">
+                    <p style="margin: 0;"><strong>Adm No</strong></p>
+                  </div>
+                  <div style="flex-grow: 1;    padding:3px;">
+                    <p style="margin: 0;border-bottom: 1px solid;">{{stdinfo?.suc_code}}</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="row mt-1">
+            <div class="col-6">
+              <table class="table-bordered w-100 text-center">
+                <thead>
+                  <tr>
+                    <th>Health Status</th>
+                    <th style="text-align:center">Term-I</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let subject of block0?.subjects">
+
+                    <th>{{subject.sub_titile}}</th>
+                    <td>{{subject.col_value}}</td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-6">
+              <table class=" table-bordered w-100 text-center">
+                <thead>
+                  <tr>
+                    <th>Attendance Report</th>
+                    <th>Term-I</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th> Present Days</th>
+                    <td>104</td>
+                  </tr>
+                  <tr>
+                    <th>Working Days</th>
+                    <td>111</td>
+                  </tr>
+                  <tr>
+                    <th>Percentage</th>
+                    <td>93.69%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="table-responsive text-center textleft">
+            <table class="table-bordered mt-2" cellpadding="2" cellspacing="2" style="width:100%">
+              <thead>
+                <tr>
+                  <th style="min-width:80px;max-width:80px;text-align:left">Subject</th>
+                  <th *ngFor="let sub of filteredExamResult1[0]?.subjects"
+                    style="min-width:60px;max-width:60px;text-align:center;">
+                    {{ sub.sub_titile}} <br>({{sub.max_marks}})
+                  </th>
+                  <th style="min-width:60px;max-width:60px;text-align:center;">Total
+                    ({{filteredExamResult1[0].max_marks}})</th>
+                  <th style="min-width:60px;max-width:60px;text-align:center;">Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let result of filteredExamResult1">
+                  <td>{{ result.subject }}</td>
+                  <td *ngFor="let sub of result.subjects" style="text-align:center;">
+                    {{ sub.marks }}
+                  </td>
+                  <td style="text-align:center;">{{ result.total }}</td>
+                  <td style="text-align:center;">{{ result.grade }}</td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+
+          <div class="row" style="margin-top: -10px;">
+            <div class="col">
+              <table class="table-responsive table-bordered mt-3" cellpadding="2" cellspacing="2" style="width:100%">
+                <thead>
+                  <tr>
+                    <th style="min-width:80px;max-width:80px;text-align:left;">Subject</th>
+                    <th *ngFor="let sub of filteredExamResult2[0].subjects"
+                      style="min-width:60px;max-width:60px;text-align:center;">{{ sub.sub_titile
+                      }}<br>({{sub.max_marks}})
+                    </th>
+                    <th style="min-width:60px;max-width:60px;text-align:center;">Total
+                      ({{filteredExamResult2[0].max_marks}})</th>
+                    <th style="min-width:60px;max-width:60px;text-align:center;">Grade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let result of filteredExamResult2">
+                    <td>{{ result.subject }}</td>
+                    <td *ngFor="let sub of result.subjects" align="center">{{ sub.marks }}</td>
+                    <td align="center">{{ result.total }}</td>
+                    <td align="center">{{ result.grade }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-12">
+              <div class="table-responsive text-center">
+                <table class="table-bordered mt-2" cellpadding="2" cellspacing="2" style="width:100%;">
+                  <thead class="thead-light">
+                    <tr>
+                      <th rowspan="2">Subject</th>
+                    </tr>
+                    <tr>
+                      <th>Max Marks</th>
+                      <th>Marks Obtained</th>
+                      <th>Grade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let subject of block3.subjects">
+                      <td style="text-align:left">{{subject.sub_titile}}</td>
+                      <td>{{subject.max_marks}}</td>
+                      <td>{{subject.marks}}</td>
+                      <td>{{subject.grade}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="table-responsive ">
+                <table class="table-bordered mt-2" cellpadding="2" cellspacing="2" style="width:100%">
+                  <thead class="">
+                    <tr>
+                      <th class="text-nowrap">Subjects <span style="font-size:9px;">(on a 5 point(A-C) Grading Scale)
+                          Grade</span></th>
+                      <th align="center" class="text-nowrap" style="text-align:center">Term-I</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let subject of block4.subjects">
+                      <td>{{subject.sub_titile}}</td>
+                      <td align="center">{{subject.grade}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="p-1">
+            <strong>Class Teacher's Comments</strong>
+            <p style="
+    margin-top: -1px;
+    line-height: 13px;
+    letter-spacing: -0.1px;
+    " *ngFor="let subject of block5.subjects">{{subject.sub_titile}}</p>
+            <div class="d-flex justify-content-between " style="margin-top: -1px;">
+              <p style="margin-top: 15px;margin-bottom:0;">Signature of the Class Teacher</p>
+              <div style="margin-top: 15px;margin-bottom:0;position: relative;">
+                Signature of the Principal
+                <aside style="position: absolute;top:-43px;">
+                  <div *ngIf="teacherSignature==''" style="height:50px"><br /></div>
+                  <div *ngIf="teacherSignature!=''"><img src="{{teacherSignature}}" style="float: right;" height="50">
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <div class="bgFixed">
+          <img src="https://analysis.aditya.ac.in/staff/layouts/img/cbse_termend_bg_1.jpg">
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

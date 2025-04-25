@@ -1,0 +1,42 @@
+<main id="main" class="main">
+   <div class="card bs-card-border ptestcard mb-3 p-3">
+      <section class="section dashboard">
+         <div class="col-lg-12">
+            <form [formGroup]="marks_entry_form" (ngSubmit)="exammarks_pushtoanalysis()">
+               <div class="row g-3">
+                  <div class="col-12 col-sm-3">
+                     <label class="form-label  ">Section</label>
+                     <select class="form-select" name="sectionid" formControlName="sectionid"
+                        aria-label="Default select example" (change)="getExams($event)" required>
+                        <option value="">Select</option>
+                        <option *ngFor="let x of exam_Sections_List" value="{{ x.id }}">
+                           {{ x.section_name }}
+                        </option>
+                     </select>
+                  </div>
+
+                  <div class="col-12 col-sm-3">
+                     <label class="form-label  ">Exam</label>
+                     <select class="form-select custom-select" name="examid" formControlName="examid"
+                        aria-label="Default select example" required>
+                        <option value="">Select</option>
+                        <option *ngFor="let x of exam_List_Data" value="{{ x.examid }}">
+                           {{ x.exam_name }}
+                        </option>
+                     </select>
+                  </div>
+
+                  <div class="col-12 col-sm-3 d-flex align-items-end">
+                     <button type="submit" class="btn btn-primary" [disabled]="!marks_entry_form.valid">Submit</button>
+                  </div>
+
+                  <div style="clear: both;"></div>
+               </div>
+            </form>
+            <div style="clear: both;"></div>
+         </div>
+      </section>
+
+   </div>
+
+</main>

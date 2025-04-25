@@ -1,0 +1,1415 @@
+<main id="main" class="main">
+  <section class="section dashboard">
+    <div class="row" *ngIf="!showJobDetails">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <!-- Title Section -->
+        <div class="pagetitle">
+          <h1>Placement Drive</h1>
+        </div>
+        <!-- Search and Filter Section -->
+        <div>
+          <a
+            [routerLink]="['/placements/postjob']"
+            class="btn btn-primary btn-sm"
+          >
+            <i class="bi bi-plus-square"></i> &nbsp; Add New
+          </a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <form novalidate class="form">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              [(ngModel)]="searchText"
+              (keyup)="filterJobs($event)"
+              class="form-control"
+              placeholder="Search by company name or role"
+            />
+          </div>
+        </form>
+      </div>
+      <!-- Live/Closed Tabs -->
+      <div class="offset-md-2 offset-lg-6 col-md-4 col-lg-2 mb-3">
+        <ul
+          class="nav nav-tabs nav-tabs-bordered w-100 text-center d-flex"
+          id="borderedTab"
+          role="tablist"
+        >
+          <li class="nav-item flex-fill" role="presentation">
+            <button
+              class="nav-link active w-100"
+              id="home-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#bordered-home"
+              type="button"
+              role="tab"
+              aria-controls="home"
+              aria-selected="true"
+              (click)="activeTab = 'live'; filterJobs()"
+            >
+              In Progress
+            </button>
+          </li>
+          <li class="nav-item flex-fill" role="presentation">
+            <button
+              class="nav-link w-100"
+              id="profile-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#bordered-profile"
+              type="button"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="false"
+              (click)="activeTab = 'closed'; filterJobs()"
+            >
+              Completed
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-4" *ngFor="let job of filteredJobs">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-0 mt-3">
+              <span
+                class="badge py-1 smallfont d-flex align-items-center border"
+                [ngClass]="{
+                  'text-success border-success':
+                    job.driveDetails?.mode_of_drive === 'On Campus',
+                  'text-danger border-danger':
+                    job.driveDetails?.mode_of_drive === 'Off Campus'
+                }"
+              >
+                {{ job.driveDetails?.mode_of_drive }}
+              </span>
+
+              <!-- Dropdown Section -->
+              <div class="d-flex align-items-center">
+                <div
+                  class="text-muted rounded-pill me-2 d-flex align-items-center"
+                >
+                  <!-- Dropdown -->
+                  <div class="nav-item dropdown ms-2">
+                    <a
+                      class="nav-link nav-profile d-flex align-items-center pe-0"
+                      href="#"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="bi bi-three-dots"></i>
+                    </a>
+                    <ul
+                      class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"
+                    >
+                      <!-- New Options -->
+                      <li
+                        (click)="fetchJobDetails(job._id, 0, 0)"
+                        style="cursor: pointer"
+                      >
+                        <a
+                          class="dropdown-item d-flex align-items-center cursor"
+                        >
+                          <i class="bi bi-calendar-event me-2"></i>
+                          <span>Details</span>
+                        </a>
+                      </li>
+                      <li
+                        (click)="fetchJobDetails(job._id, 1, 0)"
+                        style="cursor: pointer"
+                      >
+                        <a class="dropdown-item d-flex align-items-center">
+                          <i class="bi bi-people me-2"></i>
+                          <span>Eligibility List</span>
+                        </a>
+                      </li>
+                      <li
+                        (click)="fetchJobDetails(job._id, 2, 0)"
+                        style="cursor: pointer"
+                      >
+                        <a class="dropdown-item d-flex align-items-center">
+                          <i class="bi bi-people me-2"></i>
+                          <span>Attendance</span>
+                        </a>
+                      </li>
+                      <li
+                        *ngFor="
+                          let round of job.driveDetails?.round_details;
+                          let i = index
+                        "
+                        (click)="fetchJobDetails(job._id, i + 4, round.id)"
+                        style="cursor: pointer"
+                      >
+                        <a class="dropdown-item d-flex align-items-center">
+                          <i class="bi bi-record-circle me-2"></i>
+                          <span>{{ round.label }}</span>
+                        </a>
+                      </li>
+                      <li
+                        (click)="fetchJobDetails(job._id, 3, 0)"
+                        style="cursor: pointer"
+                      >
+                        <a class="dropdown-item d-flex align-items-center">
+                          <i class="bi bi-upc-scan me-2"></i>
+                          <span>Selected</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div>
+                <h5 class="card-title p-0 mt-3 m-0 text-capitalize">
+                  {{ job.jobDescription?.role }}
+                  <span> | {{ job.jobDescription?.category }}</span>
+                </h5>
+                <i
+                  class="bi bi-geo-alt-fill small text-muted text-capitalize"
+                ></i>
+                <span class="small">
+                  {{ job.jobDescription?.joblocation }}</span
+                >
+              </div>
+              <a
+                [href]="
+                  job?.jobDescription?.website?.startsWith('http')
+                    ? job.jobDescription.website
+                    : 'https://' + job.jobDescription.website
+                "
+                target="_blank"
+              >
+                <img
+                  [src]="job.jobDescription?.logo"
+                  alt="Company Logo"
+                  class="mb-2 mt-3 image-logo"
+                  (error)="job.jobDescription.logo = 'assets/img/no-logo.jpg'"
+                />
+              </a>
+            </div>
+            <div
+              class="job-description small mb-2 truncate-2-lines text-justify"
+            >
+              {{ job.jobDescription?.jobdescription }}
+            </div>
+            <div class="row">
+              <!-- Last Date to Apply -->
+              <div class="col-md-6 col-12 mb-2">
+                <p class="title-3 fw-normal m-0">Registration Start Date:</p>
+                <p class="mb-0">
+                  {{
+                    job.driveDetails?.registration_start_date
+                      | date : "dd MMM yyyy"
+                  }}
+                </p>
+              </div>
+              <!-- Package -->
+              <div class="col-md-6 col-12 mb-2">
+                <p class="title-3 fw-normal m-0">Registration End Date:</p>
+                <p class="mb-0">
+                  {{
+                    job.driveDetails?.registration_end_date
+                      | date : "dd MMM yyyy"
+                  }}
+                </p>
+              </div>
+              <!-- Departments Section -->
+              <div class="col-md-6 col-12 mb-2">
+                <p class="title-3 fw-normal m-0">Drive Name:</p>
+                <p class="mb-0 truncate-1-lines">
+                  {{ job.driveDetails.drive_info }}
+                </p>
+              </div>
+              <!-- Eligible Batches Section -->
+              <div class="col-md-6 col-12 mb-2">
+                <p class="title-3 fw-normal m-0">Eligible Batches:</p>
+                <p class="mb-0">
+                  <span
+                    *ngFor="
+                      let passoutYears of job.jobEligibility?.passout_years;
+                      let last = last
+                    "
+                  >
+                    {{ passoutYears.year }}
+                    <span *ngIf="!last">, </span>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="filteredJobs.length === 0" class="col-12 text-center mt-4">
+        <p colspan="4" class="text-center text-danger">No jobs found.</p>
+      </div>
+    </div>
+    <div class="row" *ngIf="showJobDetails">
+      <div>
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title">View Placement</h5>
+          <div>
+            <button class="btn btn-primary btn-sm" (click)="goBack()">
+              <i class="bi bi-arrow-left"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-0 mt-3">
+              <!-- <span class="badge bg-primary py-1 smallfont d-flex align-items-center">{{
+                selectedJobData.driveDetails?.mode_of_drive }}</span> -->
+              <span
+                class="badge py-1 smallfont d-flex align-items-center border"
+                [ngClass]="{
+                  'text-success border-success':
+                    selectedJobData.driveDetails?.mode_of_drive === 'On Campus',
+                  'text-danger border-danger':
+                    selectedJobData.driveDetails?.mode_of_drive === 'Off Campus'
+                }"
+              >
+                {{ selectedJobData.driveDetails?.mode_of_drive }}
+              </span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div>
+                <h5 class="card-title p-0 mt-3 m-0 text-capitalize">
+                  {{ selectedJobData.jobDescription?.role }}
+                  <span> | {{ selectedJobData.jobDescription?.category }}</span>
+                </h5>
+                <i
+                  class="bi bi-geo-alt-fill small text-muted text-capitalize"
+                ></i>
+                <span class="small">{{
+                  selectedJobData.jobDescription?.joblocation
+                }}</span>
+              </div>
+              <a
+                [href]="
+                  selectedJobData?.jobDescription?.website?.startsWith('http')
+                    ? selectedJobData.jobDescription.website
+                    : 'https://' + selectedJobData.jobDescription.website
+                "
+                target="_blank"
+              >
+                <img
+                  [src]="selectedJobData.jobDescription?.logo"
+                  alt="Company Logo"
+                  class="mb-2 mt-3 image-logo"
+                  (error)="
+                    selectedJobData.jobDescription.logo =
+                      'assets/img/no-logo.jpg'
+                  "
+                />
+              </a>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-12 mb-2">
+                <p class="title-3 fw-normal m-0">Registration Start Date:</p>
+                <p class="mb-0">
+                  {{
+                    selectedJobData.driveDetails?.registration_start_date
+                      | date : "dd MMM yyyy"
+                  }}
+                </p>
+              </div>
+              <div class="col-md-6 col-12 mb-2">
+                <p class="title-3 fw-normal m-0">Registration End Date:</p>
+                <p class="mb-0">
+                  {{
+                    selectedJobData.driveDetails?.registration_end_date
+                      | date : "dd MMM yyyy"
+                  }}
+                </p>
+              </div>
+              <div class="col-md-6 col-12 mb-2">
+                <p class="title-3 fw-normal m-0">Drive Name:</p>
+                <p class="mb-0 truncate-1-lines">
+                  {{ selectedJobData.driveDetails.drive_info }}
+                </p>
+              </div>
+              <div class="col-md-6 col-12 mb-2">
+                <p class="title-3 fw-normal m-0">Eligible Batches:</p>
+                <p class="mb-0">
+                  <span
+                    *ngFor="
+                      let passoutYears of selectedJobData.jobEligibility
+                        ?.passout_years;
+                      let last = last
+                    "
+                  >
+                    {{ passoutYears.year }}
+                    <span *ngIf="!last">, </span>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-8">
+        <div class="card border-0 overflow-hidden" style="min-height: 226px">
+          <div class="card-body p-4">
+            <div class="">
+              <h5 class="card-title p-0">Company Profile</h5>
+              <!-- Bordered Tabs -->
+              <div [ngClass]="{ collapsed: !isExpanded, expanded: isExpanded }">
+                <p class="mb-2 text-justify">
+                  {{ selectedJobData.jobDescription.companyprofile }}
+                </p>
+              </div>
+              <div class="d-flex justify-content-end">
+                <button
+                  class="btn btn-link p-0 text-primary btn-sm text-decoration-underline"
+                  style="cursor: pointer"
+                  (click)="togglecompanyprofile()"
+                  *ngIf="
+                    selectedJobData.jobdescription?.companyprofile.length > 150
+                  "
+                >
+                  {{ isExpanded ? " Less" : " More" }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <!-- Default Tabs -->
+            <ul
+              class="nav nav-tabs flex-nowrap mt-2"
+              id="myTab"
+              role="tablist"
+              style="white-space: nowrap; overflow-x: auto; overflow-y: hidden"
+            >
+              <!-- Static Tabs -->
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  [class.active]="activeTabIndex === 0"
+                  (click)="switchTab(0, 0)"
+                  type="button"
+                >
+                  Details
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  [class.active]="activeTabIndex === 1"
+                  (click)="switchTab(1, 0)"
+                  type="button"
+                >
+                  Eligibility List
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  [class.active]="activeTabIndex === 2"
+                  (click)="switchTab(2, 0)"
+                  type="button"
+                >
+                  Attendance
+                </button>
+              </li>
+
+              <!-- Dynamic Tabs -->
+              <li
+                class="nav-item"
+                role="presentation"
+                *ngFor="
+                  let round of selectedJobData.driveDetails?.round_details;
+                  let i = index
+                "
+              >
+                <button
+                  class="nav-link"
+                  [class.active]="activeTabIndex === i + totalStaticTabs"
+                  (click)="switchTab(i + totalStaticTabs, round.id)"
+                >
+                  {{ round.label }}
+                </button>
+              </li>
+
+              <!-- Final Static Tab -->
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  [class.active]="activeTabIndex === 3"
+                  (click)="switchTab(3, 0)"
+                  type="button"
+                >
+                  Selected
+                </button>
+              </li>
+            </ul>
+
+            <!-- <span>
+            
+          </span> -->
+
+            <div class="tab-content pt-4" id="myTabContent">
+              <div
+                class="tab-pane fade"
+                [class.active]="activeTabIndex === 0"
+                [class.show]="activeTabIndex === 0"
+                role="tabpanel"
+              >
+                <div class="mb-3">
+                  <div class="row">
+                    <h5 class="card-title p-0 ms-3">
+                      <P *ngIf="activeTabIndex === 0">Details</P>
+                    </h5>
+                    <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <div>
+                              <p class="fw-bolder-2 m-0">Job Description</p>
+                              <div
+                                [ngClass]="{
+                                  collapsed: !isExpandeddescription,
+                                  expanded: isExpandeddescription
+                                }"
+                              >
+                                <p class="mb-2 text-justify">
+                                  {{
+                                    selectedJobData.jobDescription
+                                      .jobdescription
+                                  }}
+                                </p>
+                              </div>
+                              <div class="d-flex justify-content-end">
+                                <button
+                                  class="btn btn-link p-0 text-primary btn-sm text-decoration-underline"
+                                  style="cursor: pointer"
+                                  (click)="togglejobDescription()"
+                                  *ngIf="
+                                    selectedJobData.jobdescription
+                                      ?.jobdescription?.length > 150
+                                  "
+                                >
+                                  {{ isExpanded ? " Less" : " More" }}
+                                </button>
+                              </div>
+                              <div
+                                class="mb-3"
+                                *ngIf="selectedJobData.jobDescription.package"
+                              >
+                                <span class="fw-bolder-2 me-2">Package:</span>
+                                <span class=" "
+                                  >{{
+                                    selectedJobData.jobDescription.package
+                                  }}
+                                  LPA</span
+                                >
+                              </div>
+                              <div
+                                class="mb-3"
+                                *ngIf="
+                                  selectedJobData.jobDescription
+                                    .service_agreement
+                                "
+                              >
+                                <span class="fw-bolder-2 me-2"
+                                  >Service Agreement:</span
+                                >
+                                <span class=" "
+                                  >{{
+                                    selectedJobData.jobDescription
+                                      .service_agreement
+                                  }}
+                                  YEARS</span
+                                >
+                              </div>
+                              <div class="mb-3">
+                                <p class="fw-bolder-2 me-2 m-0">Campuses:</p>
+                                <p>
+                                  <span
+                                    *ngFor="
+                                      let department of selectedJobData
+                                        .jobEligibility?.campuses;
+                                      let last = last
+                                    "
+                                  >
+                                    {{ department?.name }}
+                                    <span *ngIf="!last">, </span>
+                                  </span>
+                                </p>
+                              </div>
+                              <div class="mb-3">
+                                <p class="fw-bolder-2 me-2 m-0">Departments:</p>
+                                <p>
+                                  <span
+                                    *ngFor="
+                                      let department of selectedJobData
+                                        .jobEligibility?.departments;
+                                      let last = last
+                                    "
+                                  >
+                                    {{ department?.name }}
+                                    <span *ngIf="!last">, </span>
+                                  </span>
+                                </p>
+                              </div>
+                              <p class="fw-bolder-2 m-0">Academics:</p>
+                              <div class="d-flex flex-wrap gap-3 mb-3">
+                                <div class="d-flex align-items-center rounded">
+                                  <span class="me-2">Degree CGPA:</span>
+                                  <span class="fw-bolder-2">{{
+                                    selectedJobData.jobEligibility.degree_cgpa
+                                  }}</span>
+                                </div>
+                                <div class="d-flex align-items-center rounded">
+                                  <span class="me-2">10th CGPA:</span>
+                                  <span class="fw-bolder-2">{{
+                                    selectedJobData.jobEligibility.tenth_cgpa
+                                  }}</span>
+                                </div>
+                                <div class="d-flex align-items-center rounded">
+                                  <span class="me-2">Inter Percentage:</span>
+                                  <span class="fw-bolder-2">{{
+                                    selectedJobData.jobEligibility
+                                      .inter_percentage
+                                  }}</span>
+                                </div>
+                                <div class="d-flex align-items-center rounded">
+                                  <span class="me-2">Max Backlogs:</span>
+                                  <span class="fw-bolder-2">{{
+                                    selectedJobData.jobEligibility
+                                      .max_backlogs_count
+                                  }}</span>
+                                </div>
+                              </div>
+                              <div
+                                *ngIf="
+                                  selectedJobData.jobEligibility
+                                    .job_eligibility_form_other_details
+                                "
+                              >
+                                <p class="fw-bolder-2 m-0">
+                                  Eligibility Note :
+                                </p>
+                                <p class="text-justify">
+                                  {{
+                                    selectedJobData.jobEligibility
+                                      .job_eligibility_form_other_details
+                                  }}
+                                </p>
+                                <!-- <div
+                              [ngClass]="{ 'collapsed': !isExpandedEligibilitynote, 'expanded': isExpandedEligibilitynote }"><p class="mb-2 text-justify">{{
+                                selectedJobData.jobEligibility.job_eligibility_form_other_details }}</p></div><div class="mb-1 text-end"><a class="text-primary  text-decoration-underline " style="cursor: pointer;"
+                                (click)="toggleeligibilitynote()">
+                                {{ isExpandedEligibilitynote ? ' Less' : ' More' }}
+                              </a></div> -->
+                              </div>
+                              <p class="fw-bolder-2 m-0">Round Details :</p>
+                              <div
+                                class="text-justify text-capitalize"
+                                *ngIf="
+                                  selectedJobData.driveDetails.round_details
+                                    ?.length
+                                "
+                              >
+                                <ul class="list-unstyled">
+                                  <li
+                                    *ngFor="
+                                      let round of selectedJobData.driveDetails
+                                        .round_details;
+                                      let i = index
+                                    "
+                                    class="mb-1"
+                                  >
+                                    <span class="me-2">{{ i + 1 }}.</span>
+                                    <span class="align-middle">{{
+                                      round?.round || "Not specified"
+                                    }}</span>
+                                  </li>
+                                </ul>
+                              </div>
+                              <p class="fw-bolder-2 m-0">Selection Process :</p>
+                              <p class="text-justify">
+                                {{
+                                  selectedJobData.driveDetails.selection_process
+                                }}
+                              </p>
+                              <!-- <div
+                            [ngClass]="{ 'collapsed': !isExpandedselectionprocess, 'expanded': isExpandedselectionprocess }"><p class="mb-2 text-justify">{{ selectedJobData.driveDetails.selection_process }}</p></div><div class="mb-1 text-end"><a class="text-primary  text-decoration-underline " style="cursor: pointer;"
+                              (click)="toggleselectionprocess()">
+                              {{ isExpandedselectionprocess ? ' Less' : ' More' }}
+                            </a></div> -->
+                              <p class="fw-bolder-2 m-0">
+                                Selection Criteria :
+                              </p>
+                              <p class="mb-2 text-justify">
+                                {{
+                                  selectedJobData.driveDetails
+                                    .selection_criteria
+                                }}
+                              </p>
+                              <!-- <div
+                            [ngClass]="{ 'collapsed': !isExpandedselectioncriteria, 'expanded': isExpandedselectioncriteria }"><p class="mb-2 text-justify">{{ selectedJobData.driveDetails.selection_criteria }}</p></div><div class="mb-1 text-end"><a class="text-primary  text-decoration-underline " style="cursor: pointer;"
+                              (click)="toggleselectioncriteria()">
+                              {{ isExpandedselectioncriteria ? ' Less' : ' More' }}
+                            </a></div> -->
+                              <div
+                                *ngIf="
+                                  selectedJobData.driveDetails
+                                    .drive_details_form_other_details
+                                "
+                              >
+                                <p class="fw-bolder-2 m-0">Drive Note :</p>
+                                <p class="text-justify">
+                                  {{
+                                    selectedJobData.driveDetails
+                                      .drive_details_form_other_details
+                                  }}
+                                </p>
+                                <!-- <div [ngClass]="{ 'collapsed': !isExpandeddrivenote, 'expanded': isExpandeddrivenote }"><p class="mb-2 text-justify">{{
+                                selectedJobData.driveDetails.drive_details_form_other_details }}</p></div><div class="mb-1 text-end"><a class="text-primary  text-decoration-underline " style="cursor: pointer;"
+                                (click)="toggledrivenote()">
+                                {{ isExpandeddrivenote ? ' Less' : ' More' }}
+                              </a></div> -->
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 mt-2">
+                            <div class="table-responsive">
+                              <table class="table table-bordered table-hover">
+                                <tbody>
+                                  <tr>
+                                    <td scope="row">Registration Link</td>
+                                    <td class="text-break">
+                                      <a
+                                        [href]="
+                                          selectedJobData?.driveDetails?.registration_link?.startsWith(
+                                            'http'
+                                          )
+                                            ? selectedJobData.driveDetails
+                                                .registration_link
+                                            : 'https://' +
+                                              selectedJobData.driveDetails
+                                                .registration_link
+                                        "
+                                        target="_blank"
+                                        >{{
+                                          selectedJobData.driveDetails
+                                            .registration_link
+                                        }}</a
+                                      >
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td scope="row">Start Date</td>
+                                    <td>
+                                      {{
+                                        selectedJobData.driveDetails
+                                          .registration_start_date
+                                          | date : "dd MMM yyyy"
+                                      }}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td scope="row">End Date</td>
+                                    <td>
+                                      {{
+                                        selectedJobData.driveDetails
+                                          .registration_end_date
+                                          | date : "dd MMM yyyy"
+                                      }}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td scope="row">Drive Location</td>
+                                    <td class="text-break">
+                                      {{
+                                        selectedJobData.driveDetails
+                                          .drive_location
+                                      }}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td scope="row">Mode of Drive</td>
+                                    <td>
+                                      {{
+                                        selectedJobData.driveDetails
+                                          .mode_of_drive
+                                      }}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <!-- <div class="table-responsive">
+                        <table class="table table-hover table-striped table-bordered" style="font-size: 14px !important;">
+                          <thead>
+                            <tr>
+                              <th scope="col" style="width:20%">S.No</th>
+                              <th scope="col" style="width:20%">Drive</th>
+                              <th scope="col" style="width:20%">Total</th>
+                              <th scope="col" style="width:20%">Selected</th>
+                              <th scope="col" style="width:20%">Percentage</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>Eligibility List</td>
+                              <td>{{ driveSummaryData?.TotalStudents || 0 }}</td>
+                              <td>{{ driveSummaryData?.attendanceCount || 0 }}</td>
+                              <td>-</td>
+                            </tr>
+                          
+                            <tr *ngFor="let round of driveSummaryData?.rounds; let i = index">
+                              <td>{{ i + 2 }}</td>
+                              <td>{{ round.label }}</td>
+                              <td>{{ round.count }}</td>
+                              <td>-</td>
+                              <td>-</td>
+                            </tr>
+                          
+                            <tr *ngIf="!driveSummaryData">
+                              <td colspan="5" class="text-center text-danger">No data available for this drive summary.</td>
+                            </tr>
+                          </tbody>
+                          
+                        </table>
+                      </div> -->
+
+                          <div class="table-responsive mt-3">
+                            <table class="table table-bordered table-striped">
+                              <thead>
+                                <tr>
+                                  <th>S.No</th>
+                                  <th>Title</th>
+                                  <th>No of Students</th>
+                                  <th>Percentage</th>
+                                </tr>
+                              </thead>
+                              <tbody *ngIf="driveSummaryData">
+                                <tr>
+                                  <td>1</td>
+                                  <td>Eligible Students</td>
+                                  <td class="text-end">{{ driveSummaryData.TotalStudents }}</td>
+                                  <td class="text-end">100%</td>
+                                </tr>
+                                <tr>
+                                  <td>2</td>
+                                  <td>Interested</td>
+                                  <td class="text-end">
+                                    {{ driveSummaryData.interestedCount }}
+                                  </td>
+                                  <td class="text-end">
+                                    {{
+                                      (driveSummaryData.interestedCount /
+                                        driveSummaryData.TotalStudents) *
+                                        100 | number : "1.2-2"
+                                    }}%
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>3</td>
+                                  <td>Attended</td>
+                                  <td class="text-end">
+                                    {{ driveSummaryData.attendanceCount }}
+                                  </td>
+                                  <td class="text-end">
+                                    {{
+                                      (driveSummaryData.attendanceCount /
+                                        driveSummaryData.TotalStudents) *
+                                        100 | number : "1.2-2"
+                                    }}%
+                                  </td>
+                                </tr>
+                                <tr
+                                  *ngFor="
+                                    let round of driveSummaryData.rounds;
+                                    let i = index
+                                  "
+                                >
+                                  <td>{{ i + 4 }}</td>
+                                  <td>
+                                    {{ round.label }}
+                                  </td>
+                                  <td class="text-end">{{ round.count }}</td>
+                                  <td class="text-end">
+                                    {{
+                                      (round.count /
+                                        driveSummaryData.TotalStudents) *
+                                        100 | number : "1.2-2"
+                                    }}%
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>{{ driveSummaryData.rounds?.length + 4 || 4 }}</td>
+                                  <td>Selected</td>
+                                  <td class="text-end">
+                                    {{ driveSummaryData.finalSelectionCount }}
+                                  </td>
+                                  <td class="text-end">
+                                    {{
+                                      (driveSummaryData.finalSelectionCount /
+                                        driveSummaryData.TotalStudents) *
+                                        100 | number : "1.2-2"
+                                    }}%
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tbody *ngIf="!driveSummaryData">
+                                <tr>
+                                  <td
+                                    colspan="4"
+                                    class="text-center text-danger"
+                                  >
+                                    No summary data available
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="tab-pane fade"
+                [class.active]="activeTabIndex === 1"
+                [class.show]="activeTabIndex === 1"
+                role="tabpanel"
+              >
+                <div class="row">
+                  <h5 class="card-title p-0 ms-3">
+                    <p *ngIf="activeTabIndex === 1">Eligibility List</p>
+                  </h5>
+                  <div class="col-12">
+                    <div class="table-responsive">
+                      <table
+                        class="table table-hover table-striped table-bordered"
+                        style="font-size: 14px !important"
+                      >
+                        <thead>
+                          <tr>
+                            <th scope="col" style="width: 20%">S.No</th>
+                            <th scope="col" style="width: 20%">Campuses</th>
+                            <th scope="col" style="width: 20%">Students</th>
+                            <!-- <th scope="col" style="width:16.66%">Attendance</th> -->
+                            <th scope="col" style="width: 20%">Interested</th>
+                            <th
+                              scope="col"
+                              style="width: 20%"
+                              class="text-center"
+                            >
+                              Download Excel
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let campus of eligible_students;
+                              let i = index
+                            "
+                          >
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{ campus?.campusName }}</td>
+                            <td class="text-end">{{ campus?.count }}</td>
+                            <!-- <td><span *ngIf="campus?.attendedCount >0">{{ campus?.attendedCount }}</span></td> -->
+                            <td class="text-end">
+                              <span *ngIf="campus?.interestedCount > 0">{{
+                                campus?.interestedCount
+                              }}</span>
+                            </td>
+                            <td class="text-center">
+                              <i
+                                class="bi bi-cloud-download fs-6 text-success pointer-class"
+                                (click)="
+                                  downloadEligibleStudentsExcel(campus.students)
+                                "
+                              ></i>
+                            </td>
+                          </tr>
+                          <tr *ngIf="eligible_students.length > 0">
+                            <td colspan="2" class="text-end"><strong>Total</strong></td>
+                            <td class="text-end"><strong>{{ totalStudents }}</strong></td>
+                            <td class="text-end"><strong>{{ interestedStudents }}</strong></td>
+                            <td></td>
+                          </tr>
+                          <tr *ngIf="eligible_students.length === 0">
+                            <td colspan="5" class="text-center text-danger">
+                              No students meet the eligibility criteria for this
+                              drive.
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="tab-pane fade"
+                [class.active]="activeTabIndex === 2"
+                [class.show]="activeTabIndex === 2"
+                role="tabpanel"
+              >
+                <div class="row">
+                  <h5 class="card-title p-0 ms-3">
+                    <p *ngIf="activeTabIndex === 2">Attendance</p>
+                  </h5>
+                  <div class="col-md-2">
+                    <div class="upload-zone mb-4 mt-2">
+                      <i
+                        class="fas fa-cloud-upload-alt text-primary fs-3 mb-3"
+                      ></i>
+                      <h5>Drag & Drop Files Here</h5>
+                      <p class="text-muted mb-3">or</p>
+                      <input
+                        type="file"
+                        class="d-none"
+                        id="attendanceFileUpload"
+                        (change)="onAttendanceFileSelected($event)"
+                        accept=".xlsx"
+                      />
+                      <label
+                        for="attendanceFileUpload"
+                        class="btn btn-sm border border-secondary"
+                      >
+                        Browse Files
+                      </label>
+                      <p *ngIf="attendanceFileName" class="text-muted mt-2">
+                        {{ attendanceFileName }}
+                      </p>
+                    </div>
+                    <div _ngcontent-ckl-c16="" class="text-center">
+                      <button
+                        _ngcontent-ckl-c16=""
+                        (click)="excelAttendanceupload()"
+                        class="btn btn-sm btn-primary px-4"
+                        [disabled]="!enableUploadButton"
+                      >
+                        <i _ngcontent-ckl-c16="" class="fas fa-upload me-2"></i
+                        >Upload Students
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="col-md-10">
+                    <!-- <div class="table-responsive">
+                      <table
+                        class="table table-hover table-striped table-bordered"
+                        style="font-size: 14px !important"
+                      >
+                        <thead>
+                          <tr>
+                            <th scope="col" style="width: 20%">S.No</th>
+                            <th scope="col" style="width: 20%">Campuses</th>
+                            <th scope="col" style="width: 20%">Students</th>
+                            <th
+                              scope="col"
+                              style="width: 20%"
+                              class="text-center"
+                            >
+                              Download Excel
+                            </th>
+                            <th
+                              scope="col"
+                              style="width: 20%"
+                              class="text-center"
+                            >
+                              Delete
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let attendance of students_attendance;
+                              let i = index
+                            "
+                          >
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{ attendance?.campusName }}</td>
+                            <td>{{ attendance?.totalStudents }}</td>
+                            <td>{{ attendance?.count }}</td>
+                            <td class="text-center">
+                              <i
+                                class="bi bi-cloud-download fs-6 text-success pointer-class"
+                                (click)="
+                                  downloadSelectedStudentsExcel(
+                                    attendance.students
+                                  )
+                                "
+                              ></i>
+                            </td>
+                            <td class="text-center">
+                              <i
+                                class="bi bi-trash text-danger fs-6 pointer-class"
+                                (click)="
+                                  deleteAttendance(attendance?.campusName)
+                                "
+                              ></i>
+                            </td>
+                          </tr>
+                          <tr *ngIf="students_attendance.length > 0">
+                            <td colspan="2" class="text-end"><strong>Total :</strong></td>
+                            <td><strong>{{ attendenceTotalStudents }}</strong></td>
+                            <td><strong>{{ attendenceSelectedStudents }}</strong></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr *ngIf="students_attendance.length === 0">
+                            <td colspan="5" class="text-center text-danger">
+                              No attendance records found for this drive.
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div> -->
+                    <div class="table-responsive">
+                      <table
+                        class="table table-hover table-striped table-bordered"
+                        style="font-size: 14px !important"
+                      >
+                        <thead>
+                          <tr>
+                            <th rowspan="2" class="text-center align-middle" scope="col">S.No</th>
+                            <th rowspan="2" class="text-center align-middle" scope="col">Campuses</th>
+                            <th colspan="2" class="text-center align-middle">Students</th>
+                            <th rowspan="2" class="text-center align-middle" scope="col">Download Excel</th>
+                            <th rowspan="2" class="text-center align-middle" scope="col">Delete</th>
+                          </tr>
+                          <tr>
+                            <th class="text-center align-middle">Total</th>
+                            <th class="text-center align-middle">Selected</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let attendance of students_attendance; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ attendance?.campusName }}</td>
+                            <td class="text-end">{{ attendance?.totalStudents }}</td>
+                            <td class="text-end">{{ attendance?.count }}</td>
+                            <td class="text-center">
+                              <i
+                                class="bi bi-cloud-download fs-6 text-success pointer-class"
+                                (click)="downloadSelectedStudentsExcel(attendance.students)"
+                              ></i>
+                            </td>
+                            <td class="text-center">
+                              <i
+                                class="bi bi-trash text-danger fs-6 pointer-class"
+                                (click)="deleteAttendance(attendance?.campusName)"
+                              ></i>
+                            </td>
+                          </tr>
+                    
+                          <tr *ngIf="students_attendance.length > 0">
+                            <td colspan="2" class="text-end"><strong>Total</strong></td>
+                            <td class="text-end"><strong>{{ attendenceTotalStudents }}</strong></td>
+                            <td class="text-end"><strong>{{ attendenceSelectedStudents }}</strong></td>
+                            <td colspan="2"></td>
+                          </tr>
+                    
+                          <tr *ngIf="students_attendance.length === 0">
+                            <td colspan="6" class="text-center text-danger">
+                              No attendance records found for this drive.
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    
+                    <!-- <div class="text-end">
+                      <button (click)="deleteAttendance()" class="btn btn-sm  btn-danger">
+                        <i class="bi bi-trash me-2"></i>Delete</button>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+              <div
+                class="tab-pane fade"
+                *ngFor="
+                  let round of selectedJobData.driveDetails?.round_details;
+                  let i = index
+                "
+                [class.show]="activeTabIndex === i + totalStaticTabs"
+                [class.active]="activeTabIndex === i + totalStaticTabs"
+              >
+                <!-- Round content -->
+
+                <div class="row">
+                  <h5 class="card-title p-0 ms-3">
+                    <p
+                      *ngIf="
+                        activeTabIndex >= 4 &&
+                        activeTabIndex <
+                          totalStaticTabs +
+                            selectedJobData.driveDetails?.round_details?.length
+                      "
+                    >
+                      {{
+                        selectedJobData.driveDetails.round_details[
+                          activeTabIndex - totalStaticTabs
+                        ]?.round
+                      }}
+                    </p>
+                  </h5>
+                  <div class="col-md-2 mb-3">
+                    <div class="upload-zone mb-4 mt-2">
+                      <i
+                        class="fas fa-cloud-upload-alt text-primary fs-3 mb-3"
+                      ></i>
+                      <h5>Drag & Drop Files Here</h5>
+                      <p class="text-muted mb-3">or</p>
+                      <input
+                        type="file"
+                        class="d-none"
+                        [id]="'roundFileUpload_' + round.id"
+                        (change)="onRoundFileSelected($event, round.id)"
+                        accept=".xlsx"
+                      />
+                      <label
+                        [for]="'roundFileUpload_' + round.id"
+                        class="btn btn-sm border border-secondary"
+                      >
+                        Browse Files
+                      </label>
+                      <p
+                        *ngIf="roundFileNames[round.id]"
+                        class="text-muted mt-2"
+                      >
+                        {{ roundFileNames[round.id] }}
+                      </p>
+                    </div>
+                    <div _ngcontent-ckl-c16="" class="text-center">
+                      <button
+                        _ngcontent-ckl-c16=""
+                        class="btn btn-sm btn-primary px-4"
+                        (click)="excelupload(round)"
+                        [disabled]="!enableUploadButton"
+                      >
+                        <i _ngcontent-ckl-c16="" class="fas fa-upload me-2"></i
+                        >Upload Students
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="col-md-10">
+                    <div class="table-responsive">
+                      <table
+                        class="table table-hover table-striped table-bordered"
+                        style="font-size: 14px !important"
+                      >
+                        <thead>
+                          <tr>
+                            <th scope="col" class="text-center align-middle" style="width: 10%" rowspan="2">S.No</th>
+                            <th scope="col" class="text-center align-middle" style="width: 30%" rowspan="2">Campuses</th>
+                            <th scope="col" class="text-center align-middle" colspan="2" style="width: 40%">Students</th>
+                            <th scope="col" class="text-center align-middle" style="width: 10%" rowspan="2">Download</th>
+                            <th scope="col" class="text-center align-middle" style="width: 10%" rowspan="2">Delete</th>
+                          </tr>
+                          <tr>
+                            <th scope="col" class="text-center align-middle" style="width: 20%">Total</th>
+                            <th scope="col" class="text-center align-middle" style="width: 20%">Selected</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let campus of eligle_students_by_rounds;
+                              let i = index
+                            "
+                          >
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{ campus?.campusName }}</td>
+                            <td class="align-middle text-end">{{ campus?.totalStudents }}</td>
+                            <td class="align-middle text-end">{{ campus?.count }}</td>
+                            <td class="text-center">
+                              <i
+                                class="bi bi-cloud-download fs-6 text-success pointer-class"
+                                (click)="
+                                  downloadSelectedStudentsExcel(campus.students)
+                                "
+                              ></i>
+                            </td>
+                            <td class="text-center">
+                              <i
+                                class="bi bi-trash text-danger fs-6 pointer-class"
+                                (click)="deleteround(round, campus?.campusName)"
+                              ></i>
+                            </td>
+                          </tr>
+                          <tr *ngIf="eligle_students_by_rounds.length > 0">
+                            <td colspan="2" class="text-end align-middle"><strong>Total</strong></td>
+                            <td class="text-end align-middle"><strong>{{ RoundTotalStudents }}</strong></td>
+                            <td class="text-end align-middle"><strong>{{ RoundStudentsCount }}</strong></td>
+                            <td colspan="2"></td>
+                          </tr>
+                    
+                          <tr *ngIf="eligle_students_by_rounds.length === 0">
+                            <td colspan="5" class="text-center text-danger">
+                              No students have completed this
+                              {{ round.label }} yet.
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <!-- <div class="text-end">
+                      <button (click)="deleteround(round)" class="btn btn-sm  btn-danger">
+                        <i class="bi bi-trash me-2"></i>Delete</button>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+              <div
+                class="tab-pane fade"
+                [class.active]="activeTabIndex === 3"
+                [class.show]="activeTabIndex === 3"
+                role="tabpanel"
+              >
+                <div class="row">
+                  <h5 class="card-title p-0 ms-3">
+                    <P *ngIf="activeTabIndex === 3">Selected</P>
+                  </h5>
+                  <div class="col-md-2 mb-3">
+                    <div class="upload-zone mb-4 mt-2">
+                      <i
+                        class="fas fa-cloud-upload-alt text-primary fs-3 mb-3"
+                      ></i>
+                      <h5>Drag & Drop Files Here</h5>
+                      <p class="text-muted mb-3">or</p>
+                      <input
+                        type="file"
+                        class="d-none"
+                        id="selectedFileUpload"
+                        (change)="onSelectedFileSelected($event)"
+                        accept=".xlsx"
+                      />
+                      <label
+                        for="selectedFileUpload"
+                        class="btn btn-sm border border-secondary"
+                      >
+                        Browse Files
+                      </label>
+                      <p *ngIf="selectedFileName" class="text-muted mt-2">
+                        {{ selectedFileName }}
+                      </p>
+                    </div>
+                    <div _ngcontent-ckl-c16="" class="text-center">
+                      <button
+                        _ngcontent-ckl-c16=""
+                        class="btn btn-sm btn-primary px-4"
+                        (click)="excelselectedupload()"
+                        [disabled]="!enableUploadButton"
+                      >
+                        <i _ngcontent-ckl-c16="" class="fas fa-upload me-2"></i
+                        >Upload Students
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="col-md-10">
+                    <div class="table-responsive">
+                      <table class="table table-hover table-striped table-bordered"
+                      style="font-size: 14px !important">
+                        <thead>
+                          <tr>
+                            <th rowspan="2" scope="col" class="text-center align-middle" style="width: 10%">S.No</th>
+                            <th rowspan="2" scope="col" class="text-center align-middle" style="width: 20%">Campuses</th>
+                            <th colspan="2" class="text-center align-middle" style="width: 30%">Students</th>
+                            <th rowspan="2" scope="col" class="text-center align-middle" style="width: 20%">Download Excel</th>
+                            <th rowspan="2" scope="col" class="text-center align-middle" style="width: 20%">Delete</th>
+                          </tr>
+                          <tr>
+                            <th class="text-center align-middle">Total</th>
+                            <th class="text-center align-middle">Selected</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let campus of eligle_students_selected; let i = index">
+                            <td class="text-center align-middle">{{ i + 1 }}</td>
+                            <td class="align-middle">{{ campus?.campusName }}</td>
+                            <td class="text-end align-middle">{{ campus?.totalStudents }}</td>
+                            <td class="text-end align-middle">{{ campus?.count }}</td>
+                            <td class="text-center align-middle">
+                              <i
+                                class="bi bi-cloud-download fs-6 text-success pointer-class"
+                                (click)="downloadSelectedStudentsExcel(campus.students)"
+                              ></i>
+                            </td>
+                            <td class="text-center align-middle">
+                              <i
+                                class="bi bi-trash text-danger fs-6 pointer-class"
+                                (click)="deleteSelectedStudents(campus?.campusName)"
+                              ></i>
+                            </td>
+                          </tr>
+                          <tr *ngIf="eligle_students_selected.length > 0">
+                            <td colspan="2" class="text-end align-middle"><strong>Total</strong></td>
+                            <td class="text-end align-middle"><strong>{{ SelectedTotalStudents }}</strong></td>
+                            <td class="text-end align-middle"><strong>{{ SelectedStudentsCount }}</strong></td>
+                            <td colspan="2"></td>
+                          </tr>
+                          <tr *ngIf="eligle_students_selected.length === 0">
+                            <td colspan="6" class="text-center text-danger">No students have been selected yet.</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <!-- <div class="text-end">
+                        <button (click)="deleteSelectedStudents()" class="btn btn-sm  btn-danger">
+                          <i class="bi bi-trash me-2"></i>Delete</button>
+                      </div> -->
+                      <div>
+                        <form>
+                          <div class="form-check ms-4">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="agreeCheckbox"
+                              [(ngModel)]="isAgreed"
+                              name="isAgreed"
+                            />
+                            <label class="form-check-label" for="agreeCheckbox">
+                              We hereby declare that all information provided in
+                              this form is accurate and complete.
+                            </label>
+                          </div>
+                        </form>
+
+                        <div class="text-end" *ngIf="isAgreed">
+                          <button
+                            class="btn btn-modern btn-primary px-4"
+                            (click)="drivestatusupdate()"
+                          >
+                            <i class="fas fa-upload me-2"></i>Update Drive
+                            Status
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Default Tabs -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+    <!-- </div> -->
+  </section>
+</main>
+<!-- End #main -->

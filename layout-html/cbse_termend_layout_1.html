@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="stylesheet" href="css/termend.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<style>
+  th,
+  strong,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600 !important;
+    color: #222;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 500 !important;
+    font-size: 11px !important;
+  }
+
+  .textleft table tbody tr td:first-child {
+    text-align: left;
+  }
+
+  body {
+    font-family: "Open Sans", sans-serif !important;
+  }
+
+  .heading {
+    font-size: 20px !important;
+
+  }
+
+  .headline-banner {
+    font-size: 17px !important;
+    margin-bottom: 45px !important;
+  }
+</style>
+
+<body style="font-size:11px;color: #555;">
+  <div ng-app="myApp" ng-controller="myCtrl">
+
+    <div class="bg-white  shadow-sm bgDynamic">
+      <div class="text-center">
+        <aside class="titleBlock headline-banner">
+          <div class="fw-bold text-uppercase">Academic Session</div>
+          <div class="text-uppercase fw-bold">{{stdinfo.year_id}}</div>
+        </aside>
+      </div>
+
+      <aside style="margin-top: -24px;">
+        <div>
+          <div>
+            <div class="col">
+              <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 12px;">
+                <div style="padding:3px;width: 10%;">
+                  <p style="margin: 0;"><strong>Name</strong></p>
+                </div>
+                <div style="padding:3px;width: 90%;">
+                  <p style="margin: 0; border-bottom: 1px solid #0000004a;">{{stdinfo.student_name}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col d-flex">
+              <div style="width: 50%; display: flex; flex-wrap: wrap; margin-bottom: 8px;">
+                <div style="padding-left:3px;width: 15%;">
+                  <p style="margin: 0;"><strong>Section</strong></p>
+                </div>
+                <div style="padding-left:18px;width: 85%; ">
+                  <p style="margin: 0;border-bottom: 1px solid #0000004a;">{{stdinfo.section}}</p>
+                </div>
+              </div>
+              <div style="width: 50%; display: flex; flex-wrap: wrap; margin-bottom: 8px;">
+                <div style="padding:3px;width: 15%;">
+                  <p style="margin: 0;"><strong>Roll N0.</strong></p>
+                </div>
+                <div style="padding:3px;width: 85%; ">
+                  <p style="margin: 0;border-bottom: 1px solid #0000004a;">{{stdinfo.roll_no}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="">
+            <div class="col">
+              <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 8px;">
+                <div style="padding:3px;width: 10%;">
+                  <p style="margin: 0;"><strong>Class</strong></p>
+                </div>
+                <div style="padding:3px;width: 90%;">
+                  <p style="margin: 0;border-bottom: 1px solid #0000004a;">{{stdinfo.class_name}}</p>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col">
+                  <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                    <div style="padding:3px;">
+                      <p style="margin: 0;"><strong>House</strong></p>
+                    </div>
+                    <div style="flex-grow: 1;    padding:3px;">
+                      <p style="margin: 0;border-bottom: 1px solid;">Marutina</p>
+                    </div>
+                  </div>
+                </div> -->
+            <div class="col">
+              <div style="width: 100%; display: flex; flex-wrap: wrap; margin-bottom: 5px;">
+                <div style="padding:3px;width: 10%;">
+                  <p style="margin: 0;"><strong>Adm No</strong></p>
+                </div>
+                <div style="flex-grow: 1;padding:3px;width: 90%;">
+                  <p style="margin: 0;border-bottom: 1px solid #0000004a;">{{stdinfo.suc_code}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-6">
+            <table class="table-bordered w-100 colspace">
+              <thead>
+                <tr>
+                  <th>Health Status</th>
+                  <th style="text-align:center">{{total_data.exam_name}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="subject in block0.subjects">
+
+                  <th>{{subject.sub_titile}}</th>
+                  <td class="text-center">{{subject.col_value}}</td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Attendance Report Table -->
+          <div class="col-6">
+            <table class=" table-bordered w-100 colspace">
+              <thead>
+                <tr class="text-center">
+                  <th>Attendance Report</th>
+                  <th>{{total_data.exam_name}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th> Present Days</th>
+                  <td class="text-center">{{std_attendance.presentdays}}</td>
+                </tr>
+                <tr>
+                  <th>Working Days</th>
+                  <td class="text-center">{{std_attendance.workingdays}}</td>
+                </tr>
+                <tr>
+                  <th>Percentage</th>
+                  <td class="text-center">{{ (std_attendance.presentdays / std_attendance.workingdays * 100).toFixed(2)
+                    }}%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </aside>
+      <div class="bgFixed"> <img src="{{selectedLayoutImage}}"> </div>
+      <!-- <div class="bgFixed"> <img src="img/cbse_termend_bg_3.jpg"> </div> -->
+    </div>
+
+    <div class="bg-white  shadow-sm bgDynamic" style="margin-top: 15px;">
+      <aside style="margin-top: -174px; padding-left: 13px; padding-right: 15px; display: inline-block;">
+        <div class="table-responsive text-center textleft">
+          <table class="table-bordered mt-2" cellpadding="2" cellspacing="2" style="width:100%">
+            <thead>
+              <tr>
+                <th style="min-width:80px;max-width:80px;text-align:left" rowspan="2">Subject</th>
+                <th colspan="7">{{total_data.exam_name}}</th>
+              </tr>
+              <tr>
+                <th rowspan="1" ng-repeat="sub in filteredExamResult1[0].subjects"
+                  style="min-width:60px;max-width:60px;text-align:center;">
+                  {{ sub.sub_titile}} <br>({{sub.max_marks}})
+                </th>
+                <th style="min-width:60px;max-width:60px;text-align:center;">Total
+                  ({{filteredExamResult1[0].max_marks}})</th>
+                <th style="min-width:60px;max-width:60px;text-align:center;">Grade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="result in filteredExamResult1">
+                <td>{{ result.subject }}</td>
+                <td ng-repeat="sub in result.subjects" style="text-align:center;">
+                  {{ sub.marks }}
+                </td>
+                <td style="text-align:center;">{{ result.total }}</td>
+                <td style="text-align:center;">{{ result.grade }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row" style="margin-top: -10px;">
+          <div class="col">
+            <table class="table-responsive table-bordered mt-3" cellpadding="2" cellspacing="2" style="width:100%">
+              <thead>
+                <tr>
+                  <th rowspan="2" style="min-width:80px;max-width:80px;text-align:left;">Subject</th>
+                  <th colspan="7" class="text-center">{{total_data.exam_name}}</th>
+                </tr>
+                <tr>
+                  <th ng-repeat="sub in filteredExamResult2[0].subjects"
+                    style="min-width:60px;max-width:60px;text-align:center;">{{ sub.sub_titile }}<br>({{sub.max_marks}})
+                  </th>
+                  <th style="min-width:60px;max-width:60px;text-align:center;">Total
+                    ({{filteredExamResult2[0].max_marks}})</th>
+                  <th style="min-width:60px;max-width:60px;text-align:center;">Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="result in filteredExamResult2">
+                  <td>{{ result.subject }}</td>
+                  <td ng-repeat="sub in result.subjects" align="center">{{ sub.marks }}</td>
+                  <td align="center">{{ result.total }}</td>
+                  <td align="center">{{ result.grade }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-12">
+            <div class="table-responsive text-center">
+              <table class="table-bordered mt-2" cellpadding="2" cellspacing="2" style="width:100%;">
+                <thead class="thead-light">
+                  <tr>
+                    <th style="text-align: left;" rowspan="2">Subject</th>
+                    <th colspan="3">{{total_data.exam_name}}</th>
+                  </tr>
+                  <tr>
+                    <th>Max Marks</th>
+                    <th>Marks Obtained</th>
+                    <th>Grade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="subject in block3.subjects">
+                    <td style="text-align:left">{{subject.sub_titile}}</td>
+                    <td>{{subject.max_marks}}</td>
+                    <td>{{subject.marks}}</td>
+                    <td>{{subject.grade}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="table-responsive ">
+              <table class="table-bordered mt-2" cellpadding="2" cellspacing="2" style="width:100%">
+                <thead class="">
+                  <tr>
+                    <th class="text-nowrap">Subjects <span style="font-size:9px;">(on a 5 point(A-C) Grading Scale)
+                        Grade</span></th>
+                    <th align="center" class="text-nowrap" style="text-align:center">{{total_data.exam_name}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="subject in block4.subjects">
+                    <td>{{subject.sub_titile}}</td>
+                    <td align="center">{{subject.grade}}</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-1 mt-2">
+          <strong>Class Teacher's Comments</strong>
+          <p style="line-height: 13px;letter-spacing: -0.1px; margin-bottom: 40px;"
+            ng-repeat="subject in block5.subjects">
+            {{subject.col_value}}</p>
+          <div class="d-flex justify-content-between " style="margin-top: -1px;">
+            <p style="margin-top: 15px;margin-bottom:0;">Signature of the Class Teacher</p>
+            <div ng-if="teacherSignature==''" style="height:50px"><br /></div>
+            <div class="d-flex flex-column">
+              <div style="margin-top: 15px;margin-bottom:0;position: relative;">
+                Signature of the Principal
+                <aside style="position: absolute;top:-93px;">
+                  <div *ngIf="teacherSignature==''" style="height:50px"><br /></div>
+                  <div *ngIf="teacherSignature!=''"><img src="{{teacherSignature}}" style="float: right;" height="50">
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex;column-gap: 30px;">
+          <div>
+            <table width="100%" class="table-sm table-bordered mt-2 mb-2">
+              <tbody>
+                <tr>
+                  <th colspan="5" class="text-center text-uppercase">
+                    Scholastic
+                  </th>
+                </tr>
+                <tr>
+                  <th>Grade</th>
+                  <th>Marks Range</th>
+                  <th rowspan="5">&nbsp;</th>
+                  <th>Grade</th>
+                  <th>Marks Range</th>
+                </tr>
+                <tr>
+                  <td>A+</td>
+                  <td>{{getmarksrange('A1')}}</td>
+                  <td>C+</td>
+                  <td>{{getmarksrange('C1')}}</td>
+                </tr>
+                <tr>
+                  <td>A</td>
+                  <td>{{getmarksrange('A2')}}</td>
+                  <td>C</td>
+                  <td>{{getmarksrange('C2')}}</td>
+                </tr>
+                <tr>
+                  <td>B+</td>
+                  <td>{{getmarksrange('B1')}}</td>
+                  <td>D</td>
+                  <td>{{getmarksrange('D')}}</td>
+                </tr>
+                <tr>
+                  <td>B</td>
+                  <td>{{getmarksrange('B2')}}</td>
+                  <td>33 & Below</td>
+                  <td>E (Needs to Improve)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="flex-grow: 1;">
+            <div class="table-responsive mt-2 mb-2">
+              <table width="100%" class="table-sm table-bordered">
+                <tbody>
+                  <tr>
+                    <th colspan="2" class="text-center text-uppercase">
+                      Co-Scholastic
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>Grade</th>
+                    <th>Marks Range</th>
+
+                  </tr>
+                  <tr ng-repeat="x in co_scholastic_schema[0].grades_range">
+                    <td>
+                      <span ng-if="x.grade != 'E' ">{{x.grade}}</span>
+                      <span ng-if="x.grade == 'E' ">E (Needs to Improve)</span>
+                    </td>
+                    <td>
+                      <span ng-if="x.grade != 'E' ">{{x.marks_range}}</span>
+                      <span ng-if="x.grade == 'E' ">Less than 1</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="clear: both;"></div>
+          <p><br /></p>
+          <div class="text-end fw-bold pr-3">Signature of the Parent</div>
+        </div>
+      </aside>
+
+      <!-- <div class="bgFixed"> <img src="{{selectedLayoutImage}}"> </div> -->
+      <div class="bgFixed"> <img src="{{imgbasepath}}img/cbse_termend_bg_2.jpg"> </div>
+    </div>
+  </div>
+
+  <script>
+    var app = angular.module("myApp", []);
+    app.controller("myCtrl", function ($scope, $http, $filter) {
+
+      var url = new URL(window.location.href);
+      var mongoid = url.searchParams.get("id");
+      //live apis
+       var empPortalApi = "https://analysis.aditya.ac.in/staff/api/";
+       var analysislocal = "https://apis.aditya.ac.in/analysis"
+
+      //local apis
+      // var empPortalApi = "http://10.70.3.169:7700/";
+      // var analysislocal = "http://10.60.1.9:3006/api"
+      $http.get(empPortalApi + "exammarks/resultbyid/" + mongoid).then(function (response) {
+        // console.log(response)
+        $scope.total_data = response.data.result[0];
+        // console.log($scope.total_data)
+        $scope.filteredExamResult1 = $scope.total_data.exam_result.filter(subjectData => subjectData.subject !== 'ICT');
+        $scope.filteredExamResult2 = $scope.total_data.exam_result.filter(subjectData => subjectData.subject === 'ICT');
+        // console.log($scope.filteredExamResult1)
+        // console.log($scope.filteredExamResult2)
+        const termAdditionalMarks = $scope.total_data.term_aditional_marks;
+        // console.log(termAdditionalMarks)
+
+        $scope.stdinfo = $scope.total_data.student_info[0];
+        // console.log($scope.stdinfo)
+
+        $http.get(analysislocal + "/master/year").then(function (yeardata) {
+          $scope.year_Info = yeardata.data.filter(e => e.year_name == $scope.stdinfo.year_id)
+
+          var obj = {
+            "student_id": $scope.stdinfo.student_id,
+            "year_id": $scope.year_Info[0].year_id,
+            "section_id": $scope.stdinfo.section_id,
+            "attendance_from_date": $scope.total_data.student_attendance[0],
+            "attendance_to_date": $scope.total_data.student_attendance[1]
+          }
+          //  console.log(obj)
+
+          $http.post(analysislocal + "/student/rangeattendance", obj).then(function (std_attend_data) {
+            //console.log(std_attend_data)
+            $scope.std_attendance = std_attend_data.data.result[0]
+
+          });
+        })
+        $scope.block0 = termAdditionalMarks.filter(block => block.title === 'block-0')[0];
+        $scope.block3 = termAdditionalMarks.filter(block => block.title === 'block-3')[0];
+        $scope.block4 = termAdditionalMarks.filter(block => block.title === 'block-4')[0];
+        $scope.block5 = termAdditionalMarks.filter(block => block.title === 'block-5')[0];
+
+        $scope.layout_Info = $scope.total_data.layout_info[0]
+        $scope.selectedLayoutImage = $scope.layout_Info.layout_path + 'img/' + $scope.layout_Info.bg_image;
+        // $scope.selectedLayoutImage =  'img/'+ $scope.layout_Info.bg_image;
+
+        $http.get(empPortalApi + "layouts/filter/" + $scope.total_data.report_layout).then(function (imgdata) {
+          // console.log(imgdata)
+          var imgresult = imgdata.data[0];
+          $scope.imgbasepath = imgresult.layout_path;
+          $scope.selectedLayoutImage = imgresult.layout_path + 'img/' + imgresult.bg_image;
+          // console.log(imgresult.signature)
+          if (imgresult.signature != '' && imgresult.signature != undefined) {
+            // $scope.teacherSignature = 'img/'+ imgresult.signature;
+            $scope.teacherSignature = imgresult.layout_path + 'img/' + imgresult.signature;
+          } else {
+            $scope.teacherSignature = ""
+          }
+          var gradeobj = {
+            institute: $scope.stdinfo.institute,
+            exam_category: $scope.total_data.exam_type,
+            campus: $scope.stdinfo.campus
+          }
+          // console.log(gradeobj)
+
+          $http.post(empPortalApi + "gradescale/getone/", gradeobj)
+            .then(function (data) {
+              //console.log(data);
+              $scope.gradescale = data.data[0].grade_scale;
+              // console.log($scope.gradescale)
+              $scope.scholastic_schema = $scope.gradescale.filter(e => e.type === 'Scholastic')
+              $scope.co_scholastic_schema = $scope.gradescale.filter(e => e.type === 'Co-Scholastic')
+              $scope.getmarksrange = (grd) => {
+                // //console.log(grd)
+                var gradefilter = $scope.scholastic_schema[0].grades_range.filter(
+                  e => e.grade == grd
+                );
+                // console.log(grd, gradefilter);
+                return gradefilter[0].marks_range;
+              };
+            });
+
+          // })
+        })
+      }).catch(function (error) {
+        console.error("Error:", error);
+
+      });
+
+    });
+  </script>
+</body>
+
+</html>

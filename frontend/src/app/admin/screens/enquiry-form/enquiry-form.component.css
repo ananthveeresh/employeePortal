@@ -1,0 +1,149 @@
+body {
+    background: #f0fdf4;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    /* max-width: 1400px;    */
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.glass-card {
+    /* background: rgba(224, 242, 241, 0.95); */
+    backdrop-filter: blur(10px);
+    border-radius: 14px;
+    border: 1px solid rgba(224, 242, 241, 0.2);
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.08);
+}
+
+.upload-zone {
+    border: 1px dashed  #4754ee;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+
+
+.template-card {
+    /* background: #f6f6fe; */
+    background: #e5e5f9ab;
+    border-radius: 10px;
+    padding: 0.8rem;
+    transition: all 0.3s ease;
+    
+}
+
+
+
+.schedule-table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.schedule-table th {
+    color:  white!important;
+    background: #4754ee !important;
+    padding: 10px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+
+.schedule-table td {
+    padding: 8px;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.schedule-table tr:hover {
+    background-color: hsl(240, 80%, 98%);
+}
+
+.btn-modern {
+    padding: 6px 8px;
+    border-radius: 7px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    color: #fff!important;
+    background:  #4754ee !important;
+    border: 1px solid  #4754ee;
+}
+
+
+
+.download-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.download-button:hover {
+    transform: scale(1.08);
+}
+
+.animated-icon {
+    transition: all 0.3s ease;
+}
+
+.animated-icon:hover {
+    transform: scale(1.15);
+}
+
+h5 {
+    font-size: 16px;
+}
+
+h6 {
+    font-size: 18px;
+}
+
+p {
+    font-size: 13px;
+}
+
+.fs-1 {
+    font-size: 2rem !important;
+}
+
+.fs-3 {
+    font-size: 1.25rem !important;
+}
+
+.bg-primary{
+    background: #e5e5f9ab !important;
+    color : #4754ee !important;
+}
+
+.text-color{
+    color: #4754ee !important;
+    
+}
+
+.cstm-btn:hover{
+    background: #4754ee !important;
+    color: #fff !important;
+    
+}
+
+.blockBtn {
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+   
+}
+.btn-outline-primary:hover {
+    color: #fff !important;
+}

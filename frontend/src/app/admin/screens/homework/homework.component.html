@@ -1,0 +1,357 @@
+<main id="main" class="main">
+   <section class="section dashboard">
+      <div class="row">
+         <div class="col-lg-12" *ngIf="formVisible == 1">
+            <div class="card">
+               <div class="card-body">
+                  <div class="row my-3">
+                     <div class="col-6">
+                        <h5 class="card-title m-0 p-0">Entry Form</h5>
+                     </div>
+                     <div class="col-6" style="text-align: right;">
+                        <button type="button" (click)="home_work_List()" class="btn btn-primary" style="color: white;">
+                           List
+                        </button>
+                     </div>
+                  </div>
+                  <form class="row g-3" [formGroup]="homeworkData" (ngSubmit)="Onsubmit()">
+                     <div class="col-12">
+                        <select class="form-select" name="category" formControlName="category"
+                           aria-label="Default select example" (change)="filter_sub()">
+                           <option value="" disabled selected hidden>
+                              Select Category
+                           </option>
+                           <option *ngFor="let x of event_category_List" value="{{ x.categoryname }}">
+                              {{ x.categoryname }}
+                           </option>
+                        </select>
+                     </div>
+                     <div>
+                        <div class="col-md-12">
+                           <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                              <div class="tab-pane fade show active" id="bordered-justified-home" role="tabpanel"
+                                 aria-labelledby="home-tab">
+                                 <div class="QpaerntBlock">
+                                    <aside class="hstack gap-1 justify-content-between mb-2">
+                                       <label class="form-label">Enter Description </label>
+                                       <aside class="d-flex gap-1 edr">
+                                          <span class="frame" *ngIf="uploaded_info?.orginalName"> <i
+                                                class="ri-attachment-2" style="color: #ff6154;"></i><span
+                                                class="small">{{
+                                                uploaded_info?.orginalName }}</span></span>
+                                          <!-- <div class="frame">{{ uploaded_info?.orginalName }}</div> -->
+                                          <div style="position: relative;">
+                                             <input class="d-block intpcstm" type="file"
+                                                (change)="onFileSelected($event)" accept=".pdf, .jpg, .jpeg, .png"
+                                                id="fileInput" />
+                                             <label for="fileInput" class="topLayr"><i
+                                                   class="bx bx-image-alt pic_choose"></i></label>
+                                          </div>
+                                          <a class="bx bx-bold" title="Bold" href="javascript:void(0);"
+                                             (click)="insertTag('<b>')"> </a>
+                                          <a href="javascript:void(0);" class="bx bx-italic" title="Italic"
+                                             (click)="insertTag('<i>')"></a>
+                                          <a href="javascript:void(0);" class="bx bx-underline" title="Underline"
+                                             (click)="insertTag('<u>')"></a>
+                                          <a href="javascript:void(0);" class="bx bx-strikethrough" title="Strike"
+                                             (click)="insertTag('<s>')"></a>
+                                          <a href="javascript:void(0);" class="bx bx-font small" title="Small"
+                                             (click)="insertTag('<small>')"></a>
+                                       </aside>
+                                    </aside>
+                                    <textarea class="form-control txtAra" name="homework_desc"
+                                       formControlName="homework_desc" id="quesdesp" required></textarea>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-12 mselect">
+                        <label class="form-label">Select Section </label>
+                        <ng-select [items]="section_List" bindLabel="section_name"
+                           placeholder="You can Select Multiple Exams" appendTo="body" [multiple]="true" id="stdgroup"
+                           name="sectionlist" formControlName="sectionlist" (change)="getSubjects()" required>
+                        </ng-select>
+                     </div>
+                     <div class="col-6" *ngIf="
+                      selected_category && selected_category[0]?.subjectdisplay == 1
+                      ">
+                        <label class="form-label">Subjects </label>
+                        <select class="form-select" name="subjectslist" formControlName="subjectslist">
+                           <option value="">Select Subject</option>
+                           <option *ngFor="let x of subject_List" value="{{ x.id }}">
+                              {{ x.subject_name }}
+                           </option>
+                        </select>
+                     </div>
+                     <div class="col-6" *ngIf="
+                      selected_category && selected_category[0]?.subjectdisplay == 1
+                      ">
+                        <label _ngcontent-sto-c5="" class="form-label">Due Date </label>
+                        <input class="form-control" type="date" name="selectedDate" formControlName="selectedDate" />
+                     </div>
+
+                     <div class=" mt-3">
+                        <label _ngcontent-sto-c5="" class="form-label">Notifications </label>
+                        <div class="card col-6">
+                           <div class="card-body ">
+
+                              <div class="col-6 mt-2" *ngFor="let x of hmwork_Notify_List">
+                                 <input type="checkbox" name="sendNotify" formControlName="sendNotify"
+                                    (click)="get_notify(x,$event)" value="{{x}}"> {{x.notifytype}} <br>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="row mt-3"></div>
+                     <div class="text-center">
+                        <button type="submit" class="btn btn-primary" [disabled]="!homeworkData.valid">
+                           Submit
+                        </button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-12" *ngIf="formVisible == 0">
+            <div class="card bs-card-border ptestcard mb-3 p-3">
+               <div class="d-md-flex  gap-2 justify-content-between align-items-center">
+                  <div class="flex-md-grow-1 mb-3 mb-md-0">
+                     <h5 class="card-title m-0 p-0">Campus Connect</h5>
+                  </div>
+                  <div class="mb-3 mb-md-0">
+                     <input class="form-control" type="date" name="totalList" (change)="totallist($event)" />
+                  </div>
+                  <div class="hstack justify-content-between gap-3">
+                     <div class="flex-grow-1">
+                        <select name="" id="" class="form-control form-select" (change)="get_by_category($event)">
+                           <option value="All">All</option>
+                           <option value="{{ x }}" *ngFor="let x of category_list">
+                              {{ x }}
+                           </option>
+                        </select>
+                     </div>
+                     <div>
+                        <button
+                           style="color: white; height: 38px; display: flex; align-items: center; justify-content: center; padding-right: 16px;"
+                           type="button" class="btn btn-primary" (click)="addhmwork()">
+                           <i class="bi bi-plus"
+                              style="font-size: 23px; line-height: 0; margin-right: 3px; display: block; margin-top: 2px;"></i>
+                           Add
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <h5 class="text-danger text-center mt-2" *ngIf="homework_List_by_Date?.length == 0 && show_history == 0">
+               No Data Found
+            </h5>
+            <div class="row" *ngIf="homework_List_by_Date?.length > 0 && show_history == 0">
+               <div class="col-12" *ngFor="let x of homework_List_by_Date; let i = index">
+                  <div class="card bs-card-border ptestcard mb-4">
+                     <div class="card-body p-md-3 hbetween p-2" *ngIf="
+                         homework_List_by_Date?.length > 0 && show_history == 0
+                         ">
+                        <div role="header" class="hstack gap-1 border-bottom justify-content-between">
+                           <div class="IconBlock flex-grow-1">
+                              <aside class="d-flex hstack gap-1">
+                                 <i class="ibox" [ngClass]="
+                                     x?.category_info == 'Home work'
+                                     ? 'bi bi-book theme_color'
+                                     : x?.category_info == 'Circular Hub'
+                                     ? 'bi bi-newspaper invert_color'
+                                     : 'bi bi-info-circle info_color'
+                                     "></i>
+                                 <div class="d-flex flex-column">
+                                    <span class="card-hdng-small">
+                                       {{ x?.category_info }}
+                                    </span>
+                                    <small class="d-flex fw-normal small text-muted mt-n1" *ngIf="
+                                        x?.subject_info &&
+                                        x.subject_info?.subject_name != ''
+                                        ">
+                                       {{ x.subject_info?.subject_name }}
+                                    </small>
+                                 </div>
+                              </aside>
+                           </div>
+                           <div class="rightBlock">
+                              <article class="title-3">
+                                 {{ x.createdAt | date : "dd-MM-yyyy" }}
+                              </article>
+                              <small class="fw-normal small text-muted mt-n1"
+                                 style="margin-top: -2px; display: block;">Posted on </small>
+                           </div>
+                        </div>
+                        <div role="middle" class="mb-2">
+                           <div class="mt-2" [innerHTML]="x.homework_description">
+                              {{ x.homework_description }}.
+                           </div>
+                           <aside class="w-50 float-start mt-3">
+                              <small style="display: inline-flex;cursor:pointer" class="frame" (click)="load_image(x)"
+                                 *ngIf="x.filepath && x.filepath != null"> <i class="ri-attachment-2"
+                                    style="color: #ff6154;font-size: 23px;margin-top:1px;"></i>
+                                 <div class="vstack">
+                                    <span class="title-3">Download</span>
+                                    <span class="fw-normal small text-muted">Attachment</span>
+                                 </div>
+                              </small>
+                           </aside>
+                           <aside class="w-50 float-end mt-3">
+                              <article style="display: inline-flex" class="frame"
+                                 *ngIf="x?.category_info == 'Home work'" style="float: right">
+                                 <i class="bi bi-calendar2-week" style="color: #ff6154;font-size:24px"></i>
+                                 <div class="vstack">
+                                    <span class="title-3">{{ x.report_date | date : "dd-MM-yyyy" }}</span>
+                                    <span class="fw-normal small text-muted" style="display: block;margin-top:1px;">Due
+                                       on</span>
+                                 </div>
+                              </article>
+                           </aside>
+                           <div style="clear: both"></div>
+                        </div>
+                        <aside class="d-flex justify-content-start border-top align-items-start flex-row w-100">
+                           <div class="d-flex justify-content-start align-items-start flex-column w-100">
+                              <div (click)="toggleSections(i)"
+                                 style="cursor: pointer; height: 26px; width: 100%; display: flex; justify-content: flex-end;">
+                                 <div>
+                                    <i class="ri ri-arrow-down-s-line fs-3 text-success"
+                                       *ngIf="show_accordation !== i"></i>
+                                    <i class="ri-arrow-up-s-line fs-3 text-danger" *ngIf="show_accordation === i"></i>
+                                 </div>
+                              </div>
+                              <div class="w-100 mt-3" id="collapseExample"
+                                 [ngClass]="{'collapse': show_accordation !== i, 'show': show_accordation === i}">
+                                 <aside class="skillwraper mb-2 text-primary pointer-class"
+                                    *ngIf="x?.category_info == 'Home work'">
+                                    <div class="hstack gap-1" *ngFor="let sec_name of x.section_info"
+                                       (click)="get_std_list(sec_name, x)" data-bs-toggle="modal"
+                                       data-bs-target="#std_modal">
+                                       <div
+                                          class="d-flex align-center gap-1 justify-content-between mb-1 w-100 border-bottom pb-2">
+                                          <div class="hstack gap-1"><span class="small">{{ sec_name.section_name
+                                                }}</span></div>
+                                          <div class="small-badge" *ngIf="sec_name.updated == true"> <i
+                                                class="bi bi-check"></i></div>
+                                       </div>
+                                    </div>
+                                 </aside>
+
+                                 <aside class="skillwraper mb-2" *ngIf="x?.category_info != 'Home work'">
+                                    <div class="hstack gap-1" *ngFor="let sec_name of x.section_info">
+                                       <div
+                                          class="d-flex align-center gap-1 justify-content-between mb-1 w-100 border-bottom pb-2">
+                                          <div class="hstack gap-1"><span class="small">{{ sec_name.section_name
+                                                }}</span></div>
+                                          <div class="small-badge" *ngIf="sec_name.updated == true"> <i
+                                                class="bi bi-check"></i></div>
+                                       </div>
+                                    </div>
+                                 </aside>
+                                 <span style="cursor: pointer;float: left"
+                                    class="d-inline-flex px-1 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger border-opacity-10 rounded-2 justify-content-end"
+                                    (click)="deletehomework(x._id)">
+                                    <i class="bx bxs-trash-alt text-danger"></i>
+                                 </span>
+                                 <div style="clear: both"></div>
+                              </div>
+                           </div>
+                        </aside>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal fade" id="std_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="hstack justify-content-between" style="padding:3px 16px 0 16px;">
+                        <div class="card-hdng-small" id="exampleModalLabel" style="font-weight:400">
+                           {{ std_list[0]?.section_name }}
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                           style="font-size: 23px;"></button>
+                     </div>
+                     <div class="modal-body pt-0">
+                        <div class="t_height">
+                           <table class="table table-bordered table-sm">
+                              <thead style="position:sticky;top:-1px;z-index: 100;background: white;">
+                                 <tr>
+                                    <th style="text-align:center;white-space:nowrap">#</th>
+                                    <th>Student Name</th>
+                                    <th style="white-space: nowrap">Done</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr *ngFor="let x of std_list; let i = index">
+                                    <th style="text-align:center">{{ x.roll_no }}</th>
+                                    <td>{{ x.student_name }}</td>
+                                    <td class="text-center">
+                                       <div class="checkbox-wrapper-13">
+                                          <input id="c1-13" type="checkbox" [(ngModel)]="x.status"
+                                             (click)="change_status(i)" />
+                                       </div>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                           <h5 class="text-center text-danger" *ngIf="std_list.length==0"> Loading...! </h5>
+                        </div>
+                     </div>
+                     <div class="modal-footer hstack justify-content-between">
+                        <div class="flex-grow-1"><img src="assets/img/homework.svg"
+                              style="width: 145px;margin-top:-11px;"></div>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                           aria-label="Close">
+                           Close
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="onStatus_submit()">
+                           Submit
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="card-body">
+               <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true" style="display: none;">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <div *ngIf="homework_List_by_Date?.length == 0">
+                              <h5 class="text-danger text-center">no data found</h5>
+                           </div>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <div class="d-flex flex-column pointer-class"
+                              *ngIf="hwinfoview?.filepath && hwinfoview?.filepath != null">
+                              <button class="btn btn-outline-primary d-flex align-items-center gap-1 mb-3 "
+                                 (click)="load_image(hwinfoview)" style="width: 114px; cursor: pointer;">
+                                 Attachment
+                                 <i class="ri-attachment-2 " style="font-size: 13px; line-height: 15px;"></i>
+                              </button>
+                           </div>
+                           <div>
+                              <div *ngIf="imageData && selectedfiletype == 'image/jpeg'">
+                                 <img *ngIf="selectedfiletype == 'image/jpeg'" [src]="imageData" alt="Image" />
+                              </div>
+                              <div *ngIf="imageData && selectedfiletype == 'application/pdf'">
+                                 <iframe class="w-100" *ngIf="selectedfiletype == 'application/pdf'"
+                                    style="border: 1px solid red;" [src]="imageData" width="100%"
+                                    height="300px"></iframe>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                              Close
+                           </button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</main>

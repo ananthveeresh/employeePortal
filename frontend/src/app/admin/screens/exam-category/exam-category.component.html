@@ -1,0 +1,215 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Exam Category</h1>
+   
+  </div>
+
+  <section class="section dashboard">
+    
+
+    <div class="row">
+      <div class="col-lg-6" *ngIf="ShowData == 1">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Exam Category </h5>
+            <form class="row g-3" [formGroup]="exam_Cat_Data"    (ngSubmit)="onSubmit()" >
+            
+
+             
+
+              <div class="col-12">
+                <label class="form-label" 
+                  >Category Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Category Name"
+                  name="categoryname"
+                  formControlName="categoryname" 
+                 
+                  required
+                />
+
+              </div>
+
+
+              <div class="col-12">
+                <label class="form-label" 
+                  >Category Code</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Category Code"
+                  name="categorycode"
+                  formControlName="categorycode"
+                 
+                  required
+                />
+
+              </div>
+             
+
+
+               <div class="col-12">
+                <label  class="form-label"  
+                  >Institute </label
+                >
+                <select class="form-select"  name="institute_name"  formControlName="institute_name"  required >
+                   <option  value="0"  selected>Select Section</option>
+                    <option  value="{{x.id}}" *ngFor="let x of institutelist">{{x.institute_name}}</option>
+                  </select>
+              </div> 
+
+              
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary"  [disabled]="!exam_Cat_Data.valid" >Submit</button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6" *ngIf="ShowData == 2">
+        <div class="card">
+          <div class="card-body">
+            <div
+            class="col-md-12 align-self-center d-flex justify-content-end"
+          >
+            <button
+              class="left-icon p-0 hvr-grow btn submit-edit-button"
+              type="button"
+              style="margin-top: 22px"
+              (click)="backbutton()"
+            >
+              <svg
+                width="36"
+                height="36"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17.29 18.0002L20.83 14.4602C21.0163 14.2728 21.1208 14.0194 21.1208 13.7552C21.1208 13.491 21.0163 13.2376 20.83 13.0502C20.737 12.9565 20.6264 12.8821 20.5046 12.8313C20.3827 12.7805 20.252 12.7544 20.12 12.7544C19.988 12.7544 19.8573 12.7805 19.7354 12.8313C19.6136 12.8821 19.503 12.9565 19.41 13.0502L15.17 17.2902C15.0763 17.3832 15.0019 17.4938 14.9511 17.6156C14.9003 17.7375 14.8742 17.8682 14.8742 18.0002C14.8742 18.1322 14.9003 18.2629 14.9511 18.3848C15.0019 18.5066 15.0763 18.6172 15.17 18.7102L19.41 23.0002C19.5034 23.0929 19.6143 23.1662 19.7361 23.216C19.8579 23.2657 19.9884 23.291 20.12 23.2902C20.2516 23.291 20.3821 23.2657 20.5039 23.216C20.6257 23.1662 20.7366 23.0929 20.83 23.0002C21.0163 22.8128 21.1208 22.5594 21.1208 22.2952C21.1208 22.031 21.0163 21.7776 20.83 21.5902L17.29 18.0002Z"
+                  fill="#F7F7F7"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+            <h5 class="card-title">Update Category </h5>
+            <form class="row g-3" [formGroup]="Update_exam_Cat_Data"    (ngSubmit)="updateData()" >
+        
+              <div class="col-12">
+                <label class="form-label" >Category Name</label>
+                <input type="text" class="form-control" placeholder="Category Name" name="categoryname"
+                  formControlName="categoryname" required
+                />
+
+              </div>
+
+
+              <div class="col-12">
+                <label class="form-label" 
+                  >Category Code</label
+                >
+                <input  type="text"  class="form-control"  placeholder="Category Code" name="categorycode"  formControlName="categorycode"  required
+                />
+
+              </div>
+             
+
+
+               <div class="col-12">
+                <label  class="form-label"  
+                  >Institute </label
+                >
+                
+                <select class="form-select"  name="institute_name"  formControlName="institute_name"  required >
+                   <option  value="0"  selected>Select Section</option>
+                    <option  value="{{x.id}}"  *ngFor="let x of institutelist">{{x.institute_name}}</option>
+                  </select>
+              </div> 
+
+              
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary"  [disabled]="!Update_exam_Cat_Data.valid" >Update</button>
+              </div>
+            </form>
+
+     
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="col-lg-6" *ngIf="ShowData == 1">
+        <div class="card">
+
+         
+          <div class="table-responsive text-nowrap m-3">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="table-active">
+                  <th scope="col">S.No</th>
+                  <th>catcode</th>
+                  <th class="text-center">catname</th>
+                  <th>Institute Name</th>
+                  <th class="text-center">Update</th>
+                  <th class="text-center">Delete</th>
+
+
+                </tr>
+              </thead>
+              <tbody>
+                 <tr *ngFor="let x of exam_Category_List; let i = index" class="text-center">
+                  <td scope="row">{{ i + 1 }}</td>
+                  <td>{{x.categoryname}}</td>
+                  <td>{{ x.categorycode }}</td>
+                  
+                  <td *ngFor="let y of x.inst_master">{{y.institute_name}}</td>
+                  <td class="text-center">
+                    <article class="d-md-flex justify-content-md-center" (click)="update_list(x)">
+                      <a href="javascript: void(0)"><i class='bx bxs-edit-alt'></i></a>
+                    </article>
+                  </td>
+
+                  <td class="text-center" >
+                    <article class="d-md-flex justify-content-md-center"  (click)="delete_list(x)">
+                      <a href="javascript: void(0)"><i class='ri-delete-bin-7-fill' style="color: red;"></i></a>
+                    </article>
+                  </td>
+
+                
+                
+                
+                </tr> 
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    
+   
+    </div>
+    
+
+   
+
+
+
+  </section>
+
+
+ 
+
+</main>
+
+
+

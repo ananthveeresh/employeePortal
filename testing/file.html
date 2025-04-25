@@ -1,0 +1,19 @@
+<button type="button" class="btn btn-primary"
+                        [disabled]="currentStep === 0 ? !job_description_form.valid : currentStep === 1 ? !job_eligibility_form.valid : currentStep === 2 ? !drive_details_form.valid : false"
+                        (click)="currentStep === 2 ? submitForm() : nextStep()">
+                        {{ currentStep === 2 ? 'Submit' : 'Next' }}
+                      </button>
+
+
+
+                       <!-- <tr>
+                            <td>
+                              <img
+                                *ngIf="selectedJobData.jobDescription.logo"
+                                [src]="selectedJobData.jobDescription.logo"
+                                alt="Company Logo"
+                                class="img-fluid"
+                                style="max-width: 100px; height: auto;"
+                              />
+                            </td>
+                          </tr> --> 
