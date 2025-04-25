@@ -1,0 +1,2 @@
+# NodeJsMongoFramework
+NodeJsMongoFramework standard version
